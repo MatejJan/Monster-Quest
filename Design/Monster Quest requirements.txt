@@ -1,0 +1,80 @@
+MONSTER QUEST
+Requirements
+
+Fight battles:
+- Automatic battle simulation between a party of characters and monsters.
+- Creatures have hit points.
+- Attack action with a given weapon/skill, decreases HP.
+- Ability for the party to flee a battle.
+- Defeated monsters drop possessions.
+- Game over when all characters are dead.
+
+Navigate dungeons:
+- Procedurally-generated dungeons on a square grid.
+- Walkable tiles with walls on the sides.
+- Entrance tile (stairs).
+  - Defines party's starting position.
+  - Can be accessed to exit dungeon.
+- Gradual exploration and fog of war.
+  - Undiscovered tiles are not drawn.
+  - Discovered but not visible tiles are grayed out.
+  - Monsters only appear on visible tiles.
+- Movement via pathfinding.
+  - Player clicks a tile and the party finds the shortest path to move there.
+- Containers with loot.
+- Party travels together on one tile during exploration.
+  - One of the characters is chosen as the party leader.
+    - Ability checks (visibility, sneaking …) are performed using leader's stats.
+- When entering battle, characters spread out to occupy their own tiles.
+  - Characters with no ranged weapons go closer to monsters.
+
+Travel the world:
+- Move between dungeons and other locations.
+- Locations have danger level that contributes to random encounters.
+  - Towns have developer-assigned danger levels that generate human attacks.
+  - Dungeons have danger levels corresponding to amount of living monsters in it.
+- Locations are connected with roads with defined distances.
+  - Certain distance defines a day's worth of travel.
+  - Random encounter rolled per each day of travel.
+    - On the first half of the trip, rolls are done based on source, in the second half on destination (rounded up).
+    - On multi-day travels, sleeping occurs after the potential random encounter.
+- Automatic layout generation.
+  - Locations can specify approximate cardinal direction on the map.
+- Dungeon locations.
+  - Description and icon for a dungeon.
+  - Developer specifies monsters in the dungeon.
+  - Player can take a short rest to regain HP by spending one hit dice.
+  - Player can sleep to regain all HP and half of hit dice.
+    - Danger level average of the roads connecting to it + dungeon's danger level.
+    - If random encounter is triggered, no healing occurs.
+- Game won when all dungeons are cleared.
+
+Random encounters:
+- Procedurally-generated overworld locations.
+- Fight starts automatically, direct return to world map and traveling.
+
+Visit towns:
+- Town locations that offer different actions.
+
+Buy supplies:
+- Buy food rations that deplete when you travel.
+  - Loss of HP when out of food.
+- Upgrade weapons for gold.
+
+Heal and revive characters:
+- Stay at an inn to fully heal for a little gold.
+- Go to the temple to revive characters for a lot of gold.
+
+Party creation:
+- 4 human fighters are created.
+  - Abilities are rolled and randomly assigned.
+  - Armor type (light, medium, heavy) is selected based on strength.
+  - Weapon combo selected based on strength and dexterity.
+  - Character token icon is chosen based on weapon choice.
+- All character properties can be rerolled.
+- Names can be changed.
+
+Character leveling:
+- Defeating monsters gains XP.
+- Upon reaching the required XP, you gain a level.
+- When gaining a new level, you increase your HP and get a new hit dice.

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6610c137e2cbb4f94a201bc3fad849e4, type: 3}
+  m_Name: Greatsword
+  m_EditorClassIdentifier: 
+  displayName: greatsword
+  cost:
+    copper: 0
+    silver: 0
+    electrum: 0
+    gold: 50
+    platinum: 0
+  weight: 6
+  effects:
+  - {fileID: 11400000, guid: 3edf8e9ea2f6d404b8aa224b9570f559, type: 2}
+  - {fileID: 11400000, guid: 0a4e171e8c39e4fe18118c2b3d0342e8, type: 2}
+  - {fileID: 11400000, guid: 6db34ea093a2d444c99195f4bf07be44, type: 2}
+  - {fileID: 11400000, guid: 6e57e5b45661442c6b7a7430cbbf9c56, type: 2}

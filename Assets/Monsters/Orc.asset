@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
+  m_Name: Orc
+  m_EditorClassIdentifier: 
+  displayName: orc
+  size: 3
+  type: 10
+  alignment: chaotic evil
+  armorClass: 13
+  hitPointsRoll: 2d8+6
+  abilityScores:
+    <strength>k__BackingField:
+      <score>k__BackingField: 16
+    <dexterity>k__BackingField:
+      <score>k__BackingField: 12
+    <constitution>k__BackingField:
+      <score>k__BackingField: 16
+    <intelligence>k__BackingField:
+      <score>k__BackingField: 7
+    <wisdom>k__BackingField:
+      <score>k__BackingField: 11
+    <charisma>k__BackingField:
+      <score>k__BackingField: 10
+  damageVulnerabilities: 
+  damageResistances: 
+  damageImmunities: 
+  challengeRating: 0.5
+  effects: []
+  items:
+  - {fileID: 11400000, guid: c0261fbfb74a44b84b5950a6bfc64870, type: 2}
+  - {fileID: 11400000, guid: b58f7b63b9aea4fafbbbb346dbccf771, type: 2}
