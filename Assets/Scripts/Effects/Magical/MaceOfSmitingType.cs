@@ -42,13 +42,13 @@ namespace MonsterQuest.Effects
             return new ArrayValue<DamageRoll>(this, new[] { _lastDamageRoll });
         }
 
-        public void ReactToDamageDealt(Damage damage)
+        public void ReactToDamageDealt(DamageAmount damageAmount)
         {
             // React only to extra damage dealt with this weapon.
-            if (damage.roll != _lastDamageRoll) return;
+            if (damageAmount.roll != _lastDamageRoll) return;
 
             // If a construct has 25 hit points or fewer after taking this damage, it is destroyed.
-            Creature target = damage.hit.target;
+            Creature target = damageAmount.hit.target;
 
             if (IsTargetAConstruct(target) && target.hitPoints <= 25)
             {

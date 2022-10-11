@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using MonsterQuest.Effects;
+using UnityEngine;
 using Attack = MonsterQuest.Actions.Attack;
 
 namespace MonsterQuest
 {
-    public class Monster : Creature, IArmorClassRule, IDamageTypeRule, IAttackAbilityRule
+    public class Monster : Creature, IArmorClassRule, IDamageTypeRule, IAttackAbilityRule, IAttackRollModifierRule
     {
         public Monster(MonsterType type)
         {
@@ -47,6 +49,8 @@ namespace MonsterQuest
 
         public override SizeCategory size => type.size;
 
+        public override Sprite bodySprite => type.bodySprite;
+
         protected override int proficiencyBonusBase => (int)type.challengeRating;
 
         public IntegerValue GetArmorClass(Creature creature)
@@ -60,41 +64,50 @@ namespace MonsterQuest
 
         public SingleValue<Ability> GetAttackAbility(Attack attack)
         {
-            // Only provide information for our own attacks.
+            // Only provide information for our own inherent (non-weapon) attacks.
             if (attack.effect.parent != this) return null;
 
             // Melee attacks use Strength, ranged attacks use Dexterity.
             return new SingleValue<Ability>(this, attack.effect is RangedAttack ? Ability.Dexterity : Ability.Strength);
         }
 
-        public ArrayValue<DamageType> GetDamageTypeResistances(Damage damage)
+        public IntegerValue GetAttackRollModifier(Attack attack)
+        {
+            // Only provide information for our own attacks.
+            if (attack.attacker != this) return null;
+
+            // Return the proficiency bonus modifier.
+            return new IntegerValue(this, 0, proficiencyBonus);
+        }
+
+        public ArrayValue<DamageType> GetDamageTypeResistances(DamageAmount damageAmount)
         {
             // Only provide information for the current monster.
-            if (damage.hit.target != this) return null;
+            if (damageAmount.hit.target != this) return null;
 
             return new ArrayValue<DamageType>(this, type.damageResistances);
         }
 
-        public ArrayValue<DamageType> GetDamageTypeImmunities(Damage damage)
+        public ArrayValue<DamageType> GetDamageTypeImmunities(DamageAmount damageAmount)
         {
             // Only provide information for the current monster.
-            if (damage.hit.target != this) return null;
+            if (damageAmount.hit.target != this) return null;
 
             return new ArrayValue<DamageType>(this, type.damageImmunities);
         }
 
-        public ArrayValue<DamageType> GetDamageTypeVulnerabilities(Damage damage)
+        public ArrayValue<DamageType> GetDamageTypeVulnerabilities(DamageAmount damageAmount)
         {
             // Only provide information for the current monster.
-            if (damage.hit.target != this) return null;
+            if (damageAmount.hit.target != this) return null;
 
             return new ArrayValue<DamageType>(this, type.damageVulnerabilities);
         }
 
-        protected override void HandleZeroHP(int remainingDamageAmount, Hit hit)
+        protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit)
         {
             // Monsters immediately die.
-            Die();
+            yield return Die();
         }
     }
 }

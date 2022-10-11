@@ -37,5 +37,6 @@ namespace MonsterQuest
         public float challengeRating;
         public EffectType[] effects;
         public ItemType[] items;
+        public Sprite bodySprite;
     }
 }

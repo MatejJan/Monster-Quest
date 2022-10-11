@@ -8,7 +8,7 @@ namespace MonsterQuest
 {
     public partial class Character : Creature, IArmorClassRule
     {
-        public Character(string name, Race race, ClassType classType)
+        public Character(string name, Race race, ClassType classType, Sprite bodySprite)
         {
             this.name = name;
             DebugHelper.StartLog($"Creating {definiteName}.");
@@ -17,6 +17,8 @@ namespace MonsterQuest
 
             Class characterClass = classType.Create(this) as Class;
             effectsList.Add(characterClass);
+
+            this.bodySprite = bodySprite;
 
             // Generate possible ability scores.
             DebugHelper.StartLog("Rolling ability scores …");
@@ -58,6 +60,8 @@ namespace MonsterQuest
         public Race race { get; }
 
         public override SizeCategory size => race.size;
+
+        public override Sprite bodySprite { get; }
 
         [field: SerializeField] public int level { get; private set; }
 

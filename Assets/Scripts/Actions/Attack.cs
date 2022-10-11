@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using MonsterQuest.Effects;
 
@@ -25,7 +26,7 @@ namespace MonsterQuest.Actions
         public Ability? ability { get; }
         public bool isBonusAction { get; }
 
-        public void Execute()
+        public IEnumerator Execute()
         {
             DebugHelper.StartLog($"Performing attack action by {attacker.definiteName} targeting {target.definiteName} … ");
 
@@ -39,59 +40,68 @@ namespace MonsterQuest.Actions
             bool wasHit = false;
             bool wasCritical = false;
 
-            // Query what attack roll method will be used for this attack (normal, advantage, disadvantage).
-            DebugHelper.StartLog("Determining advantage or disadvantage for the attack roll … ");
-            AttackRollMethod[] attackRollMethods = battle.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
-            DebugHelper.EndLog();
-
-            bool advantage = attackRollMethods.Contains(AttackRollMethod.Advantage);
-            bool disadvantage = attackRollMethods.Contains(AttackRollMethod.Disadvantage);
-
-            int attackRoll = Dice.Roll("d20");
-
-            if (advantage && !disadvantage)
-            {
-                // We have an advantage, roll again and take the maximum.
-                DebugHelper.StartLog("Rolling again for advantage.");
-                attackRoll = Math.Max(attackRoll, Dice.Roll("d20"));
-                DebugHelper.EndLog();
-            }
-            else if (disadvantage && !advantage)
-            {
-                // We have a disadvantage, roll again and take the minimum.
-                DebugHelper.StartLog("Rolling again for disadvantage.");
-                attackRoll = Math.Min(attackRoll, Dice.Roll("d20"));
-                DebugHelper.EndLog();
-            }
-
-            // The attack always misses on a critical miss.
-            if (attackRoll == 1)
-            {
-                wasCritical = true;
-            }
-            // The attack always hits on a critical hit.
-            else if (attackRoll == 20)
+            // Attacks on unconscious targets is always a critical hit.
+            if (target.isUnconscious)
             {
                 wasHit = true;
                 wasCritical = true;
             }
-            // Otherwise the attack value must be greater than or equal to the target's armor class.
             else
             {
-                // Add attack roll modifiers.
-                DebugHelper.StartLog("Determining attack roll modifiers … ");
-                int attackRollModifier = battle.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
+                // Query what attack roll method will be used for this attack (normal, advantage, disadvantage).
+                DebugHelper.StartLog("Determining advantage or disadvantage for the attack roll … ");
+                AttackRollMethod[] attackRollMethods = battle.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
                 DebugHelper.EndLog();
 
-                attackRoll += attackRollModifier;
+                bool advantage = attackRollMethods.Contains(AttackRollMethod.Advantage);
+                bool disadvantage = attackRollMethods.Contains(AttackRollMethod.Disadvantage);
 
-                // Determine the target's armor class.
-                DebugHelper.StartLog("Determining target's armor class … ");
-                int armorClass = battle.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
-                DebugHelper.EndLog();
+                int attackRoll = Dice.Roll("d20");
 
-                // Determine result.
-                wasHit = attackRoll >= armorClass;
+                if (advantage && !disadvantage)
+                {
+                    // We have an advantage, roll again and take the maximum.
+                    DebugHelper.StartLog("Rolling again for advantage.");
+                    attackRoll = Math.Max(attackRoll, Dice.Roll("d20"));
+                    DebugHelper.EndLog();
+                }
+                else if (disadvantage && !advantage)
+                {
+                    // We have a disadvantage, roll again and take the minimum.
+                    DebugHelper.StartLog("Rolling again for disadvantage.");
+                    attackRoll = Math.Min(attackRoll, Dice.Roll("d20"));
+                    DebugHelper.EndLog();
+                }
+
+                // The attack always misses on a critical miss.
+                if (attackRoll == 1)
+                {
+                    wasCritical = true;
+                }
+                // The attack always hits on a critical hit.
+                else if (attackRoll == 20)
+                {
+                    wasHit = true;
+                    wasCritical = true;
+                }
+                // Otherwise the attack value must be greater than or equal to the target's armor class.
+                else
+                {
+                    // Add attack roll modifiers.
+                    DebugHelper.StartLog("Determining attack roll modifiers … ");
+                    int attackRollModifier = battle.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
+                    DebugHelper.EndLog();
+
+                    attackRoll += attackRollModifier;
+
+                    // Determine the target's armor class.
+                    DebugHelper.StartLog("Determining target's armor class … ");
+                    int armorClass = battle.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
+                    DebugHelper.EndLog();
+
+                    // Determine result.
+                    wasHit = attackRoll >= armorClass;
+                }
             }
 
             DebugHelper.EndLog();
@@ -133,14 +143,22 @@ namespace MonsterQuest.Actions
 
             Console.Write("and ");
 
-            if (!wasHit)
+            if (wasHit)
+            {
+                Console.WriteLine($"{(wasCritical ? "gets a critical hit!" : "hits.")}");
+            }
+            else
             {
                 Console.WriteLine($"{(wasCritical ? "gets a critical miss" : "misses")}.");
-
-                return;
             }
 
-            Console.WriteLine($"{(wasCritical ? "gets a critical hit!" : "hits.")}");
+            yield return attacker.controller?.Attack();
+
+            // End the attack if it was a miss.
+            if (!wasHit)
+            {
+                yield break;
+            }
 
             // Create the hit.
             Hit hit = new(this, wasCritical);
@@ -151,7 +169,7 @@ namespace MonsterQuest.Actions
             DebugHelper.EndLog();
 
             // Roll for damages.
-            Damage[] damages = new Damage[damageRolls.Length];
+            DamageAmount[] damageAmounts = new DamageAmount[damageRolls.Length];
 
             for (int i = 0; i < damageRolls.Length; i++)
             {
@@ -179,17 +197,16 @@ namespace MonsterQuest.Actions
                 }
 
                 // Create the damage.
-                damages[i] = new Damage(hit, damageRoll, amount);
+                damageAmounts[i] = new DamageAmount(hit, damageRoll, amount);
             }
 
-            DebugHelper.StartLog($"Dealing damages: {string.Join<Damage>(", ", damages)}.");
+            Damage damage = new(damageAmounts);
+
+            DebugHelper.StartLog($"Dealing damage: {damage}.");
             DebugHelper.EndLog();
 
-            // Apply the damages.
-            foreach (Damage damage in damages)
-            {
-                battle.QueryRules((IDamageRule rule) => rule.ReactToDamage(damage));
-            }
+            // Apply the damage.
+            yield return battle.CallRules((IDamageRule rule) => rule.ReactToDamage(damage));
         }
     }
 }

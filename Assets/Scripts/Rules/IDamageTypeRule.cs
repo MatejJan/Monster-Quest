@@ -2,8 +2,8 @@ namespace MonsterQuest
 {
     public interface IDamageTypeRule
     {
-        ArrayValue<DamageType> GetDamageTypeVulnerabilities(Damage damage);
-        ArrayValue<DamageType> GetDamageTypeResistances(Damage damage);
-        ArrayValue<DamageType> GetDamageTypeImmunities(Damage damage);
+        ArrayValue<DamageType> GetDamageTypeVulnerabilities(DamageAmount damageAmount);
+        ArrayValue<DamageType> GetDamageTypeResistances(DamageAmount damageAmount);
+        ArrayValue<DamageType> GetDamageTypeImmunities(DamageAmount damageAmount);
     }
 }

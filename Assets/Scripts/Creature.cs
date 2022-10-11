@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Actions;
+using MonsterQuest.Controllers;
 using MonsterQuest.Effects;
 using UnityEngine;
 using Attack = MonsterQuest.Effects.Attack;
@@ -30,15 +32,31 @@ namespace MonsterQuest
             Gargantuan
         }
 
+        public static Dictionary<SizeCategory, float> spaceTakenPerSize;
+
         protected readonly List<Effect> effectsList = new();
         protected readonly List<Item> itemsList = new();
+
+        static Creature()
+        {
+            // Define how much space each size category takes up.
+            spaceTakenPerSize = new Dictionary<SizeCategory, float>
+            {
+                { SizeCategory.Tiny, 2.5f },
+                { SizeCategory.Small, 5f },
+                { SizeCategory.Medium, 5f },
+                { SizeCategory.Large, 10f },
+                { SizeCategory.Huge, 15f },
+                { SizeCategory.Gargantuan, 20f }
+            };
+        }
 
         protected Creature()
         {
             abilityScores = new AbilityScores();
         }
 
-        // Changing properties.
+        // State properties.
         public AbilityScores abilityScores { get; }
         [field: SerializeField] public int hitPointsMaximum { get; protected set; }
         [field: SerializeField] public string name { get; protected set; }
@@ -48,6 +66,7 @@ namespace MonsterQuest
 
         // Derived properties.
         public abstract SizeCategory size { get; }
+        public float spaceTaken => spaceTakenPerSize[size];
 
         public IEnumerable<Effect> effects => effectsList;
         public IEnumerable<Item> items => itemsList;
@@ -55,11 +74,22 @@ namespace MonsterQuest
         public string definiteName => EnglishHelpers.GetDefiniteNounForm(name);
         public string indefiniteName => EnglishHelpers.GetIndefiniteNounForm(name);
 
+        public abstract Sprite bodySprite { get; }
+
         public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
         protected abstract int proficiencyBonusBase { get; }
 
+        public CreatureController controller { get; private set; }
+
+        public bool isUnconscious => lifeStatus == LifeStatus.StableUnconscious || lifeStatus == LifeStatus.UnstableUnconscious;
+
         public IEnumerable<object> rules => new object[] { this }.Concat(effects).Concat(items.SelectMany(item => item.rules));
         public string rulesProviderName => indefiniteName;
+
+        public void Initialize(CreatureController controller)
+        {
+            this.controller = controller;
+        }
 
         public void GiveItem(Item item)
         {
@@ -118,32 +148,36 @@ namespace MonsterQuest
             return MakeAbilityCheck(ability, successAmount);
         }
 
-        public void Die()
+        public IEnumerator Die()
         {
             hitPoints = 0;
             lifeStatus = LifeStatus.Dead;
 
             Console.WriteLine($"{definiteName.ToUpperFirst()} dies.");
+
+            yield return controller.Die();
         }
 
-        public void Heal(int amount)
+        public IEnumerator Heal(int amount)
         {
             hitPoints = Math.Min(hitPoints + amount, hitPointsMaximum);
 
-            Console.WriteLine($"{definiteName.ToUpperFirst()} heals {amount} hit points and ");
+            Console.Write($"{definiteName.ToUpperFirst()} heals {amount} HP and ");
 
             if (lifeStatus == LifeStatus.Alive)
             {
-                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} hit points")}");
+                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
             }
             else
             {
                 lifeStatus = LifeStatus.Alive;
 
-                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} hit points")}");
+                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
             }
+
+            yield break;
         }
 
-        protected abstract void HandleZeroHP(int remainingDamageAmount, Hit hit);
+        protected abstract IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit);
     }
 }

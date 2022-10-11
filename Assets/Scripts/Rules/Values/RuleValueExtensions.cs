@@ -14,9 +14,9 @@ namespace MonsterQuest
             return CoverValue.Resolve(values);
         }
 
-        public static DamageAlteration Resolve(this IEnumerable<DamageAlterationValue> values)
+        public static DamageAlteration Resolve(this IEnumerable<DamageAmountAlterationValue> values)
         {
-            return DamageAlterationValue.Resolve(values);
+            return DamageAmountAlterationValue.Resolve(values);
         }
 
         public static int Resolve(this IEnumerable<IntegerValue> values, IntegerValue.ResolutionStrategy resolutionStrategy = IntegerValue.ResolutionStrategy.Maximum)

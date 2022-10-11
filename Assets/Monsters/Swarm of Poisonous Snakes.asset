@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swarm of Poisonous Snakes
   m_EditorClassIdentifier: 
   displayName: swarm of poisonous snakes
-  size: 1
+  size: 3
   type: 2
   alignment: unaligned
   armorClass: 14
@@ -38,3 +38,4 @@ MonoBehaviour:
   effects:
   - {fileID: 11400000, guid: 1241b8a73e06849f2b01fa41209e2cfb, type: 2}
   items: []
+  bodySprite: {fileID: 21300000, guid: 6e6d8b6cdad08421dbcc5788ae20f90c, type: 3}

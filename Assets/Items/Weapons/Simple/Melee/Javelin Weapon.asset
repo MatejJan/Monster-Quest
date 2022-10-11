@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aadff792d7b34dbfb502b6deb510090, type: 3}
   m_Name: Javelin Weapon
   m_EditorClassIdentifier: 
-  categories: 0100000003000000
+  categories: 01000000030000000c000000

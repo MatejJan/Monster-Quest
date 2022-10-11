@@ -1,7 +1,9 @@
+using System.Collections;
+
 namespace MonsterQuest.Actions
 {
     public interface IAction
     {
-        public void Execute();
+        public IEnumerator Execute();
     }
 }

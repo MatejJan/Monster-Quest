@@ -1,89 +1,98 @@
+using System.Collections;
+
 namespace MonsterQuest
 {
     public abstract partial class Creature : IDamageRule
     {
-        public void ReactToDamage(Damage damage)
+        public IEnumerator ReactToDamage(Damage damage)
         {
             // Only react to damage if we are the target.
-            if (damage.hit.target != this) return;
+            if (damage.hit.target != this) yield break;
 
-            Damage modifiedDamage = damage;
+            // Don't react to further damage once we're dead.
+            if (lifeStatus == LifeStatus.Dead) yield break;
 
-            // Some damage rolls can be halved with a saving throw.
-            if (damage.roll.savingThrowAbility != Ability.None)
+            foreach (DamageAmount damageAmount in damage.amounts)
             {
-                DebugHelper.StartLog($"Performing a DC {damage.roll.savingThrowDC} {damage.roll.savingThrowAbility} saving throw …");
-                bool savingThrowSucceeded = MakeSavingThrow(damage.roll.savingThrowAbility, damage.roll.savingThrowDC);
+                DamageAmount modifiedDamageAmount = damageAmount;
+
+                // Some damage rolls can be halved with a saving throw.
+                if (damageAmount.roll.savingThrowAbility != Ability.None)
+                {
+                    DebugHelper.StartLog($"Performing a DC {damageAmount.roll.savingThrowDC} {damageAmount.roll.savingThrowAbility} saving throw …");
+                    bool savingThrowSucceeded = MakeSavingThrow(damageAmount.roll.savingThrowAbility, damageAmount.roll.savingThrowDC);
+                    DebugHelper.EndLog();
+
+                    if (savingThrowSucceeded)
+                    {
+                        modifiedDamageAmount = modifiedDamageAmount.CloneWithValue(damageAmount.value / 2);
+
+                        Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and succeeds on a saving throw to halve the damage.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and fails on a saving throw to resist it.");
+                    }
+                }
+
+                DebugHelper.StartLog($"Determining damage amount alteration for {modifiedDamageAmount} on {definiteName} … ");
+                DamageAlteration damageAlteration = modifiedDamageAmount.hit.battle.GetRuleValues((IDamageAmountAlterationRule rule) => rule.GetDamageAlteration(modifiedDamageAmount)).Resolve();
                 DebugHelper.EndLog();
 
-                if (savingThrowSucceeded)
-                {
-                    modifiedDamage = modifiedDamage.CloneWithAmount(damage.amount / 2);
+                DamageAmount finalDamageAmount = modifiedDamageAmount;
 
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damage} and succeeds on a saving throw to halve the damage.");
+                // Apply damage immunities (ignore the damage).
+                if (damageAlteration.immunity)
+                {
+                    finalDamageAmount = finalDamageAmount.CloneWithValue(0);
+                }
+
+                // Apply damage resistances (halve the damage).
+                if (damageAlteration.resistance)
+                {
+                    finalDamageAmount = finalDamageAmount.CloneWithValue(finalDamageAmount.value / 2);
+                }
+
+                // Apply damage vulnerabilities (double the damage).
+                if (damageAlteration.vulnerability)
+                {
+                    finalDamageAmount = finalDamageAmount.CloneWithValue(finalDamageAmount.value * 2);
+                }
+
+                if (damageAmount.roll.savingThrowAbility != Ability.None)
+                {
+                    Console.Write($"{definiteName.ToUpperFirst()} receives {modifiedDamageAmount}");
                 }
                 else
                 {
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damage} and fails on a saving throw to resist it.");
+                    Console.Write($"{definiteName.ToUpperFirst()} is hit with {modifiedDamageAmount}");
                 }
-            }
 
-            DebugHelper.StartLog($"Determining damage alteration for {modifiedDamage} on {definiteName} … ");
-            DamageAlteration damageAlteration = modifiedDamage.hit.battle.GetRuleValues((IDamageAlterationRule rule) => rule.GetDamageAlteration(modifiedDamage)).Resolve();
-            DebugHelper.EndLog();
+                if (damageAlteration.immunity)
+                {
+                    Console.WriteLine(" but is immune and takes no damage.");
+                }
+                else if (damageAlteration.resistance && damageAlteration.vulnerability)
+                {
+                    Console.WriteLine($". {definiteName.ToUpperFirst()} is both resistant and vulnerable to it and takes {finalDamageAmount.value} damage.");
+                }
+                else if (damageAlteration.resistance)
+                {
+                    Console.WriteLine($" but due to their resistance only takes {finalDamageAmount.value} damage.");
+                }
+                else if (damageAlteration.vulnerability)
+                {
+                    Console.WriteLine($" but due to their vulnerability takes {finalDamageAmount.value} damage.");
+                }
+                else
+                {
+                    Console.WriteLine(".");
+                }
 
-            Damage finalDamage = modifiedDamage;
-
-            // Apply damage immunities (ignore the damage).
-            if (damageAlteration.immunity)
-            {
-                finalDamage = finalDamage.CloneWithAmount(0);
-            }
-
-            // Apply damage resistances (halve the damage).
-            if (damageAlteration.resistance)
-            {
-                finalDamage = finalDamage.CloneWithAmount(finalDamage.amount / 2);
-            }
-
-            // Apply damage vulnerabilities (double the damage).
-            if (damageAlteration.vulnerability)
-            {
-                finalDamage = finalDamage.CloneWithAmount(finalDamage.amount * 2);
-            }
-
-            if (damage.roll.savingThrowAbility != Ability.None)
-            {
-                Console.Write($"{definiteName.ToUpperFirst()} receives {modifiedDamage}");
-            }
-            else
-            {
-                Console.Write($"{definiteName.ToUpperFirst()} is hit with {modifiedDamage}");
-            }
-
-            if (damageAlteration.immunity)
-            {
-                Console.WriteLine(" but is immune and takes no damage.");
-            }
-            else if (damageAlteration.resistance && damageAlteration.vulnerability)
-            {
-                Console.WriteLine($". {definiteName.ToUpperFirst()} is both resistant and vulnerable to it and takes {finalDamage.amount} damage.");
-            }
-            else if (damageAlteration.resistance)
-            {
-                Console.WriteLine($" but due to their resistance only takes {finalDamage.amount} damage.");
-            }
-            else if (damageAlteration.vulnerability)
-            {
-                Console.WriteLine($" but due to their vulnerability takes {finalDamage.amount} damage.");
-            }
-            else
-            {
-                Console.WriteLine(".");
+                hitPoints -= finalDamageAmount.value;
             }
 
             // Determine the outcome.
-            hitPoints -= finalDamage.amount;
             int remainingAmount = 0;
 
             if (hitPoints < 0)
@@ -94,11 +103,12 @@ namespace MonsterQuest
 
             if (hitPoints == 0)
             {
-                HandleZeroHP(remainingAmount, finalDamage.hit);
+                yield return TakeDamageAtZeroHP(remainingAmount, damage.hit);
             }
             else
             {
                 Console.WriteLine($"{definiteName.ToUpperFirst()} has {hitPoints} HP left.");
+                yield return controller.TakeDamage();
             }
         }
     }

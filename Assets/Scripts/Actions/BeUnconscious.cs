@@ -1,4 +1,6 @@
-﻿namespace MonsterQuest.Actions
+﻿using System.Collections;
+
+namespace MonsterQuest.Actions
 {
     public class BeUnconscious : IAction
     {
@@ -11,9 +13,9 @@
         public Battle battle { get; }
         public Character character { get; }
 
-        public void Execute()
+        public IEnumerator Execute()
         {
-            character.HandleUnconsciousState();
+            yield return character.HandleUnconsciousState();
         }
     }
 }

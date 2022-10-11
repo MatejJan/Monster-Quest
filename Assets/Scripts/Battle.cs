@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Actions;
@@ -18,18 +19,23 @@ namespace MonsterQuest
             // Create global providers.
             globalRules.Add(new AttackAbilityModifier());
             globalRules.Add(new CoverBonus());
-            globalRules.Add(new DamageTypeDamageAlteration());
+            globalRules.Add(new DamageAmountTypeDamageAmountAmountAlteration());
         }
 
         public IEnumerable<object> rules => globalRules.Concat(heroes.rules).Concat(monster.rules);
 
-        public void QueryRules<T>(Action<T> callback) where T : class
+        public IEnumerator CallRules<T>(Func<T, IEnumerator> callback) where T : class
         {
             foreach (object rule in rules)
             {
                 if (rule is T)
                 {
-                    callback(rule as T);
+                    IEnumerator result = callback(rule as T);
+
+                    if (result != null)
+                    {
+                        yield return result;
+                    }
                 }
             }
         }
@@ -38,24 +44,25 @@ namespace MonsterQuest
         {
             List<V> values = new();
 
-            QueryRules((T rule) =>
+            foreach (object rule in rules)
             {
-                V value = callback(rule);
-
-                if (value != null)
+                if (rule is T t)
                 {
-                    values.Add(value);
+                    V value = callback(t);
+
+                    if (value != null)
+                    {
+                        values.Add(value);
+                    }
                 }
-            });
+            }
 
             return values;
         }
 
-        public void Simulate()
+        public IEnumerator Simulate()
         {
             Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
-
-            int round = 1;
 
             do
             {
@@ -63,28 +70,28 @@ namespace MonsterQuest
                 foreach (Character hero in heroes)
                 {
                     IAction action = hero.TakeTurn(this, monster);
-                    action?.Execute();
+                    yield return action?.Execute();
 
                     if (monster.hitPoints == 0) break;
                 }
 
-                if (monster.hitPoints > 0)
+                heroes.RemoveAll(hero => hero.lifeStatus == Creature.LifeStatus.Dead);
+
+                if (monster.lifeStatus != Creature.LifeStatus.Dead && heroes.Count > 0)
                 {
                     // Monster's turn.
                     int randomHeroIndex = Random.Range(0, heroes.Count);
                     Character attackedHero = heroes[randomHeroIndex];
 
                     IAction action = monster.TakeTurn(this, attackedHero);
-                    action?.Execute();
+                    yield return action?.Execute();
 
-                    if (attackedHero.hitPoints == 0)
+                    if (attackedHero.lifeStatus == Creature.LifeStatus.Dead)
                     {
                         heroes.Remove(attackedHero);
                     }
                 }
-
-                round++;
-            } while (monster.hitPoints > 0 && heroes.Count > 0 && round < 100);
+            } while (monster.hitPoints > 0 && heroes.Count > 0);
 
             if (monster.hitPoints == 0)
             {

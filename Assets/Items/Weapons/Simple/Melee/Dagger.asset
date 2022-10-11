@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6610c137e2cbb4f94a201bc3fad849e4, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  displayName: dagger
+  cost:
+    copper: 0
+    silver: 0
+    electrum: 0
+    gold: 2
+    platinum: 0
+  weight: 1
+  effects:
+  - {fileID: 11400000, guid: a71a247d2e81c44879790f600c11d7f5, type: 2}
+  - {fileID: 11400000, guid: 86a75cdbb15e1485bacee64d3de90aa8, type: 2}
+  - {fileID: 11400000, guid: 457a6ca107c244fd89540816f150412b, type: 2}
+  - {fileID: 11400000, guid: d21077dab75864c9ca4fa588ffaa4552, type: 2}
+  - {fileID: 11400000, guid: 06bcdba6b43414c7c9e5ff2769516fde, type: 2}
+  - {fileID: 11400000, guid: 36422ad14ca2449789fc481cc513561b, type: 2}

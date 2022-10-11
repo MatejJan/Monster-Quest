@@ -39,3 +39,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 676d548270b994e04979c3ac1c93a1d9, type: 2}
   - {fileID: 11400000, guid: e2029a33a324a4ce98a6c62932ba3d43, type: 2}
   items: []
+  bodySprite: {fileID: 21300000, guid: f1fa343faea49484d895a671f5ea4a29, type: 3}

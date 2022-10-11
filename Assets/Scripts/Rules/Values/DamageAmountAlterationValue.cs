@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace MonsterQuest
 {
-    public class DamageAlterationValue
+    public class DamageAmountAlterationValue
     {
-        public DamageAlterationValue(IRulesProvider provider, bool vulnerability = false, bool resistance = false, bool immunity = false)
+        public DamageAmountAlterationValue(IRulesProvider provider, bool vulnerability = false, bool resistance = false, bool immunity = false)
         {
             this.provider = provider;
 
@@ -20,15 +20,15 @@ namespace MonsterQuest
         public bool resistance { get; }
         public bool immunity { get; }
 
-        public static DamageAlteration Resolve(IEnumerable<DamageAlterationValue> values)
+        public static DamageAlteration Resolve(IEnumerable<DamageAmountAlterationValue> values)
         {
             // Remove null values.
-            DamageAlterationValue[] validValues = values.Where(value => value != null).ToArray();
+            DamageAmountAlterationValue[] validValues = values.Where(value => value != null).ToArray();
 
             // Categorize values.
-            DamageAlterationValue[] vulnerabilityValues = validValues.Where(value => value.vulnerability).ToArray();
-            DamageAlterationValue[] resistanceValues = validValues.Where(value => value.resistance).ToArray();
-            DamageAlterationValue[] immunityValues = validValues.Where(value => value.immunity).ToArray();
+            DamageAmountAlterationValue[] vulnerabilityValues = validValues.Where(value => value.vulnerability).ToArray();
+            DamageAmountAlterationValue[] resistanceValues = validValues.Where(value => value.resistance).ToArray();
+            DamageAmountAlterationValue[] immunityValues = validValues.Where(value => value.immunity).ToArray();
 
             // There must be at least one value provider in the category for the category to be active.
             DamageAlteration result = new() { vulnerability = vulnerabilityValues.Length > 0, resistance = resistanceValues.Length > 0, immunity = immunityValues.Length > 0 };
@@ -46,17 +46,17 @@ namespace MonsterQuest
                 {
                     Console.WriteLine($"The target is {StringHelpers.JoinWithAnd(categories)} to this damage.");
 
-                    foreach (DamageAlterationValue value in vulnerabilityValues)
+                    foreach (DamageAmountAlterationValue value in vulnerabilityValues)
                     {
                         Console.WriteLine($"Vulnerable from {value.provider.rulesProviderName}.");
                     }
 
-                    foreach (DamageAlterationValue value in resistanceValues)
+                    foreach (DamageAmountAlterationValue value in resistanceValues)
                     {
                         Console.WriteLine($"Resistant from {value.provider.rulesProviderName}.");
                     }
 
-                    foreach (DamageAlterationValue value in immunityValues)
+                    foreach (DamageAmountAlterationValue value in immunityValues)
                     {
                         Console.WriteLine($"Immune from {value.provider.rulesProviderName}.");
                     }
