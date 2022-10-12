@@ -75,6 +75,7 @@ namespace MonsterQuest
         public string indefiniteName => EnglishHelpers.GetIndefiniteNounForm(name);
 
         public abstract Sprite bodySprite { get; }
+        public abstract float flyHeight { get; }
 
         public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
         protected abstract int proficiencyBonusBase { get; }
@@ -132,13 +133,13 @@ namespace MonsterQuest
 
         public bool MakeAbilityCheck(Ability ability, int successAmount)
         {
-            DebugHelper.StartLog($"{definiteName.ToUpperFirst()} is making a DC {successAmount} {ability} check …");
+            DebugHelpers.StartLog($"{definiteName.ToUpperFirst()} is making a DC {successAmount} {ability} check …");
 
             int roll = Dice.Roll("d20");
             int abilityModifier = abilityScores[ability].modifier;
             bool result = roll + abilityModifier >= successAmount;
 
-            DebugHelper.EndLog($"The check {(result ? "succeeds" : "fails")}.");
+            DebugHelpers.EndLog($"The check {(result ? "succeeds" : "fails")}.");
 
             return result;
         }
@@ -179,5 +180,16 @@ namespace MonsterQuest
         }
 
         protected abstract IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit);
+
+        [Serializable]
+        public class Speed
+        {
+            public float walk;
+            public float burrow;
+            public float climb;
+            public float fly;
+            public float swim;
+            public bool hover;
+        }
     }
 }

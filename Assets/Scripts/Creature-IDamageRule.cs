@@ -19,9 +19,9 @@ namespace MonsterQuest
                 // Some damage rolls can be halved with a saving throw.
                 if (damageAmount.roll.savingThrowAbility != Ability.None)
                 {
-                    DebugHelper.StartLog($"Performing a DC {damageAmount.roll.savingThrowDC} {damageAmount.roll.savingThrowAbility} saving throw …");
+                    DebugHelpers.StartLog($"Performing a DC {damageAmount.roll.savingThrowDC} {damageAmount.roll.savingThrowAbility} saving throw …");
                     bool savingThrowSucceeded = MakeSavingThrow(damageAmount.roll.savingThrowAbility, damageAmount.roll.savingThrowDC);
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
 
                     if (savingThrowSucceeded)
                     {
@@ -35,9 +35,9 @@ namespace MonsterQuest
                     }
                 }
 
-                DebugHelper.StartLog($"Determining damage amount alteration for {modifiedDamageAmount} on {definiteName} … ");
+                DebugHelpers.StartLog($"Determining damage amount alteration for {modifiedDamageAmount} on {definiteName} … ");
                 DamageAlteration damageAlteration = modifiedDamageAmount.hit.battle.GetRuleValues((IDamageAmountAlterationRule rule) => rule.GetDamageAlteration(modifiedDamageAmount)).Resolve();
-                DebugHelper.EndLog();
+                DebugHelpers.EndLog();
 
                 DamageAmount finalDamageAmount = modifiedDamageAmount;
 

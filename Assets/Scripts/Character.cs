@@ -11,7 +11,7 @@ namespace MonsterQuest
         public Character(string name, Race race, ClassType classType, Sprite bodySprite)
         {
             this.name = name;
-            DebugHelper.StartLog($"Creating {definiteName}.");
+            DebugHelpers.StartLog($"Creating {definiteName}.");
 
             this.race = race;
 
@@ -21,7 +21,7 @@ namespace MonsterQuest
             this.bodySprite = bodySprite;
 
             // Generate possible ability scores.
-            DebugHelper.StartLog("Rolling ability scores …");
+            DebugHelpers.StartLog("Rolling ability scores …");
             List<int> possibleAbilityScores = new();
 
             for (int i = 0; i < 6; i++)
@@ -45,16 +45,16 @@ namespace MonsterQuest
             for (int i = 0; i < 6; i++)
             {
                 abilityScores[(Ability)(i + 1)].score = possibleAbilityScores[i];
-                DebugHelper.Log($"{(Ability)(i + 1)}: {possibleAbilityScores[i]}");
+                DebugHelpers.Log($"{(Ability)(i + 1)}: {possibleAbilityScores[i]}");
             }
 
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Calculate hit points at first level.
             hitPointsMaximum = classType.hitPointsBase + abilityScores.constitution.modifier;
             hitPoints = hitPointsMaximum;
 
-            DebugHelper.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
+            DebugHelpers.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
         }
 
         public Race race { get; }
@@ -62,6 +62,7 @@ namespace MonsterQuest
         public override SizeCategory size => race.size;
 
         public override Sprite bodySprite { get; }
+        public override float flyHeight => 0;
 
         [field: SerializeField] public int level { get; private set; }
 

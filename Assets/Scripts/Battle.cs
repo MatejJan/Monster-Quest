@@ -11,8 +11,8 @@ namespace MonsterQuest
     public class Battle : IRulesHandler
     {
         public List<object> globalRules = new();
-        public Party heroes;
         public Monster monster;
+        public Party heroes;
 
         public Battle()
         {

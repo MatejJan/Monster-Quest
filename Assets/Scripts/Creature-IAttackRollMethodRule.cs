@@ -14,9 +14,9 @@ namespace MonsterQuest
             // Attacker has a disadvantage if they are wearing armor (including a shield) they are not proficient in.
             Item[] armorItems = items.Where(item => item.GetEffect<Armor>() != null).ToArray();
 
-            DebugHelper.StartLog("Determining armor proficiency … ");
+            DebugHelpers.StartLog("Determining armor proficiency … ");
             ArmorCategory[] proficientArmorCategories = attack.battle.GetRuleValues((IArmorProficiencyRule rule) => rule.GetArmorProficiency(this)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             foreach (Item armorItem in armorItems)
             {

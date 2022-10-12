@@ -13,13 +13,13 @@ namespace MonsterQuest
             this.type = type;
             name = type.displayName;
 
-            DebugHelper.StartLog($"Creating {indefiniteName}.");
+            DebugHelpers.StartLog($"Creating {indefiniteName}.");
 
             // Roll the monster's hit points.
-            DebugHelper.StartLog("Determining hit points.");
-            hitPointsMaximum = Dice.Roll(type.hitPointsRoll);
+            DebugHelpers.StartLog("Determining hit points.");
+            hitPointsMaximum = Math.Max(1, Dice.Roll(type.hitPointsRoll));
             hitPoints = hitPointsMaximum;
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Copy the rest of the properties from the monster type.
             foreach (Ability ability in Enum.GetValues(typeof(Ability)))
@@ -42,7 +42,7 @@ namespace MonsterQuest
                 effectsList.Add(effectType.Create(this));
             }
 
-            DebugHelper.EndLog($"Created {indefiniteName} with {hitPoints} HP.");
+            DebugHelpers.EndLog($"Created {indefiniteName} with {hitPoints} HP.");
         }
 
         public MonsterType type { get; }
@@ -50,6 +50,7 @@ namespace MonsterQuest
         public override SizeCategory size => type.size;
 
         public override Sprite bodySprite => type.bodySprite;
+        public override float flyHeight => type.flyHeight;
 
         protected override int proficiencyBonusBase => (int)type.challengeRating;
 

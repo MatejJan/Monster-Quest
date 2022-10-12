@@ -9,17 +9,17 @@ namespace MonsterQuest
             Hit hit = damageAmount.hit;
             Battle battle = hit.attack.battle;
 
-            DebugHelper.StartLog("Determining vulnerabilities … ");
+            DebugHelpers.StartLog("Determining vulnerabilities … ");
             DamageType[] vulnerabilities = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeVulnerabilities(damageAmount)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
-            DebugHelper.StartLog("Determining resistances … ");
+            DebugHelpers.StartLog("Determining resistances … ");
             DamageType[] resistances = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeResistances(damageAmount)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
-            DebugHelper.StartLog("Determining immunities … ");
+            DebugHelpers.StartLog("Determining immunities … ");
             DamageType[] immunities = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeImmunities(damageAmount)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // See which vulnerabilities, resistances, and immunities are included in the damage type.
             bool isVulnerable = vulnerabilities.Any(vulnerability => (vulnerability & damageAmount.type) == vulnerability);

@@ -15,9 +15,17 @@ MonoBehaviour:
   displayName: kobold
   size: 2
   type: 10
+  TypeTags: []
   alignment: lawful evil
   armorClass: 12
   hitPointsRoll: 2d6-2
+  speed:
+    walk: 30
+    burrow: 0
+    climb: 0
+    fly: 0
+    swim: 0
+    hover: 0
   abilityScores:
     <strength>k__BackingField:
       <score>k__BackingField: 7
@@ -31,12 +39,26 @@ MonoBehaviour:
       <score>k__BackingField: 7
     <charisma>k__BackingField:
       <score>k__BackingField: 8
+  savingThrowBonuses: []
+  skillBonuses: []
   damageVulnerabilities: 
   damageResistances: 
   damageImmunities: 
+  conditionImmunities: 
+  senses:
+  - sense: 2
+    range: 60
+  blind: 0
+  languageAbilities:
+  - language: 2
+    canSpeak: 1
+  - language: 12
+    canSpeak: 1
+  telepathyRange: 0
   challengeRating: 0.125
   effects: []
   items:
   - {fileID: 11400000, guid: 6a13c72c219c94a9d90fa58d8613c11e, type: 2}
   - {fileID: 11400000, guid: f15090d628ddd4550a4042629f01ffee, type: 2}
   bodySprite: {fileID: 21300000, guid: d552d8278689c4085bea3f3beb828393, type: 3}
+  flyHeight: 0

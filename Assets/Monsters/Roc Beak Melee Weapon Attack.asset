@@ -9,24 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f84c7251e7497da9b346344003b190, type: 3}
-  m_Name: Swarm of Poisonous Snakes Bites Melee Weapon Attack
+  m_Script: {fileID: 11500000, guid: 3512b3dfc5bcd490aa06f030db69fa30, type: 3}
+  m_Name: Roc Beak Melee Weapon Attack
   m_EditorClassIdentifier: 
   damageRolls:
-  - <roll>k__BackingField: 2d6
+  - <roll>k__BackingField: 4d8+9
     <type>k__BackingField: 128
     <isExtraDamage>k__BackingField: 0
     <savingThrowAbility>k__BackingField: 0
     <savingThrowDC>k__BackingField: 0
-  - <roll>k__BackingField: 4d6
-    <type>k__BackingField: 256
-    <isExtraDamage>k__BackingField: 1
-    <savingThrowAbility>k__BackingField: 3
-    <savingThrowDC>k__BackingField: 10
   attackAbility: 0
-  customAttackModifiers: 1
-  attackRollModifier: 6
+  customAttackModifiers: 0
+  attackRollModifier: 0
   damageRollModifier: 0
-  descriptionVerb: bites
-  descriptionObject: 
-  reach: 0
+  descriptionVerb: 
+  descriptionObject: its beak
+  reach: 5

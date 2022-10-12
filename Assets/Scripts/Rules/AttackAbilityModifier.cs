@@ -28,9 +28,9 @@ namespace MonsterQuest
             }
 
             // Find which ability was chosen for the modifier.
-            DebugHelper.StartLog("Determining attack ability … ");
+            DebugHelpers.StartLog("Determining attack ability … ");
             Ability attackAbility = attack.battle.GetRuleValues((IAttackAbilityRule rule) => rule.GetAttackAbility(attack)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             if (attackAbility == Ability.None) return null;
 

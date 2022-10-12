@@ -1,6 +1,6 @@
 namespace MonsterQuest
 {
-    public static class DebugHelper
+    public static class DebugHelpers
     {
         public static void Log(string text)
         {

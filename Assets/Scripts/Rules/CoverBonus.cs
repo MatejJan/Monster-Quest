@@ -15,9 +15,9 @@ namespace MonsterQuest
             // See what cover the target has.
             List<CoverValue> values = new();
 
-            DebugHelper.StartLog("Determining cover … ");
+            DebugHelpers.StartLog("Determining cover … ");
             Cover cover = attack.battle.GetRuleValues((ICoverRule rule) => rule.GetCover(attack)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Half and three-quarters cover give you a bonus.
             int armorClassBonus = cover switch

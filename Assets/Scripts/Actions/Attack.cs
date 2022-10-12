@@ -28,13 +28,13 @@ namespace MonsterQuest.Actions
 
         public IEnumerator Execute()
         {
-            DebugHelper.StartLog($"Performing attack action by {attacker.definiteName} targeting {target.definiteName} … ");
+            DebugHelpers.StartLog($"Performing attack action by {attacker.definiteName} targeting {target.definiteName} … ");
 
             // Determine if a target redirect occurs.
-            DebugHelper.StartLog("Determining target redirect … ");
+            DebugHelpers.StartLog("Determining target redirect … ");
             Creature newTarget = battle.GetRuleValues((ITargetRedirectionRule rule) => rule.RedirectTarget(this)).Resolve();
             target = newTarget ?? target;
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Determine whether the attack is a hit or a miss.
             bool wasHit = false;
@@ -49,9 +49,9 @@ namespace MonsterQuest.Actions
             else
             {
                 // Query what attack roll method will be used for this attack (normal, advantage, disadvantage).
-                DebugHelper.StartLog("Determining advantage or disadvantage for the attack roll … ");
+                DebugHelpers.StartLog("Determining advantage or disadvantage for the attack roll … ");
                 AttackRollMethod[] attackRollMethods = battle.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
-                DebugHelper.EndLog();
+                DebugHelpers.EndLog();
 
                 bool advantage = attackRollMethods.Contains(AttackRollMethod.Advantage);
                 bool disadvantage = attackRollMethods.Contains(AttackRollMethod.Disadvantage);
@@ -61,16 +61,16 @@ namespace MonsterQuest.Actions
                 if (advantage && !disadvantage)
                 {
                     // We have an advantage, roll again and take the maximum.
-                    DebugHelper.StartLog("Rolling again for advantage.");
+                    DebugHelpers.StartLog("Rolling again for advantage.");
                     attackRoll = Math.Max(attackRoll, Dice.Roll("d20"));
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
                 }
                 else if (disadvantage && !advantage)
                 {
                     // We have a disadvantage, roll again and take the minimum.
-                    DebugHelper.StartLog("Rolling again for disadvantage.");
+                    DebugHelpers.StartLog("Rolling again for disadvantage.");
                     attackRoll = Math.Min(attackRoll, Dice.Roll("d20"));
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
                 }
 
                 // The attack always misses on a critical miss.
@@ -88,23 +88,23 @@ namespace MonsterQuest.Actions
                 else
                 {
                     // Add attack roll modifiers.
-                    DebugHelper.StartLog("Determining attack roll modifiers … ");
+                    DebugHelpers.StartLog("Determining attack roll modifiers … ");
                     int attackRollModifier = battle.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
 
                     attackRoll += attackRollModifier;
 
                     // Determine the target's armor class.
-                    DebugHelper.StartLog("Determining target's armor class … ");
+                    DebugHelpers.StartLog("Determining target's armor class … ");
                     int armorClass = battle.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
 
                     // Determine result.
                     wasHit = attackRoll >= armorClass;
                 }
             }
 
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Describe the outcome of the attack.
             string descriptionVerb;
@@ -164,9 +164,9 @@ namespace MonsterQuest.Actions
             Hit hit = new(this, wasCritical);
 
             // Query what kind of damage rolls need to be performed.
-            DebugHelper.StartLog("Determining damage rolls … ");
+            DebugHelpers.StartLog("Determining damage rolls … ");
             DamageRoll[] damageRolls = battle.GetRuleValues((IDamageRollRule rule) => rule.GetDamageRolls(hit)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // Roll for damages.
             DamageAmount[] damageAmounts = new DamageAmount[damageRolls.Length];
@@ -188,9 +188,9 @@ namespace MonsterQuest.Actions
                 // Add damage modifiers to base attacks (not extra).
                 if (!damageRoll.isExtraDamage)
                 {
-                    DebugHelper.StartLog("Determining damage modifiers … ");
+                    DebugHelpers.StartLog("Determining damage modifiers … ");
                     int damageModifier = battle.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
-                    DebugHelper.EndLog();
+                    DebugHelpers.EndLog();
 
                     // The resulting amount cannot be negative.
                     amount = Math.Max(0, amount + damageModifier);
@@ -202,8 +202,8 @@ namespace MonsterQuest.Actions
 
             Damage damage = new(damageAmounts);
 
-            DebugHelper.StartLog($"Dealing damage: {damage}.");
-            DebugHelper.EndLog();
+            DebugHelpers.StartLog($"Dealing damage: {damage}.");
+            DebugHelpers.EndLog();
 
             // Apply the damage.
             yield return battle.CallRules((IDamageRule rule) => rule.ReactToDamage(damage));

@@ -40,9 +40,9 @@ namespace MonsterQuest.Effects
             if (attack.weapon != parent) return null;
 
             // Weapon provides the proficiency bonus modifier if its wielder is proficient with it.
-            DebugHelper.StartLog("Determining weapon proficiencies … ");
+            DebugHelpers.StartLog("Determining weapon proficiencies … ");
             WeaponCategory[] proficientWeaponCategories = attack.battle.GetRuleValues((IWeaponProficiencyRule rule) => rule.GetWeaponProficiency(attack.attacker)).Resolve();
-            DebugHelper.EndLog();
+            DebugHelpers.EndLog();
 
             // The attacker must be proficient in at least one of the weapon's categories to get the proficiency bonus.
             if (proficientWeaponCategories.Intersect(weaponType.categories).Any())

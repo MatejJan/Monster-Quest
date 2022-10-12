@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using MonsterQuest.Controllers;
 using MonsterQuest.Effects;
 using UnityEngine;
@@ -63,27 +64,29 @@ namespace MonsterQuest
 
             for (int i = 0; i < heroes.Count; i++)
             {
+                Creature hero = heroes[i];
                 GameObject heroGameObject = Instantiate(database.creaturePrefab, _creaturesTransform);
-                heroGameObject.transform.position = new Vector3(((heroes.Count - 1) * -0.5f + i) * 5, heroes[i].spaceTaken / 2, 0);
-                heroGameObject.GetComponent<CreatureController>().Initialize(this, heroes[i]);
+                heroGameObject.name = hero.name;
+                heroGameObject.transform.position = new Vector3(((heroes.Count - 1) * -0.5f + i) * 5, hero.spaceTaken / 2, 0);
+                CreatureController creatureController = heroGameObject.GetComponent<CreatureController>();
+                creatureController.Initialize(this, hero);
+                creatureController.FaceDirection(CardinalDirection.South);
             }
 
             yield return new WaitForSeconds(1);
 
-            MonsterType[] monsterTypes =
-            {
-                database.GetMonster("giant bat"),
-                database.GetMonster("azer"),
-                database.GetMonster("troll")
-            };
+            MonsterType[] monsterTypes = database.monsters.OrderBy(monsterType => monsterType.challengeRating).ToArray();
 
             foreach (MonsterType monsterType in monsterTypes)
             {
                 battle.monster = new Monster(monsterType);
                 GameObject monsterGameObject = Instantiate(database.creaturePrefab, _creaturesTransform);
+                monsterGameObject.name = battle.monster.name;
                 monsterGameObject.transform.position = new Vector3(0, -battle.monster.spaceTaken / 2, 0);
-                monsterGameObject.transform.rotation = Quaternion.Euler(0, 0, 180);
-                monsterGameObject.GetComponent<CreatureController>().Initialize(this, battle.monster);
+
+                CreatureController creatureController = monsterGameObject.GetComponent<CreatureController>();
+                creatureController.Initialize(this, battle.monster);
+                creatureController.FaceDirection(CardinalDirection.North);
 
                 yield return new WaitForSeconds(1);
 
@@ -94,11 +97,11 @@ namespace MonsterQuest
 
             if (heroes.Count > 1)
             {
-                Console.WriteLine($"After three grueling battles, the heroes {heroes} return from the dungeons to live another day.");
+                Console.WriteLine($"After many grueling battles, the heroes {heroes} return from the dungeons to live another day.");
             }
             else if (heroes.Count == 1)
             {
-                Console.WriteLine($"After three grueling battles, {heroes[0].name} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                Console.WriteLine($"After many grueling battles, {heroes[0].name} returns from the dungeons. Unfortunately, none of the other party members survived.");
             }
         }
     }

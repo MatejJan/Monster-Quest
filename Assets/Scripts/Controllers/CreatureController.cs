@@ -9,29 +9,61 @@ namespace MonsterQuest.Controllers
         private static readonly int _takeDamageHash = Animator.StringToHash("Take damage");
         private static readonly int _dieHash = Animator.StringToHash("Die");
         private static readonly int _liveHash = Animator.StringToHash("Live");
+        private static readonly int _flyHash = Animator.StringToHash("Fly");
 
         private Animator _bodySpriteAnimator;
+        private Animator _bodyVerticalDisplacementAnimator;
+
         private Creature _creature;
         private Game _game;
+        private Transform _bodyOrientationTransform;
 
-        private void Start()
+        private Transform _bodySpriteTransform;
+        private Transform _bodyTransform;
+        private Transform _bodyVerticalDisplacementTransform;
+        private Transform _standTransform;
+
+        private void Awake()
         {
-            _creature.Initialize(this);
+            _bodyTransform = transform.Find("Body");
 
-            Transform bodySpriteTransform = transform.Find("Body").Find("Sprite");
-            SpriteRenderer bodySpriteRenderer = bodySpriteTransform.GetComponent<SpriteRenderer>();
-            bodySpriteRenderer.sprite = _creature.bodySprite;
+            _bodyVerticalDisplacementTransform = _bodyTransform.Find("Vertical displacement");
+            _bodyVerticalDisplacementAnimator = _bodyVerticalDisplacementTransform.GetComponent<Animator>();
 
-            _bodySpriteAnimator = bodySpriteTransform.GetComponent<Animator>();
+            _bodyOrientationTransform = _bodyVerticalDisplacementTransform.Find("Orientation");
 
-            SpriteRenderer standSpriteRenderer = transform.Find("Stand").GetComponent<SpriteRenderer>();
-            standSpriteRenderer.sprite = Game.database.standSprites[(int)_creature.size];
+            _bodySpriteTransform = _bodyOrientationTransform.Find("Sprite");
+            _bodySpriteAnimator = _bodySpriteTransform.GetComponent<Animator>();
+
+            _standTransform = transform.Find("Stand");
         }
 
         public void Initialize(Game game, Creature creature)
         {
             _game = game;
             _creature = creature;
+            _creature.Initialize(this);
+
+            SpriteRenderer bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
+            bodySpriteRenderer.sprite = _creature.bodySprite;
+
+            SpriteRenderer standSpriteRenderer = _standTransform.GetComponent<SpriteRenderer>();
+            standSpriteRenderer.sprite = Game.database.standSprites[(int)_creature.size];
+
+            FlyIfPossible(false);
+        }
+
+        public void FaceDirection(CardinalDirection direction)
+        {
+            // Get the angle we need to rotate by.
+            float angleDegrees = DirectionHelpers.cardinalDirectionRotationsDegrees[direction];
+
+            // Account for sprites being positioned in the south direction.
+            angleDegrees -= DirectionHelpers.cardinalDirectionRotationsDegrees[CardinalDirection.South];
+
+            // Rotate the body orientation and stand.
+            _bodyOrientationTransform.localRotation = Quaternion.Euler(0, 0, angleDegrees);
+            _standTransform.localRotation = _bodyOrientationTransform.localRotation;
         }
 
         public IEnumerator Attack()
@@ -63,6 +95,9 @@ namespace MonsterQuest.Controllers
             // Trigger the live animation.
             _bodySpriteAnimator.SetTrigger(_liveHash);
 
+            // Start flying again.
+            FlyIfPossible();
+
             yield return new WaitForSeconds(1f);
         }
 
@@ -71,11 +106,65 @@ namespace MonsterQuest.Controllers
             // Trigger the die animation.
             _bodySpriteAnimator.SetTrigger(_dieHash);
 
-            yield return new WaitForSeconds(1.9f);
+            // Stop flying.
+            StopFlying();
+
+            yield return new WaitForSeconds(1.5f);
 
             Destroy(gameObject);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        private void FlyIfPossible(bool transition = true)
+        {
+            _bodyVerticalDisplacementAnimator.SetBool(_flyHash, _creature.flyHeight > 0);
+
+            // Move to creature to flying height if needed.
+            if (_creature.flyHeight == 0) return;
+
+            StartCoroutine(FlyToHeight(_creature.flyHeight, transition ? 1 : 0));
+        }
+
+        private void StopFlying()
+        {
+            // Nothing to do if we weren't flying.
+            if (_bodyTransform.localPosition.y == 0) return;
+
+            // Stop flying.
+            _bodyVerticalDisplacementAnimator.SetBool(_flyHash, false);
+
+            // Return to ground.
+            StartCoroutine(FlyToHeight(0, 0.5f));
+        }
+
+        private IEnumerator FlyToHeight(float height, float transitionDuration)
+        {
+            float startHeight = _bodyTransform.localPosition.y;
+            float startTime = Time.time;
+
+            float transitionProgress;
+
+            do
+            {
+                transitionProgress = transitionDuration > 0 ? (Time.time - startTime) / transitionDuration : 1;
+                Vector3 position = _bodyTransform.localPosition;
+
+                if (transitionProgress >= 1)
+                {
+                    position.y = height;
+                }
+                else
+                {
+                    position.y = Mathf.SmoothStep(startHeight, height, transitionProgress);
+                }
+
+                // Raise the creature to be sorted before lower creates.
+                position.z = -position.y;
+
+                _bodyTransform.localPosition = position;
+                yield return null;
+            } while (transitionProgress < 1);
         }
     }
 }

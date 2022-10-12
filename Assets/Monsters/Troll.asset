@@ -15,9 +15,17 @@ MonoBehaviour:
   displayName: troll
   size: 4
   type: 9
+  TypeTags: []
   alignment: chaotic evil
   armorClass: 15
   hitPointsRoll: 8d10+40
+  speed:
+    walk: 30
+    burrow: 0
+    climb: 0
+    fly: 0
+    swim: 0
+    hover: 0
   abilityScores:
     <strength>k__BackingField:
       <score>k__BackingField: 18
@@ -31,12 +39,26 @@ MonoBehaviour:
       <score>k__BackingField: 9
     <charisma>k__BackingField:
       <score>k__BackingField: 7
+  savingThrowBonuses: []
+  skillBonuses:
+  - skill: 13
+    amount: 2
   damageVulnerabilities: 
   damageResistances: 
   damageImmunities: 
+  conditionImmunities: 
+  senses:
+  - sense: 2
+    range: 60
+  blind: 0
+  languageAbilities:
+  - language: 5
+    canSpeak: 1
+  telepathyRange: 0
   challengeRating: 5
   effects:
   - {fileID: 11400000, guid: 676d548270b994e04979c3ac1c93a1d9, type: 2}
   - {fileID: 11400000, guid: e2029a33a324a4ce98a6c62932ba3d43, type: 2}
   items: []
   bodySprite: {fileID: 21300000, guid: f1fa343faea49484d895a671f5ea4a29, type: 3}
+  flyHeight: 0
