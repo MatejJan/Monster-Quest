@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class RangedWeaponAttack : RangedAttack, IAttackRollMethodRule
     {
         public RangedWeaponAttack(EffectType type, object parent) : base(type, parent) { }
@@ -25,15 +27,15 @@ namespace MonsterQuest.Effects
             if (!IsOwnAttack(attack)) return null;
 
             // Shooting beyond the normal range results in a disadvantage.
-            if (attack.battle.GetDistance(attack.attacker, attack.target) > rangedWeaponAttackType.range)
+            if (Game.state.battle.GetDistance(attack.attacker, attack.target) > rangedWeaponAttackType.range)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }
 
             // Shooting next to a hostile creature results in a disadvantage.
-            Creature nearestHostileCreature = attack.battle.GetCreatures().Where(creature => attack.battle.AreHostile(attack.attacker, creature)).OrderBy(hostile => attack.battle.GetDistance(attack.attacker, hostile)).First();
+            Creature nearestHostileCreature = Game.state.battle.GetCreatures().Where(creature => Game.state.battle.AreHostile(attack.attacker, creature)).OrderBy(hostile => Game.state.battle.GetDistance(attack.attacker, hostile)).First();
 
-            if (nearestHostileCreature != null && attack.battle.GetDistance(attack.attacker, nearestHostileCreature) <= 5)
+            if (nearestHostileCreature != null && Game.state.battle.GetDistance(attack.attacker, nearestHostileCreature) <= 5)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }

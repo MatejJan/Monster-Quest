@@ -17,6 +17,6 @@ namespace MonsterQuest
         // TODO: public Spell spell {get; }
 
         public Creature target => attack.target;
-        public Battle battle => attack.battle;
+        public Battle battle => Game.state.battle;
     }
 }

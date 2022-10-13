@@ -36,7 +36,7 @@ namespace MonsterQuest
                 }
 
                 DebugHelpers.StartLog($"Determining damage amount alteration for {modifiedDamageAmount} on {definiteName} … ");
-                DamageAlteration damageAlteration = modifiedDamageAmount.hit.battle.GetRuleValues((IDamageAmountAlterationRule rule) => rule.GetDamageAlteration(modifiedDamageAmount)).Resolve();
+                DamageAlteration damageAlteration = Game.GetRuleValues((IDamageAmountAlterationRule rule) => rule.GetDamageAlteration(modifiedDamageAmount)).Resolve();
                 DebugHelpers.EndLog();
 
                 DamageAmount finalDamageAmount = modifiedDamageAmount;
@@ -108,7 +108,7 @@ namespace MonsterQuest
             else
             {
                 Console.WriteLine($"{definiteName.ToUpperFirst()} has {hitPoints} HP left.");
-                yield return controller.TakeDamage();
+                yield return presenter.TakeDamage();
             }
         }
     }

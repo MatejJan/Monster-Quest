@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Actions;
@@ -6,11 +7,16 @@ using UnityEngine;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public partial class Character : Creature, IArmorClassRule
     {
-        public Character(string name, Race race, ClassType classType, Sprite bodySprite)
+        [SerializeField] private Sprite _bodySprite;
+
+        [SerializeReference] private Creature _swornEnemy;
+
+        public Character(string displayName, Race race, ClassType classType, Sprite bodySprite)
         {
-            this.name = name;
+            this.displayName = displayName;
             DebugHelpers.StartLog($"Creating {definiteName}.");
 
             this.race = race;
@@ -18,7 +24,7 @@ namespace MonsterQuest
             Class characterClass = classType.Create(this) as Class;
             effectsList.Add(characterClass);
 
-            this.bodySprite = bodySprite;
+            _bodySprite = bodySprite;
 
             // Generate possible ability scores.
             DebugHelpers.StartLog("Rolling ability scores …");
@@ -57,14 +63,15 @@ namespace MonsterQuest
             DebugHelpers.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
         }
 
-        public Race race { get; }
+        // State properties
+        [field: SerializeField] public Race race { get; private set; }
+        [field: SerializeField] public int level { get; private set; }
 
+        // Derived properties
         public override SizeCategory size => race.size;
 
-        public override Sprite bodySprite { get; }
+        public override Sprite bodySprite => _bodySprite;
         public override float flyHeight => 0;
-
-        [field: SerializeField] public int level { get; private set; }
 
         protected override int proficiencyBonusBase => level;
 
@@ -79,6 +86,8 @@ namespace MonsterQuest
 
         public override IAction TakeTurn(Battle battle, Creature target)
         {
+            if (_swornEnemy == null) _swornEnemy = target;
+
             // An unconscious character must perform a death saving throw action.
             if (lifeStatus != LifeStatus.Alive)
             {

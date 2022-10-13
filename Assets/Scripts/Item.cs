@@ -1,25 +1,31 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public class Item : IRulesHandler
     {
-        public List<Effect> effects = new();
-
         public Item(ItemType type)
         {
             this.type = type;
 
             // Create all effects of this item.
+            effects = new List<Effect>();
+
             foreach (EffectType effectType in type.effects)
             {
                 effects.Add(effectType.Create(this));
             }
         }
 
-        public ItemType type { get; }
+        // State properties
+        [field: SerializeReference] public List<Effect> effects { get; private set; }
+        [field: SerializeField] public ItemType type { get; private set; }
 
+        // Derived properties
         public string displayName => type.displayName;
 
         public string definiteName => EnglishHelpers.GetDefiniteNounForm(displayName);

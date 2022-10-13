@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Actions;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace MonsterQuest
@@ -10,92 +11,64 @@ namespace MonsterQuest
     [Serializable]
     public class Battle : IRulesHandler
     {
-        public List<object> globalRules = new();
-        public Monster monster;
-        public Party heroes;
+        [SerializeReference] private List<object> _globalRules;
 
-        public Battle()
+        public Battle(Monster monster)
         {
+            this.monster = monster;
+
             // Create global providers.
-            globalRules.Add(new AttackAbilityModifier());
-            globalRules.Add(new CoverBonus());
-            globalRules.Add(new DamageAmountTypeDamageAmountAmountAlteration());
-        }
-
-        public IEnumerable<object> rules => globalRules.Concat(heroes.rules).Concat(monster.rules);
-
-        public IEnumerator CallRules<T>(Func<T, IEnumerator> callback) where T : class
-        {
-            foreach (object rule in rules)
+            _globalRules = new List<object>
             {
-                if (rule is T)
-                {
-                    IEnumerator result = callback(rule as T);
-
-                    if (result != null)
-                    {
-                        yield return result;
-                    }
-                }
-            }
+                new AttackAbilityModifier(),
+                new CoverBonus(),
+                new DamageAmountTypeDamageAmountAmountAlteration()
+            };
         }
 
-        public IEnumerable<V> GetRuleValues<T, V>(Func<T, V> callback) where T : class
-        {
-            List<V> values = new();
+        // State properties
+        [field: SerializeReference] public Monster monster { get; private set; }
 
-            foreach (object rule in rules)
-            {
-                if (rule is T t)
-                {
-                    V value = callback(t);
-
-                    if (value != null)
-                    {
-                        values.Add(value);
-                    }
-                }
-            }
-
-            return values;
-        }
+        // Derived properties
+        public IEnumerable<object> rules => _globalRules.Concat(monster.rules);
 
         public IEnumerator Simulate()
         {
-            Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
-
             do
             {
                 // Heroes' turn.
-                foreach (Character hero in heroes)
+                foreach (Character character in Game.state.party.characters)
                 {
-                    IAction action = hero.TakeTurn(this, monster);
+                    IAction action = character.TakeTurn(this, monster);
                     yield return action?.Execute();
 
+                    // Stop attacking if the monster died.
                     if (monster.hitPoints == 0) break;
                 }
 
-                heroes.RemoveAll(hero => hero.lifeStatus == Creature.LifeStatus.Dead);
+                // Remove any characters that died while unconscious.
+                Game.state.party.RemoveDeadCharacters();
 
-                if (monster.lifeStatus != Creature.LifeStatus.Dead && heroes.Count > 0)
+                if (monster.lifeStatus != Creature.LifeStatus.Dead && Game.state.party.characters.Count > 0)
                 {
                     // Monster's turn.
-                    int randomHeroIndex = Random.Range(0, heroes.Count);
-                    Character attackedHero = heroes[randomHeroIndex];
+                    int randomHeroIndex = Random.Range(0, Game.state.party.characters.Count);
+                    Character attackedHero = Game.state.party.characters[randomHeroIndex];
 
                     IAction action = monster.TakeTurn(this, attackedHero);
                     yield return action?.Execute();
 
-                    if (attackedHero.lifeStatus == Creature.LifeStatus.Dead)
-                    {
-                        heroes.Remove(attackedHero);
-                    }
+                    // Remove the characters that died from the attack.
+                    Game.state.party.RemoveDeadCharacters();
                 }
-            } while (monster.hitPoints > 0 && heroes.Count > 0);
+
+                // Save the game between turns.
+                Game.SaveGame();
+            } while (monster.hitPoints > 0 && Game.state.party.characters.Count > 0);
 
             if (monster.hitPoints == 0)
             {
-                Console.WriteLine($"{monster.definiteName.ToUpperFirst()} collapses and the heroes celebrate their victory!");
+                Console.WriteLine("The heroes celebrate their victory!");
             }
             else
             {
@@ -112,7 +85,7 @@ namespace MonsterQuest
         {
             List<Creature> creatures = new();
 
-            creatures.AddRange(heroes);
+            creatures.AddRange(Game.state.party.characters);
             creatures.Add(monster);
 
             return creatures;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -19,6 +20,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class Class : Effect, IWeaponProficiencyRule, IArmorProficiencyRule
     {
         public Class(ClassType type, object parent) : base(type, parent) { }

@@ -6,19 +6,16 @@ namespace MonsterQuest
     {
         public DamageAmountAlterationValue GetDamageAlteration(DamageAmount damageAmount)
         {
-            Hit hit = damageAmount.hit;
-            Battle battle = hit.attack.battle;
-
             DebugHelpers.StartLog("Determining vulnerabilities … ");
-            DamageType[] vulnerabilities = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeVulnerabilities(damageAmount)).Resolve();
+            DamageType[] vulnerabilities = Game.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeVulnerabilities(damageAmount)).Resolve();
             DebugHelpers.EndLog();
 
             DebugHelpers.StartLog("Determining resistances … ");
-            DamageType[] resistances = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeResistances(damageAmount)).Resolve();
+            DamageType[] resistances = Game.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeResistances(damageAmount)).Resolve();
             DebugHelpers.EndLog();
 
             DebugHelpers.StartLog("Determining immunities … ");
-            DamageType[] immunities = battle.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeImmunities(damageAmount)).Resolve();
+            DamageType[] immunities = Game.GetRuleValues((IDamageTypeRule rule) => rule.GetDamageTypeImmunities(damageAmount)).Resolve();
             DebugHelpers.EndLog();
 
             // See which vulnerabilities, resistances, and immunities are included in the damage type.

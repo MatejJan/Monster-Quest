@@ -6,12 +6,13 @@ using Attack = MonsterQuest.Actions.Attack;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public class Monster : Creature, IArmorClassRule, IDamageTypeRule, IAttackAbilityRule, IAttackRollModifierRule
     {
         public Monster(MonsterType type)
         {
             this.type = type;
-            name = type.displayName;
+            displayName = type.displayName;
 
             DebugHelpers.StartLog($"Creating {indefiniteName}.");
 
@@ -45,8 +46,10 @@ namespace MonsterQuest
             DebugHelpers.EndLog($"Created {indefiniteName} with {hitPoints} HP.");
         }
 
-        public MonsterType type { get; }
+        // State properties
+        [field: SerializeField] public MonsterType type { get; private set; }
 
+        // Derived properties
         public override SizeCategory size => type.size;
 
         public override Sprite bodySprite => type.bodySprite;

@@ -16,7 +16,7 @@ namespace MonsterQuest
             List<CoverValue> values = new();
 
             DebugHelpers.StartLog("Determining cover … ");
-            Cover cover = attack.battle.GetRuleValues((ICoverRule rule) => rule.GetCover(attack)).Resolve();
+            Cover cover = Game.GetRuleValues((ICoverRule rule) => rule.GetCover(attack)).Resolve();
             DebugHelpers.EndLog();
 
             // Half and three-quarters cover give you a bonus.

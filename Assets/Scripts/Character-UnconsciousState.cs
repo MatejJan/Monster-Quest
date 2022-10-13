@@ -34,7 +34,7 @@ namespace MonsterQuest
                 Console.WriteLine($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
 
                 yield return Heal(1);
-                yield return controller.RegainConsciousness();
+                yield return presenter.RegainConsciousness();
             }
             else
             {
@@ -54,7 +54,7 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.Dead;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} instantly dies.");
 
-                yield return controller.Die();
+                yield return presenter.Die();
                 yield break;
             }
 
@@ -64,7 +64,7 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.UnstableUnconscious;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} falls unconscious.");
 
-                yield return controller.FallUnconscious();
+                yield return presenter.FallUnconscious();
                 yield break;
             }
 

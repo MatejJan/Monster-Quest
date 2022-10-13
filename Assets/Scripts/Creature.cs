@@ -34,8 +34,8 @@ namespace MonsterQuest
 
         public static Dictionary<SizeCategory, float> spaceTakenPerSize;
 
-        protected readonly List<Effect> effectsList = new();
-        protected readonly List<Item> itemsList = new();
+        [SerializeReference] protected List<Effect> effectsList;
+        [SerializeReference] protected List<Item> itemsList;
 
         static Creature()
         {
@@ -53,26 +53,29 @@ namespace MonsterQuest
 
         protected Creature()
         {
+            effectsList = new List<Effect>();
+            itemsList = new List<Item>();
+
             abilityScores = new AbilityScores();
         }
 
-        // State properties.
-        public AbilityScores abilityScores { get; }
+        // State properties
+        [field: SerializeField] public AbilityScores abilityScores { get; protected set; }
         [field: SerializeField] public int hitPointsMaximum { get; protected set; }
-        [field: SerializeField] public string name { get; protected set; }
+        [field: SerializeField] public string displayName { get; protected set; }
 
         [field: SerializeField] public int hitPoints { get; protected set; }
         [field: SerializeField] public LifeStatus lifeStatus { get; protected set; }
 
-        // Derived properties.
+        // Derived properties
         public abstract SizeCategory size { get; }
         public float spaceTaken => spaceTakenPerSize[size];
 
         public IEnumerable<Effect> effects => effectsList;
         public IEnumerable<Item> items => itemsList;
 
-        public string definiteName => EnglishHelpers.GetDefiniteNounForm(name);
-        public string indefiniteName => EnglishHelpers.GetIndefiniteNounForm(name);
+        public string definiteName => EnglishHelpers.GetDefiniteNounForm(displayName);
+        public string indefiniteName => EnglishHelpers.GetIndefiniteNounForm(displayName);
 
         public abstract Sprite bodySprite { get; }
         public abstract float flyHeight { get; }
@@ -80,16 +83,16 @@ namespace MonsterQuest
         public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
         protected abstract int proficiencyBonusBase { get; }
 
-        public CreatureController controller { get; private set; }
+        public CreaturePresenter presenter { get; private set; }
 
         public bool isUnconscious => lifeStatus == LifeStatus.StableUnconscious || lifeStatus == LifeStatus.UnstableUnconscious;
 
         public IEnumerable<object> rules => new object[] { this }.Concat(effects).Concat(items.SelectMany(item => item.rules));
         public string rulesProviderName => indefiniteName;
 
-        public void Initialize(CreatureController controller)
+        public void Initialize(CreaturePresenter creaturePresenter)
         {
-            this.controller = controller;
+            presenter = creaturePresenter;
         }
 
         public void GiveItem(Item item)
@@ -128,7 +131,7 @@ namespace MonsterQuest
                 }
             }
 
-            return new Actions.Attack(battle, this, target, attackEffect, attackItem, attackAbility);
+            return new Actions.Attack(this, target, attackEffect, attackItem, attackAbility);
         }
 
         public bool MakeAbilityCheck(Ability ability, int successAmount)
@@ -156,7 +159,7 @@ namespace MonsterQuest
 
             Console.WriteLine($"{definiteName.ToUpperFirst()} dies.");
 
-            yield return controller.Die();
+            yield return presenter.Die();
         }
 
         public IEnumerator Heal(int amount)

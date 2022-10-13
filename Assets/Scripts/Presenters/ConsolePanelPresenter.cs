@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace MonsterQuest
+namespace MonsterQuest.Presenters
 {
-    public class ConsolePanelController : MonoBehaviour
+    public class ConsolePanelPresenter : MonoBehaviour
     {
         [SerializeField] private float normalHeight;
         [SerializeField] private float fullHeight;

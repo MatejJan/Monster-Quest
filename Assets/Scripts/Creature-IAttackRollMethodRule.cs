@@ -15,7 +15,7 @@ namespace MonsterQuest
             Item[] armorItems = items.Where(item => item.GetEffect<Armor>() != null).ToArray();
 
             DebugHelpers.StartLog("Determining armor proficiency … ");
-            ArmorCategory[] proficientArmorCategories = attack.battle.GetRuleValues((IArmorProficiencyRule rule) => rule.GetArmorProficiency(this)).Resolve();
+            ArmorCategory[] proficientArmorCategories = Game.GetRuleValues((IArmorProficiencyRule rule) => rule.GetArmorProficiency(this)).Resolve();
             DebugHelpers.EndLog();
 
             foreach (Item armorItem in armorItems)

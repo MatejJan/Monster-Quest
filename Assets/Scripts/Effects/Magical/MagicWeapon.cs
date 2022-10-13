@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -13,6 +14,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class MagicWeapon : Effect, IAttackRollModifierRule, IDamageRollModifierRule
     {
         public MagicWeapon(EffectType type, object parent) : base(type, parent) { }

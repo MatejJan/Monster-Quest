@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -11,6 +12,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class MeleeWeaponAttack : MeleeAttack
     {
         public MeleeWeaponAttack(EffectType type, object parent) : base(type, parent) { }

@@ -1,18 +1,19 @@
 using System;
+using UnityEngine;
 
 namespace MonsterQuest
 {
     [Serializable]
     public abstract class Effect : IRulesProvider
     {
-        public EffectType type;
-        public object parent;
-
-        public Effect(EffectType type, object parent)
+        protected Effect(EffectType type, object parent)
         {
             this.type = type;
             this.parent = parent;
         }
+
+        [field: SerializeField] public EffectType type { get; private set; }
+        [field: SerializeReference] public object parent { get; private set; }
 
         public string rulesProviderName
         {

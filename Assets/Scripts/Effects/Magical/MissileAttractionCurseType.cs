@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -13,6 +14,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class MissileAttractionCurse : Effect, ITargetRedirectionRule
     {
         public MissileAttractionCurse(EffectType type, object parent) : base(type, parent) { }
@@ -24,7 +26,7 @@ namespace MonsterQuest.Effects
             if (attack.effect is not RangedAttack) return null;
 
             // Only redirect attacks within the range.
-            if (attack.battle.GetDistance(parent as Creature, attack.target) > missileAttractionCurseType.range) return null;
+            if (Game.state.battle.GetDistance(parent as Creature, attack.target) > missileAttractionCurseType.range) return null;
 
             // The owner of this curse is within the range and becomes the new target.
             return new SingleValue<Creature>(this, parent as Creature);

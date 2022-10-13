@@ -20,6 +20,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class Weapon : Effect, IAttackAbilityRule, IAttackRollModifierRule
     {
         public Weapon(WeaponType type, object parent) : base(type, parent) { }
@@ -41,7 +42,7 @@ namespace MonsterQuest.Effects
 
             // Weapon provides the proficiency bonus modifier if its wielder is proficient with it.
             DebugHelpers.StartLog("Determining weapon proficiencies … ");
-            WeaponCategory[] proficientWeaponCategories = attack.battle.GetRuleValues((IWeaponProficiencyRule rule) => rule.GetWeaponProficiency(attack.attacker)).Resolve();
+            WeaponCategory[] proficientWeaponCategories = Game.GetRuleValues((IWeaponProficiencyRule rule) => rule.GetWeaponProficiency(attack.attacker)).Resolve();
             DebugHelpers.EndLog();
 
             // The attacker must be proficient in at least one of the weapon's categories to get the proficiency bonus.

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MonsterQuest.Controllers
 {
-    public class CreatureController : MonoBehaviour
+    public class CreaturePresenter : MonoBehaviour
     {
         private static readonly int _attackHash = Animator.StringToHash("Attack");
         private static readonly int _takeDamageHash = Animator.StringToHash("Take damage");
@@ -15,7 +15,6 @@ namespace MonsterQuest.Controllers
         private Animator _bodyVerticalDisplacementAnimator;
 
         private Creature _creature;
-        private Game _game;
         private Transform _bodyOrientationTransform;
 
         private Transform _bodySpriteTransform;
@@ -38,9 +37,8 @@ namespace MonsterQuest.Controllers
             _standTransform = transform.Find("Stand");
         }
 
-        public void Initialize(Game game, Creature creature)
+        public void Initialize(Creature creature)
         {
-            _game = game;
             _creature = creature;
             _creature.Initialize(this);
 
@@ -109,7 +107,7 @@ namespace MonsterQuest.Controllers
             // Stop flying.
             StopFlying();
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
 
             Destroy(gameObject);
 

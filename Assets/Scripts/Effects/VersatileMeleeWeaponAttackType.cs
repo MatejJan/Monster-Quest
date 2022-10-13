@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class VersatileMeleeWeaponAttack : MeleeWeaponAttack
     {
         public VersatileMeleeWeaponAttack(EffectType type, object parent) : base(type, parent) { }

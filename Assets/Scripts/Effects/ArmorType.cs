@@ -17,6 +17,7 @@ namespace MonsterQuest.Effects
         }
     }
 
+    [Serializable]
     public class Armor : Effect, IArmorClassRule
     {
         public Armor(EffectType type, object parent) : base(type, parent) { }

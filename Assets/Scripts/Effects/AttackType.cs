@@ -1,3 +1,5 @@
+using System;
+
 namespace MonsterQuest.Effects
 {
     public abstract class AttackType : EffectType
@@ -14,6 +16,7 @@ namespace MonsterQuest.Effects
         public string descriptionObject;
     }
 
+    [Serializable]
     public abstract class Attack : Effect, IAttackAbilityRule, IAttackRollModifierRule, IDamageRollModifierRule, IDamageRollRule
     {
         protected Attack(EffectType type, object parent) : base(type, parent) { }

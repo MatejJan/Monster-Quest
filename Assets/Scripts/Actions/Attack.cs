@@ -7,9 +7,8 @@ namespace MonsterQuest.Actions
 {
     public class Attack : IAction
     {
-        public Attack(Battle battle, Creature attacker, Creature target, Effects.Attack effect, Item weapon, Ability? ability = null, bool isBonusAction = false)
+        public Attack(Creature attacker, Creature target, Effects.Attack effect, Item weapon, Ability? ability = null, bool isBonusAction = false)
         {
-            this.battle = battle;
             this.attacker = attacker;
             this.target = target;
             this.effect = effect;
@@ -18,7 +17,6 @@ namespace MonsterQuest.Actions
             this.isBonusAction = isBonusAction;
         }
 
-        public Battle battle { get; }
         public Creature attacker { get; }
         public Creature target { get; private set; }
         public Effects.Attack effect { get; }
@@ -32,7 +30,7 @@ namespace MonsterQuest.Actions
 
             // Determine if a target redirect occurs.
             DebugHelpers.StartLog("Determining target redirect … ");
-            Creature newTarget = battle.GetRuleValues((ITargetRedirectionRule rule) => rule.RedirectTarget(this)).Resolve();
+            Creature newTarget = Game.GetRuleValues((ITargetRedirectionRule rule) => rule.RedirectTarget(this)).Resolve();
             target = newTarget ?? target;
             DebugHelpers.EndLog();
 
@@ -50,7 +48,7 @@ namespace MonsterQuest.Actions
             {
                 // Query what attack roll method will be used for this attack (normal, advantage, disadvantage).
                 DebugHelpers.StartLog("Determining advantage or disadvantage for the attack roll … ");
-                AttackRollMethod[] attackRollMethods = battle.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
+                AttackRollMethod[] attackRollMethods = Game.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
                 DebugHelpers.EndLog();
 
                 bool advantage = attackRollMethods.Contains(AttackRollMethod.Advantage);
@@ -89,14 +87,14 @@ namespace MonsterQuest.Actions
                 {
                     // Add attack roll modifiers.
                     DebugHelpers.StartLog("Determining attack roll modifiers … ");
-                    int attackRollModifier = battle.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
+                    int attackRollModifier = Game.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
                     DebugHelpers.EndLog();
 
                     attackRoll += attackRollModifier;
 
                     // Determine the target's armor class.
                     DebugHelpers.StartLog("Determining target's armor class … ");
-                    int armorClass = battle.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
+                    int armorClass = Game.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
                     DebugHelpers.EndLog();
 
                     // Determine result.
@@ -152,7 +150,7 @@ namespace MonsterQuest.Actions
                 Console.WriteLine($"{(wasCritical ? "gets a critical miss" : "misses")}.");
             }
 
-            yield return attacker.controller?.Attack();
+            yield return attacker.presenter?.Attack();
 
             // End the attack if it was a miss.
             if (!wasHit)
@@ -165,7 +163,7 @@ namespace MonsterQuest.Actions
 
             // Query what kind of damage rolls need to be performed.
             DebugHelpers.StartLog("Determining damage rolls … ");
-            DamageRoll[] damageRolls = battle.GetRuleValues((IDamageRollRule rule) => rule.GetDamageRolls(hit)).Resolve();
+            DamageRoll[] damageRolls = Game.GetRuleValues((IDamageRollRule rule) => rule.GetDamageRolls(hit)).Resolve();
             DebugHelpers.EndLog();
 
             // Roll for damages.
@@ -189,7 +187,7 @@ namespace MonsterQuest.Actions
                 if (!damageRoll.isExtraDamage)
                 {
                     DebugHelpers.StartLog("Determining damage modifiers … ");
-                    int damageModifier = battle.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
+                    int damageModifier = Game.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
                     DebugHelpers.EndLog();
 
                     // The resulting amount cannot be negative.
@@ -206,7 +204,7 @@ namespace MonsterQuest.Actions
             DebugHelpers.EndLog();
 
             // Apply the damage.
-            yield return battle.CallRules((IDamageRule rule) => rule.ReactToDamage(damage));
+            yield return Game.CallRules((IDamageRule rule) => rule.ReactToDamage(damage));
         }
     }
 }
