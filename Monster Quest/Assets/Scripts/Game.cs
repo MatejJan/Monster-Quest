@@ -20,7 +20,7 @@ namespace MonsterQuest
         [SerializeField] private Database databaseObject;
         [SerializeField] private GameStateAsset loadGameState;
 
-        private BattlePresenter _battlePresenter;
+        private CombatPresenter _combatPresenter;
         private static string saveFilePath => Path.Combine(Application.persistentDataPath, _saveFileName);
         private static bool saveFileExists => File.Exists(saveFilePath);
 
@@ -31,7 +31,7 @@ namespace MonsterQuest
         {
             database = databaseObject;
 
-            _battlePresenter = transform.Find("Battle").GetComponent<BattlePresenter>();
+            _combatPresenter = transform.Find("Combat").GetComponent<CombatPresenter>();
         }
 
         private void Start()
@@ -73,7 +73,7 @@ namespace MonsterQuest
                 state.party.characters[i].GiveItem(chainShirt.Create());
             }
 
-            Console.WriteLine($"{state.party} descend into the dungeon.");
+            Console.WriteLine($"Warriors {state.party} descend into the dungeon.");
 
             state.remainingMonsterTypes.AddRange(database.monsters.OrderBy(monsterType => monsterType.challengeRating));
         }
@@ -113,14 +113,14 @@ namespace MonsterQuest
         private IEnumerator Simulate()
         {
             // Present the characters.
-            _battlePresenter.InitializeParty();
+            _combatPresenter.InitializeParty();
 
             while (state.combat is not null || state.remainingMonsterTypes.Count > 0)
             {
-                // Create a new battle (it might already exist from a save file).
+                // See if we need to create a new combat (it might already exist from a save file).
                 if (state.combat is null)
                 {
-                    // Wait a bit before starting a new battle.
+                    // Wait a bit before starting new combat.
                     yield return new WaitForSeconds(1);
 
                     // Create the next monster.
@@ -129,16 +129,16 @@ namespace MonsterQuest
                     Monster monster = new(monsterType);
                     Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
 
-                    // Create a battle with the monster.
+                    // Create a combat with the monster.
                     state.combat = new Combat(state, monster);
                 }
 
                 // Present the monster.
-                _battlePresenter.InitializeMonster();
+                _combatPresenter.InitializeMonster();
 
                 yield return new WaitForSeconds(1);
 
-                // Simulate the battle.
+                // Simulate the combat.
                 yield return state.combat.Simulate();
 
                 // If everyone died, stop simulation.
@@ -149,7 +149,7 @@ namespace MonsterQuest
                     break;
                 }
 
-                // End the battle and save the game before continuing.
+                // End the combat and save the game before continuing.
                 state.combat = null;
                 SaveGame();
             }
@@ -157,12 +157,12 @@ namespace MonsterQuest
             switch (state.party.characters.Count)
             {
                 case > 1:
-                    Console.WriteLine($"After many grueling battles, the heroes {state.party.characters} return from the dungeons to live another day.");
+                    Console.WriteLine($"After many grueling fights, the heroes {state.party.characters} return from the dungeons to live another day.");
 
                     break;
 
                 case 1:
-                    Console.WriteLine($"After many grueling battles, {state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                    Console.WriteLine($"After many grueling fights, {state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
 
                     break;
             }

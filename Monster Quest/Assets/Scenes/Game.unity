@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 105512658}
   - component: {fileID: 105512659}
   m_Layer: 0
-  m_Name: Battle
+  m_Name: Combat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -458,7 +458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705460843}
   m_Layer: 0
-  m_Name: Dungeon
+  m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,6 +611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   databaseObject: {fileID: 11400000, guid: 7102d44ed9e6d4a0fbe1c34fd7f7cb28, type: 2}
+  loadGameState: {fileID: 0}
 --- !u!4 &1066135998
 Transform:
   m_ObjectHideFlags: 0
