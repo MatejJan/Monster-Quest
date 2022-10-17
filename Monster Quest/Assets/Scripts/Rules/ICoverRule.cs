@@ -1,9 +1,7 @@
-﻿using MonsterQuest.Actions;
-
-namespace MonsterQuest
+﻿namespace MonsterQuest
 {
     public interface ICoverRule
     {
-        CoverValue GetCover(Attack attack);
+        CoverValue GetCover(AttackAction attackAction);
     }
 }

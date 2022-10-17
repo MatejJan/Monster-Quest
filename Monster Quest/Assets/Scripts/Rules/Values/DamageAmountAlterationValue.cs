@@ -44,7 +44,7 @@ namespace MonsterQuest
 
                 if (categories.Count > 0)
                 {
-                    Console.WriteLine($"The target is {StringHelpers.JoinWithAnd(categories)} to this damage.");
+                    Console.WriteLine($"The target is {StringHelper.JoinWithAnd(categories)} to this damage.");
 
                     foreach (DamageAmountAlterationValue value in vulnerabilityValues)
                     {

@@ -20,20 +20,20 @@ namespace MonsterQuest.Effects
         public MagicWeapon(EffectType type, object parent) : base(type, parent) { }
         public MagicWeaponType magicWeaponType => (MagicWeaponType)type;
 
-        public IntegerValue GetAttackRollModifier(Actions.Attack attack)
+        public IntegerValue GetAttackRollModifier(AttackAction attackAction)
         {
-            return GetRollModifier(attack);
+            return GetRollModifier(attackAction);
         }
 
-        public IntegerValue GetDamageRollModifier(Actions.Attack attack)
+        public IntegerValue GetDamageRollModifier(AttackAction attackAction)
         {
-            return GetRollModifier(attack);
+            return GetRollModifier(attackAction);
         }
 
-        private IntegerValue GetRollModifier(Actions.Attack attack)
+        private IntegerValue GetRollModifier(AttackAction attackAction)
         {
             // Only provide information for this weapon.
-            if (attack.weapon != parent) return null;
+            if (attackAction.weapon != parent) return null;
 
             return new IntegerValue(this, modifierValue: magicWeaponType.bonus);
         }

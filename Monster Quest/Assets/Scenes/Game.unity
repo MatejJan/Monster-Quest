@@ -164,6 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105512658}
   - component: {fileID: 105512659}
+  - component: {fileID: 105512660}
   m_Layer: 0
   m_Name: Combat
   m_TagString: Untagged
@@ -198,6 +199,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18da46847b544f67b4ae42c7a4d07151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &105512660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105512657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb9898c5712740b2a94280ce2ab85cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &497185838

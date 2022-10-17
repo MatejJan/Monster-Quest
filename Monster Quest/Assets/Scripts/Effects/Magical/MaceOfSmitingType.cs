@@ -20,26 +20,26 @@ namespace MonsterQuest.Effects
 
         public MaceOfSmiting(EffectType type, object parent) : base(type, parent) { }
 
-        public IntegerValue GetAttackRollModifier(Actions.Attack attack)
+        public IntegerValue GetAttackRollModifier(AttackAction attackAction)
         {
-            return GetRollModifier(attack);
+            return GetRollModifier(attackAction);
         }
 
-        public IntegerValue GetDamageRollModifier(Actions.Attack attack)
+        public IntegerValue GetDamageRollModifier(AttackAction attackAction)
         {
-            return GetRollModifier(attack);
+            return GetRollModifier(attackAction);
         }
 
         public ArrayValue<DamageRoll> GetDamageRolls(Hit hit)
         {
             // Only provide information to attacks with this weapon.
-            if (hit.attack.weapon != parent) return null;
+            if (hit.attackAction.weapon != parent) return null;
 
             // When you roll a 20 on an attack roll made with this weapon, the target takes an extra 2d6 bludgeoning damage, or 4d6 bludgeoning damage if it’s a construct.
             if (!hit.wasCritical) return null;
 
             // Create the roll and store it so we can apply extra consequences after it has been dealt.
-            string roll = IsTargetAConstruct(hit.attack.target) ? "4d6" : "2d6";
+            string roll = IsTargetAConstruct(hit.attackAction.target) ? "4d6" : "2d6";
             _lastDamageRoll = new DamageRoll(roll, DamageType.Bludgeoning, true);
 
             return new ArrayValue<DamageRoll>(this, new[] { _lastDamageRoll });
@@ -61,13 +61,13 @@ namespace MonsterQuest.Effects
             }
         }
 
-        private IntegerValue GetRollModifier(Actions.Attack attack)
+        private IntegerValue GetRollModifier(AttackAction attackAction)
         {
             // Only provide information to attacks with this weapon.
-            if (attack.weapon != parent) return null;
+            if (attackAction.weapon != parent) return null;
 
             // You gain a +1 bonus to attack and damage rolls made with this magic weapon. The bonus increases to +3 when you use the mace to attack a construct.
-            return new IntegerValue(this, modifierValue: IsTargetAConstruct(attack.target) ? 3 : 1);
+            return new IntegerValue(this, modifierValue: IsTargetAConstruct(attackAction.target) ? 3 : 1);
         }
 
         private bool IsTargetAConstruct(Creature target)

@@ -39,7 +39,7 @@ namespace MonsterQuest
 
                 if (Console.verbose)
                 {
-                    Console.WriteLine($"Values are {StringHelpers.JoinWithAnd(overrideItems)} from {overrideValues[0].provider} with priority {overrideValues[0].priority}.");
+                    Console.WriteLine($"Values are {StringHelper.JoinWithAnd(overrideItems)} from {overrideValues[0].provider} with priority {overrideValues[0].priority}.");
 
                     if (overrideValues.Length > 1)
                     {
@@ -47,7 +47,7 @@ namespace MonsterQuest
 
                         for (int i = 1; i < overrideValues.Length; i++)
                         {
-                            Console.WriteLine($"{StringHelpers.JoinWithAnd(overrideValues[i].overrideItems)} from {overrideValues[i].provider.rulesProviderName} with priority {overrideValues[i].priority}.");
+                            Console.WriteLine($"{StringHelper.JoinWithAnd(overrideValues[i].overrideItems)} from {overrideValues[i].provider.rulesProviderName} with priority {overrideValues[i].priority}.");
                         }
                     }
 
@@ -57,12 +57,12 @@ namespace MonsterQuest
 
                         foreach (ArrayValue<T> addValue in addValues)
                         {
-                            Console.WriteLine($"{StringHelpers.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
+                            Console.WriteLine($"{StringHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
                         }
 
                         foreach (ArrayValue<T> removeValue in removeValues)
                         {
-                            Console.WriteLine($"{StringHelpers.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
+                            Console.WriteLine($"{StringHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
                         }
                     }
                 }
@@ -90,7 +90,7 @@ namespace MonsterQuest
             {
                 if (items.Count > 0)
                 {
-                    Console.WriteLine($"Values are {StringHelpers.JoinWithAnd(items)}.");
+                    Console.WriteLine($"Values are {StringHelper.JoinWithAnd(items)}.");
                 }
                 else
                 {
@@ -101,7 +101,7 @@ namespace MonsterQuest
                 {
                     if (addValue.addItems.Any())
                     {
-                        Console.WriteLine($"{StringHelpers.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
+                        Console.WriteLine($"{StringHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
                     }
                 }
 
@@ -109,7 +109,7 @@ namespace MonsterQuest
                 {
                     if (removeValue.addItems.Any())
                     {
-                        Console.WriteLine($"{StringHelpers.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
+                        Console.WriteLine($"{StringHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
                     }
                 }
             }

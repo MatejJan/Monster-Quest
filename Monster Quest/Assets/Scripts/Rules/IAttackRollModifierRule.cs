@@ -1,9 +1,7 @@
-﻿using MonsterQuest.Actions;
-
-namespace MonsterQuest
+﻿namespace MonsterQuest
 {
     public interface IAttackRollModifierRule
     {
-        IntegerValue GetAttackRollModifier(Attack attack);
+        IntegerValue GetAttackRollModifier(AttackAction attackAction);
     }
 }

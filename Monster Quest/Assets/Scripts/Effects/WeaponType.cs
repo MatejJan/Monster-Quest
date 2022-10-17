@@ -26,29 +26,29 @@ namespace MonsterQuest.Effects
         public Weapon(WeaponType type, object parent) : base(type, parent) { }
         public WeaponType weaponType => (WeaponType)type;
 
-        public SingleValue<Ability> GetAttackAbility(Actions.Attack attack)
+        public SingleValue<Ability> GetAttackAbility(AttackAction attackAction)
         {
             // Only provide information for the current weapon.
-            if (attack.weapon != parent) return null;
+            if (attackAction.weapon != parent) return null;
 
             // Melee weapons use Strength, ranged weapons use Dexterity.
             return new SingleValue<Ability>(this, weaponType.HasCategory(WeaponCategory.Ranged) ? Ability.Dexterity : Ability.Strength);
         }
 
-        public IntegerValue GetAttackRollModifier(Actions.Attack attack)
+        public IntegerValue GetAttackRollModifier(AttackAction attackAction)
         {
             // Only provide information for the current weapon.
-            if (attack.weapon != parent) return null;
+            if (attackAction.weapon != parent) return null;
 
             // Weapon provides the proficiency bonus modifier if its wielder is proficient with it.
-            DebugHelpers.StartLog("Determining weapon proficiencies … ");
-            WeaponCategory[] proficientWeaponCategories = attack.gameState.GetRuleValues((IWeaponProficiencyRule rule) => rule.GetWeaponProficiency(attack.attacker)).Resolve();
-            DebugHelpers.EndLog();
+            DebugHelper.StartLog("Determining weapon proficiencies … ");
+            WeaponCategory[] proficientWeaponCategories = attackAction.gameState.GetRuleValues((IWeaponProficiencyRule rule) => rule.GetWeaponProficiency(attackAction.attacker)).Resolve();
+            DebugHelper.EndLog();
 
             // The attacker must be proficient in at least one of the weapon's categories to get the proficiency bonus.
             if (proficientWeaponCategories.Intersect(weaponType.categories).Any())
             {
-                return new IntegerValue(this, modifierValue: attack.attacker.proficiencyBonus);
+                return new IntegerValue(this, modifierValue: attackAction.attacker.proficiencyBonus);
             }
 
             return null;

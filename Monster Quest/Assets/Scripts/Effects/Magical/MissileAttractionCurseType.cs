@@ -20,13 +20,13 @@ namespace MonsterQuest.Effects
         public MissileAttractionCurse(EffectType type, object parent) : base(type, parent) { }
         public MissileAttractionCurseType missileAttractionCurseType => (MissileAttractionCurseType)type;
 
-        public SingleValue<Creature> RedirectTarget(Actions.Attack attack)
+        public SingleValue<Creature> RedirectTarget(AttackAction attackAction)
         {
             // Only redirect ranged attacks.
-            if (attack.effect is not RangedAttack) return null;
+            if (attackAction.effect is not RangedAttack) return null;
 
             // Only redirect attacks within the range.
-            if (Game.state.combat.GetDistance(parent as Creature, attack.target) > missileAttractionCurseType.range) return null;
+            if (GameManager.state.combat.GetDistance(parent as Creature, attackAction.target) > missileAttractionCurseType.range) return null;
 
             // The owner of this curse is within the range and becomes the new target.
             return new SingleValue<Creature>(this, parent as Creature);

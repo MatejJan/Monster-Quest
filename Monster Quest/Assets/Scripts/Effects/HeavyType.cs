@@ -17,13 +17,13 @@ namespace MonsterQuest.Effects
     {
         public Heavy(EffectType type, object parent) : base(type, parent) { }
 
-        public MultipleValue<AttackRollMethod> GetAttackRollMethod(Actions.Attack attack)
+        public MultipleValue<AttackRollMethod> GetAttackRollMethod(AttackAction attackAction)
         {
             // Only provide information for this weapon.
-            if (attack.weapon != parent) return null;
+            if (attackAction.weapon != parent) return null;
 
             // Small creatures have disadvantage on attack rolls with heavy weapons.
-            if (attack.attacker.size > Creature.SizeCategory.Small) return null;
+            if (attackAction.attacker.size > Creature.SizeCategory.Small) return null;
 
             return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
         }

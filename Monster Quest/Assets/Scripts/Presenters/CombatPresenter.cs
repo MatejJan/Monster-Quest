@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MonsterQuest.Presenters
+namespace MonsterQuest
 {
     public class CombatPresenter : MonoBehaviour
     {
@@ -14,13 +14,13 @@ namespace MonsterQuest.Presenters
         public void InitializeParty()
         {
             // Create the character views.
-            for (int i = 0; i < Game.state.party.characters.Count; i++)
+            for (int i = 0; i < GameManager.state.party.characters.Count; i++)
             {
-                Creature character = Game.state.party.characters[i];
+                Creature character = GameManager.state.party.characters[i];
 
-                GameObject characterGameObject = Instantiate(Game.database.creaturePrefab, _creaturesTransform);
+                GameObject characterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);
                 characterGameObject.name = character.displayName;
-                characterGameObject.transform.position = new Vector3(((Game.state.party.characters.Count - 1) * -0.5f + i) * 5, character.spaceTaken / 2, 0);
+                characterGameObject.transform.position = new Vector3(((GameManager.state.party.characters.Count - 1) * -0.5f + i) * 5, character.spaceTaken / 2, 0);
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(character);
@@ -30,10 +30,10 @@ namespace MonsterQuest.Presenters
 
         public void InitializeMonster()
         {
-            Combat combat = Game.state.combat;
+            Combat combat = GameManager.state.combat;
 
             // Create the monster view.
-            GameObject monsterGameObject = Instantiate(Game.database.creaturePrefab, _creaturesTransform);
+            GameObject monsterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);
             monsterGameObject.name = combat.monster.displayName;
             monsterGameObject.transform.position = new Vector3(0, -combat.monster.spaceTaken / 2, 0);
 

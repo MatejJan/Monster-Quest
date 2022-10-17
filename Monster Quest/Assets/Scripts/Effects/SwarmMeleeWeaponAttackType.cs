@@ -21,15 +21,15 @@ namespace MonsterQuest.Effects
         public override ArrayValue<DamageRoll> GetDamageRolls(Hit hit)
         {
             // Only provide information to attacks with this weapon.
-            if (!IsOwnAttack(hit.attack)) return null;
+            if (!IsOwnAttack(hit.attackAction)) return null;
 
             // Deal half the damage if the swarm has half of its hit points or fewer.
-            Creature attacker = hit.attack.attacker;
+            Creature attacker = hit.attackAction.attacker;
 
             if (attacker.hitPoints > attacker.hitPointsMaximum / 2) return base.GetDamageRolls(hit);
 
             DamageRoll normalDamageRoll = swarmMeleeWeaponAttackType.damageRolls[0];
-            DamageRoll halvedDamageRoll = new(Dice.GetRollWithHalfTheDice(normalDamageRoll.roll), normalDamageRoll.type, normalDamageRoll.isExtraDamage, normalDamageRoll.savingThrowAbility, normalDamageRoll.savingThrowDC);
+            DamageRoll halvedDamageRoll = new(DiceHelper.GetRollWithHalfTheDice(normalDamageRoll.roll), normalDamageRoll.type, normalDamageRoll.isExtraDamage, normalDamageRoll.savingThrowAbility, normalDamageRoll.savingThrowDC);
 
             DamageRoll[] damageRolls = new DamageRoll[swarmMeleeWeaponAttackType.damageRolls.Length];
             damageRolls[0] = halvedDamageRoll;

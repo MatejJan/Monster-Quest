@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace MonsterQuest.Presenters
+namespace MonsterQuest
 {
     public class CreaturePresenter : MonoBehaviour
     {
@@ -40,13 +40,13 @@ namespace MonsterQuest.Presenters
         public void Initialize(Creature creature)
         {
             _creature = creature;
-            _creature.Initialize(this);
+            _creature.InitializePresenter(this);
 
             SpriteRenderer bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
             bodySpriteRenderer.sprite = _creature.bodySprite;
 
             SpriteRenderer standSpriteRenderer = _standTransform.GetComponent<SpriteRenderer>();
-            standSpriteRenderer.sprite = Game.database.standSprites[(int)_creature.size];
+            standSpriteRenderer.sprite = GameManager.database.standSprites[(int)_creature.size];
 
             FlyIfPossible(false);
         }
@@ -54,10 +54,10 @@ namespace MonsterQuest.Presenters
         public void FaceDirection(CardinalDirection direction)
         {
             // Get the angle we need to rotate by.
-            float angleDegrees = DirectionHelpers.cardinalDirectionRotationsDegrees[direction];
+            float angleDegrees = CardinalDirectionHelper.cardinalDirectionRotationsDegrees[direction];
 
             // Account for sprites being positioned in the south direction.
-            angleDegrees -= DirectionHelpers.cardinalDirectionRotationsDegrees[CardinalDirection.South];
+            angleDegrees -= CardinalDirectionHelper.cardinalDirectionRotationsDegrees[CardinalDirection.South];
 
             // Rotate the body orientation and stand.
             _bodyOrientationTransform.localRotation = Quaternion.Euler(0, 0, angleDegrees);

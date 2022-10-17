@@ -1,14 +1,12 @@
-﻿using MonsterQuest.Actions;
-
-namespace MonsterQuest
+﻿namespace MonsterQuest
 {
     public interface IArmorClassRule
     {
         IntegerValue GetArmorClass(Creature creature);
 
-        IntegerValue GetArmorClass(Attack attack)
+        IntegerValue GetArmorClass(AttackAction attackAction)
         {
-            return GetArmorClass(attack.target);
+            return GetArmorClass(attackAction.target);
         }
     }
 }

@@ -24,11 +24,11 @@ namespace MonsterQuest.Effects
         public override ArrayValue<DamageRoll> GetDamageRolls(Hit hit)
         {
             // Only provide information to attacks with this weapon.
-            if (!IsOwnAttack(hit.attack)) return null;
+            if (!IsOwnAttack(hit.attackAction)) return null;
 
             // If the attack is made with two hands, use the two handed damage roll.
             // For now we assume two handed attacks when the attacker has only one weapon.
-            if (hit.attack.attacker.items.Count(item => item.GetEffect<Weapon>() is not null) > 1) return base.GetDamageRolls(hit);
+            if (hit.attackAction.attacker.items.Count(item => item.GetEffect<Weapon>() is not null) > 1) return base.GetDamageRolls(hit);
 
             DamageRoll oneHandedDamageRoll = versatileMeleeWeaponAttackType.damageRolls[0];
             DamageRoll twoHandedDamageRoll = new(versatileMeleeWeaponAttackType.twoHandedDamageRoll, oneHandedDamageRoll.type, oneHandedDamageRoll.isExtraDamage, oneHandedDamageRoll.savingThrowAbility, oneHandedDamageRoll.savingThrowDC);

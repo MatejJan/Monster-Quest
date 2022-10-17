@@ -21,21 +21,21 @@ namespace MonsterQuest.Effects
         public RangedWeaponAttack(EffectType type, object parent) : base(type, parent) { }
         public RangedWeaponAttackType rangedWeaponAttackType => (RangedWeaponAttackType)attackType;
 
-        public MultipleValue<AttackRollMethod> GetAttackRollMethod(Actions.Attack attack)
+        public MultipleValue<AttackRollMethod> GetAttackRollMethod(AttackAction attackAction)
         {
             // Only provide information for the current attack.
-            if (!IsOwnAttack(attack)) return null;
+            if (!IsOwnAttack(attackAction)) return null;
 
             // Shooting beyond the normal range results in a disadvantage.
-            if (Game.state.combat.GetDistance(attack.attacker, attack.target) > rangedWeaponAttackType.range)
+            if (GameManager.state.combat.GetDistance(attackAction.attacker, attackAction.target) > rangedWeaponAttackType.range)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }
 
             // Shooting next to a hostile creature results in a disadvantage.
-            Creature nearestHostileCreature = Game.state.combat.GetCreatures().Where(creature => Game.state.combat.AreHostile(attack.attacker, creature)).OrderBy(hostile => Game.state.combat.GetDistance(attack.attacker, hostile)).First();
+            Creature nearestHostileCreature = GameManager.state.combat.GetCreatures().Where(creature => GameManager.state.combat.AreHostile(attackAction.attacker, creature)).OrderBy(hostile => GameManager.state.combat.GetDistance(attackAction.attacker, hostile)).First();
 
-            if (nearestHostileCreature is not null && Game.state.combat.GetDistance(attack.attacker, nearestHostileCreature) <= 5)
+            if (nearestHostileCreature is not null && GameManager.state.combat.GetDistance(attackAction.attacker, nearestHostileCreature) <= 5)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }

@@ -1,9 +1,7 @@
-﻿using MonsterQuest.Actions;
-
-namespace MonsterQuest
+﻿namespace MonsterQuest
 {
     public interface IAttackAbilityRule
     {
-        SingleValue<Ability> GetAttackAbility(Attack attack);
+        SingleValue<Ability> GetAttackAbility(AttackAction attackAction);
     }
 }

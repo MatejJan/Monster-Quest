@@ -22,10 +22,10 @@ namespace MonsterQuest.Effects
         protected Attack(EffectType type, object parent) : base(type, parent) { }
         public AttackType attackType => (AttackType)type;
 
-        public SingleValue<Ability> GetAttackAbility(Actions.Attack attack)
+        public SingleValue<Ability> GetAttackAbility(AttackAction attackAction)
         {
             // Only provide information for the current attack.
-            if (!IsOwnAttack(attack)) return null;
+            if (!IsOwnAttack(attackAction)) return null;
 
             // The attack type can specify its own attack ability.
             if (attackType.attackAbility != Ability.None) return new SingleValue<Ability>(this, attackType.attackAbility);
@@ -33,10 +33,10 @@ namespace MonsterQuest.Effects
             return null;
         }
 
-        public IntegerValue GetAttackRollModifier(Actions.Attack attack)
+        public IntegerValue GetAttackRollModifier(AttackAction attackAction)
         {
             // Only provide information for the current attack.
-            if (!IsOwnAttack(attack)) return null;
+            if (!IsOwnAttack(attackAction)) return null;
 
             // The attack type can override the attack roll modifier.
             if (attackType.customAttackModifiers) return new IntegerValue(this, overrideValue: attackType.attackRollModifier);
@@ -44,10 +44,10 @@ namespace MonsterQuest.Effects
             return null;
         }
 
-        public IntegerValue GetDamageRollModifier(Actions.Attack attack)
+        public IntegerValue GetDamageRollModifier(AttackAction attackAction)
         {
             // Only provide information for the current attack.
-            if (!IsOwnAttack(attack)) return null;
+            if (!IsOwnAttack(attackAction)) return null;
 
             // The attack type can override the damage roll modifier.
             if (attackType.customAttackModifiers) return new IntegerValue(this, overrideValue: attackType.damageRollModifier);
@@ -58,14 +58,14 @@ namespace MonsterQuest.Effects
         public virtual ArrayValue<DamageRoll> GetDamageRolls(Hit hit)
         {
             // Only provide information to attacks with this weapon.
-            if (!IsOwnAttack(hit.attack)) return null;
+            if (!IsOwnAttack(hit.attackAction)) return null;
 
             return new ArrayValue<DamageRoll>(this, attackType.damageRolls);
         }
 
-        protected bool IsOwnAttack(Actions.Attack attack)
+        protected bool IsOwnAttack(AttackAction attackAction)
         {
-            return attack.effect == this && (attack.weapon == parent || attack.attacker == parent);
+            return attackAction.effect == this && (attackAction.weapon == parent || attackAction.attacker == parent);
         }
     }
 }
