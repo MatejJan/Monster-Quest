@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MonsterQuest.Presenters
+namespace MonsterQuest
 {
     public class ConsolePanelPresenter : MonoBehaviour
     {
