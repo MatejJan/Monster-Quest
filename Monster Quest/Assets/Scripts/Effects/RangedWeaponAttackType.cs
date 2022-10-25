@@ -27,15 +27,15 @@ namespace MonsterQuest.Effects
             if (!IsOwnAttack(attackAction)) return null;
 
             // Shooting beyond the normal range results in a disadvantage.
-            if (GameManager.state.combat.GetDistance(attackAction.attacker, attackAction.target) > rangedWeaponAttackType.range)
+            if (attackAction.gameState.combat.GetDistance(attackAction.attacker, attackAction.target) > rangedWeaponAttackType.range)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }
 
             // Shooting next to a hostile creature results in a disadvantage.
-            Creature nearestHostileCreature = GameManager.state.combat.GetCreatures().Where(creature => GameManager.state.combat.AreHostile(attackAction.attacker, creature)).OrderBy(hostile => GameManager.state.combat.GetDistance(attackAction.attacker, hostile)).First();
+            Creature nearestHostileCreature = attackAction.gameState.combat.GetCreatures().Where(creature => attackAction.gameState.combat.AreHostile(attackAction.attacker, creature)).OrderBy(hostile => attackAction.gameState.combat.GetDistance(attackAction.attacker, hostile)).First();
 
-            if (nearestHostileCreature is not null && GameManager.state.combat.GetDistance(attackAction.attacker, nearestHostileCreature) <= 5)
+            if (nearestHostileCreature is not null && attackAction.gameState.combat.GetDistance(attackAction.attacker, nearestHostileCreature) <= 5)
             {
                 return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }

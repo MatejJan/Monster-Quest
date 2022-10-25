@@ -26,7 +26,7 @@ namespace MonsterQuest.Effects
             if (attackAction.effect is not RangedAttack) return null;
 
             // Only redirect attacks within the range.
-            if (GameManager.state.combat.GetDistance(parent as Creature, attackAction.target) > missileAttractionCurseType.range) return null;
+            if (attackAction.gameState.combat.GetDistance(parent as Creature, attackAction.target) > missileAttractionCurseType.range) return null;
 
             // The owner of this curse is within the range and becomes the new target.
             return new SingleValue<Creature>(this, parent as Creature);

@@ -11,16 +11,16 @@ namespace MonsterQuest
             _creaturesTransform = transform.Find("Creatures");
         }
 
-        public void InitializeParty()
+        public void InitializeParty(GameState gameState)
         {
             // Create the character views.
-            for (int i = 0; i < GameManager.state.party.characters.Count; i++)
+            for (int i = 0; i < gameState.party.characters.Count; i++)
             {
-                Creature character = GameManager.state.party.characters[i];
+                Creature character = gameState.party.characters[i];
 
                 GameObject characterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);
                 characterGameObject.name = character.displayName;
-                characterGameObject.transform.position = new Vector3(((GameManager.state.party.characters.Count - 1) * -0.5f + i) * 5, character.spaceTaken / 2, 0);
+                characterGameObject.transform.position = new Vector3(((gameState.party.characters.Count - 1) * -0.5f + i) * 5, character.spaceTaken / 2, 0);
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(character);
@@ -28,9 +28,9 @@ namespace MonsterQuest
             }
         }
 
-        public void InitializeMonster()
+        public void InitializeMonster(GameState gameState)
         {
-            Combat combat = GameManager.state.combat;
+            Combat combat = gameState.combat;
 
             // Create the monster view.
             GameObject monsterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);

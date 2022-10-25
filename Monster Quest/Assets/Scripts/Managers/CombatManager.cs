@@ -10,7 +10,7 @@ namespace MonsterQuest
             do
             {
                 // Heroes' turn.
-                foreach (Character character in GameManager.state.party.characters)
+                foreach (Character character in gameState.party.characters)
                 {
                     IAction action = character.TakeTurn(gameState);
 
@@ -21,9 +21,9 @@ namespace MonsterQuest
                 }
 
                 // Remove any characters that died while unconscious.
-                GameManager.state.party.RemoveDeadCharacters();
+                gameState.party.RemoveDeadCharacters();
 
-                if (gameState.combat.monster.lifeStatus != Creature.LifeStatus.Dead && GameManager.state.party.characters.Count > 0)
+                if (gameState.combat.monster.lifeStatus != Creature.LifeStatus.Dead && gameState.party.characters.Count > 0)
                 {
                     // Monster's turn.
                     IAction action = gameState.combat.monster.TakeTurn(gameState);
@@ -31,12 +31,10 @@ namespace MonsterQuest
                     yield return action?.Execute();
 
                     // Remove the characters that died from the attack.
-                    GameManager.state.party.RemoveDeadCharacters();
+                    gameState.party.RemoveDeadCharacters();
                 }
 
-                // Save the game between turns.
-                GameManager.SaveGame();
-            } while (gameState.combat.monster.hitPoints > 0 && GameManager.state.party.characters.Count > 0);
+            } while (gameState.combat.monster.hitPoints > 0 && gameState.party.characters.Count > 0);
 
             if (gameState.combat.monster.hitPoints == 0)
             {

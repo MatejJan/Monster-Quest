@@ -35,7 +35,7 @@ namespace MonsterQuest
         {
             List<Creature> creatures = new();
 
-            creatures.AddRange(GameManager.state.party.characters);
+            creatures.AddRange(gameState.party.characters);
             creatures.Add(monster);
 
             return creatures;

@@ -21,11 +21,11 @@ namespace MonsterQuest
 
         private CombatManager _combatManager;
         private CombatPresenter _combatPresenter;
+        private GameState _state;
 
         private static string saveFilePath => Path.Combine(Application.persistentDataPath, _saveFileName);
         private static bool saveFileExists => File.Exists(saveFilePath);
 
-        public static GameState state { get; private set; }
         public static Database database { get; private set; }
 
         private void Awake()
@@ -41,7 +41,7 @@ namespace MonsterQuest
         {
             if (loadGameState)
             {
-                state = loadGameState.gameState;
+                _state = loadGameState.gameState;
             }
             else if (saveFileExists)
             {
@@ -55,16 +55,16 @@ namespace MonsterQuest
             StartCoroutine(Simulate());
         }
 
-        public static void NewGame()
+        public void NewGame()
         {
             // Create a new game state.
-            state = new GameState();
+            _state = new GameState();
 
             // Create a new party.
             Race humanRace = database.GetRace("human");
             ClassType fighterClassType = database.GetClass("fighter");
 
-            state.party = new Party(new Character[] { new("Jazlyn", humanRace, fighterClassType, database.characterBodySprites[0]), new("Theron", humanRace, fighterClassType, database.characterBodySprites[1]), new("Dayana", humanRace, fighterClassType, database.characterBodySprites[2]), new("Rolando", humanRace, fighterClassType, database.characterBodySprites[3]) });
+            _state.party = new Party(new Character[] { new("Jazlyn", humanRace, fighterClassType, database.characterBodySprites[0]), new("Theron", humanRace, fighterClassType, database.characterBodySprites[1]), new("Dayana", humanRace, fighterClassType, database.characterBodySprites[2]), new("Rolando", humanRace, fighterClassType, database.characterBodySprites[3]) });
 
             ItemType[] weaponItemTypes = { database.GetItem("greatsword"), database.GetItem("javelin"), database.GetItem("greatsword"), database.GetItem("greataxe") };
 
@@ -72,24 +72,24 @@ namespace MonsterQuest
 
             for (int i = 0; i < 4; i++)
             {
-                state.party.characters[i].GiveItem(weaponItemTypes[i].Create());
-                state.party.characters[i].GiveItem(chainShirt.Create());
+                _state.party.characters[i].GiveItem(weaponItemTypes[i].Create());
+                _state.party.characters[i].GiveItem(chainShirt.Create());
             }
 
-            Console.WriteLine($"Warriors {state.party} descend into the dungeon.");
+            Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
 
-            state.remainingMonsterTypes.AddRange(database.monsters.OrderBy(monsterType => monsterType.challengeRating));
+            _state.remainingMonsterTypes.AddRange(database.monsters.OrderBy(monsterType => monsterType.challengeRating));
         }
 
-        public static void LoadGame()
+        public void LoadGame()
         {
             string json = File.ReadAllText(saveFilePath);
-            state = JsonUtility.FromJson<GameState>(json);
+            _state = JsonUtility.FromJson<GameState>(json);
         }
 
-        public static void SaveGame()
+        public void SaveGame()
         {
-            string json = JsonUtility.ToJson(state);
+            string json = JsonUtility.ToJson(_state);
             File.WriteAllText(saveFilePath, json);
 
 #if UNITY_EDITOR
@@ -101,14 +101,14 @@ namespace MonsterQuest
             AssetDatabase.DeleteAsset(_lastGameStateAssetPath);
 
             GameStateAsset gameStateAsset = ScriptableObject.CreateInstance<GameStateAsset>();
-            gameStateAsset.gameState = state;
+            gameStateAsset.gameState = _state;
             AssetDatabase.CreateAsset(gameStateAsset, _lastGameStateAssetPath);
 
             AssetDatabase.SaveAssets();
 #endif
         }
 
-        public static void DeleteSavedGame()
+        public void DeleteSavedGame()
         {
             File.Delete(saveFilePath);
         }
@@ -116,36 +116,36 @@ namespace MonsterQuest
         private IEnumerator Simulate()
         {
             // Present the characters.
-            _combatPresenter.InitializeParty();
+            _combatPresenter.InitializeParty(_state);
 
-            while (state.combat is not null || state.remainingMonsterTypes.Count > 0)
+            while (_state.combat is not null || _state.remainingMonsterTypes.Count > 0)
             {
                 // See if we need to create a new combat (it might already exist from a save file).
-                if (state.combat is null)
+                if (_state.combat is null)
                 {
                     // Wait a bit before starting new combat.
                     yield return new WaitForSeconds(1);
 
                     // Create the next monster.
-                    MonsterType monsterType = state.remainingMonsterTypes[0];
-                    state.remainingMonsterTypes.RemoveAt(0);
+                    MonsterType monsterType = _state.remainingMonsterTypes[0];
+                    _state.remainingMonsterTypes.RemoveAt(0);
                     Monster monster = new(monsterType);
                     Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
 
                     // Create a combat with the monster.
-                    state.combat = new Combat(state, monster);
+                    _state.combat = new Combat(_state, monster);
                 }
 
                 // Present the monster.
-                _combatPresenter.InitializeMonster();
+                _combatPresenter.InitializeMonster(_state);
 
                 yield return new WaitForSeconds(1);
 
                 // Simulate the combat.
-                yield return _combatManager.Simulate(state);
+                yield return _combatManager.Simulate(_state);
 
                 // If everyone died, stop simulation.
-                if (state.party.characters.Count == 0)
+                if (_state.party.characters.Count == 0)
                 {
                     DeleteSavedGame();
 
@@ -153,19 +153,19 @@ namespace MonsterQuest
                 }
 
                 // End the combat and save the game before continuing.
-                state.combat = null;
+                _state.combat = null;
                 SaveGame();
             }
 
-            switch (state.party.characters.Count)
+            switch (_state.party.characters.Count)
             {
                 case > 1:
-                    Console.WriteLine($"After many grueling fights, the heroes {state.party.characters} return from the dungeons to live another day.");
+                    Console.WriteLine($"After many grueling fights, the heroes {_state.party.characters} return from the dungeons to live another day.");
 
                     break;
 
                 case 1:
-                    Console.WriteLine($"After many grueling fights, {state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                    Console.WriteLine($"After many grueling fights, {_state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
 
                     break;
             }
