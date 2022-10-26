@@ -27,7 +27,7 @@ namespace MonsterQuest
 
         // Main stat block
         public string displayName;
-        public Creature.SizeCategory size;
+        public SizeCategory size;
         public TypeCategory type;
         public string[] TypeTags;
         public string alignment;

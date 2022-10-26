@@ -39,9 +39,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5bdd4c146fff4c33bdea124761c3209, type: 2}
   - {fileID: 11400000, guid: d61643c7330414aaa830cf5496e6377c, type: 2}
   standSprites:
-  - {fileID: 0}
   - {fileID: 21300000, guid: 722741d42d5ab40bc8d93a9fb39f67d4, type: 3}
-  - {fileID: 21300000, guid: 6b3f8bb90389e43a993af97788e8bed6, type: 3}
+  - {fileID: 21300000, guid: 23d708df13f4b4b49a594dd90c94cb67, type: 3}
   - {fileID: 21300000, guid: 23d708df13f4b4b49a594dd90c94cb67, type: 3}
   - {fileID: 21300000, guid: 3278bd074ad0e433ba2fbd2d1a65f77f, type: 3}
   - {fileID: 21300000, guid: f247a52797af14bfb8cd8c78aefade8e, type: 3}

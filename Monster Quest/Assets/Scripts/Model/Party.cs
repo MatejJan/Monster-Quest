@@ -21,7 +21,7 @@ namespace MonsterQuest
 
         public void RemoveDeadCharacters()
         {
-            characters.RemoveAll(character => character.lifeStatus == Creature.LifeStatus.Dead);
+            characters.RemoveAll(character => character.lifeStatus == LifeStatus.Dead);
         }
 
         public override string ToString()

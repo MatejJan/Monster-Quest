@@ -6,6 +6,6 @@ namespace MonsterQuest
     public class Race : ScriptableObject
     {
         public string displayName;
-        public Creature.SizeCategory size;
+        public SizeCategory size;
     }
 }

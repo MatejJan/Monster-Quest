@@ -5,22 +5,32 @@ namespace MonsterQuest
 {
     public class CreaturePresenter : MonoBehaviour
     {
+        private const float _creatureUnitScale = 0.8f;
+
         private static readonly int _attackHash = Animator.StringToHash("Attack");
         private static readonly int _takeDamageHash = Animator.StringToHash("Take damage");
         private static readonly int _dieHash = Animator.StringToHash("Die");
         private static readonly int _liveHash = Animator.StringToHash("Live");
         private static readonly int _flyHash = Animator.StringToHash("Fly");
 
+        [SerializeField] private Color damagedColor;
+
         private Animator _bodySpriteAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
 
         private Creature _creature;
-        private Transform _bodyOrientationTransform;
 
+        private float _currentHitPointRatio;
+        private IEnumerator _hitPointAnimationCoroutine;
+
+        private SpriteRenderer _bodySpriteRenderer;
+
+        private Transform _bodyOrientationTransform;
         private Transform _bodySpriteTransform;
         private Transform _bodyTransform;
         private Transform _bodyVerticalDisplacementTransform;
-        private Transform _standTransform;
+        private Transform _hitPointsMaskTransform;
+        private Transform _standBaseTransform;
 
         private void Awake()
         {
@@ -34,21 +44,34 @@ namespace MonsterQuest
             _bodySpriteTransform = _bodyOrientationTransform.Find("Sprite");
             _bodySpriteAnimator = _bodySpriteTransform.GetComponent<Animator>();
 
-            _standTransform = transform.Find("Stand");
+            Transform standTransform = transform.Find("Stand");
+            _standBaseTransform = standTransform.Find("Base");
+            _hitPointsMaskTransform = standTransform.Find("Hit points mask");
         }
 
         public void Initialize(Creature creature)
         {
+            // Connect model and presenter.
             _creature = creature;
             _creature.InitializePresenter(this);
 
-            SpriteRenderer bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
-            bodySpriteRenderer.sprite = _creature.bodySprite;
+            // Set body sprite.
+            _bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
+            _bodySpriteRenderer.sprite = _creature.bodySprite;
 
-            SpriteRenderer standSpriteRenderer = _standTransform.GetComponent<SpriteRenderer>();
-            standSpriteRenderer.sprite = GameManager.database.standSprites[(int)_creature.size];
+            // Set stand sprite.
+            SpriteRenderer[] standSpriteRenderers = _standBaseTransform.GetComponentsInChildren<SpriteRenderer>();
 
+            foreach (SpriteRenderer standSpriteRenderer in standSpriteRenderers)
+            {
+                standSpriteRenderer.sprite = GameManager.database.standSprites[(int)_creature.size - 1];
+            }
+
+            // Animate flying if needed.
             FlyIfPossible(false);
+
+            // Set initial hit points.
+            SetHitPointRatio((float)creature.hitPoints / creature.hitPointsMaximum);
         }
 
         public void FaceDirection(CardinalDirection direction)
@@ -59,9 +82,9 @@ namespace MonsterQuest
             // Account for sprites being positioned in the south direction.
             angleDegrees -= CardinalDirectionHelper.cardinalDirectionRotationsDegrees[CardinalDirection.South];
 
-            // Rotate the body orientation and stand.
+            // Rotate the body orientation and the stand base.
             _bodyOrientationTransform.localRotation = Quaternion.Euler(0, 0, angleDegrees);
-            _standTransform.localRotation = _bodyOrientationTransform.localRotation;
+            _standBaseTransform.localRotation = _bodyOrientationTransform.localRotation;
         }
 
         public IEnumerator Attack()
@@ -77,13 +100,27 @@ namespace MonsterQuest
             // Trigger the take damage animation.
             _bodySpriteAnimator.SetTrigger(_takeDamageHash);
 
+            // Update hit points indicator.
+            UpdateHitPoints();
+
             yield return new WaitForSeconds(1f);
+        }
+
+        public IEnumerator Heal()
+        {
+            // Update hit points indicator.
+            UpdateHitPoints();
+
+            yield break;
         }
 
         public IEnumerator FallUnconscious()
         {
             // Trigger the die animation.
             _bodySpriteAnimator.SetTrigger(_dieHash);
+
+            // Update hit points indicator.
+            UpdateHitPoints();
 
             yield return new WaitForSeconds(1.9f);
         }
@@ -103,6 +140,9 @@ namespace MonsterQuest
         {
             // Trigger the die animation.
             _bodySpriteAnimator.SetTrigger(_dieHash);
+
+            // Update hit points indicator.
+            UpdateHitPoints();
 
             // Stop flying.
             StopFlying();
@@ -158,6 +198,55 @@ namespace MonsterQuest
 
                 yield return null;
             } while (transitionProgress < 1);
+        }
+
+        private void SetHitPointRatio(float ratio)
+        {
+            float spaceTaken = _creature.spaceTaken * _creatureUnitScale;
+            _hitPointsMaskTransform.localPosition = new Vector3(0, -spaceTaken / 2, 0);
+            _hitPointsMaskTransform.localScale = new Vector3(spaceTaken, spaceTaken * ratio, 1);
+
+            _bodySpriteRenderer.color = Color.Lerp(damagedColor, Color.white, ratio);
+
+            _currentHitPointRatio = ratio;
+        }
+
+        private void UpdateHitPoints()
+        {
+            AnimateToHitPointRatio((float)_creature.hitPoints / _creature.hitPointsMaximum);
+        }
+
+        private void AnimateToHitPointRatio(float ratio)
+        {
+            if (_hitPointAnimationCoroutine != null)
+            {
+                StopCoroutine(_hitPointAnimationCoroutine);
+            }
+
+            _hitPointAnimationCoroutine = AnimateToHitPointRatioCoroutine(ratio, 0.5f);
+            StartCoroutine(_hitPointAnimationCoroutine);
+        }
+
+        private IEnumerator AnimateToHitPointRatioCoroutine(float endRatio, float transitionDuration)
+        {
+            float startRatio = _currentHitPointRatio;
+            float startTime = Time.time;
+
+            float transitionProgress;
+
+            do
+            {
+                transitionProgress = transitionDuration > 0 ? (Time.time - startTime) / transitionDuration : 1;
+
+                // Ease out to desired ratio.
+                float easedTransitionProgress = Mathf.Sin(transitionProgress * Mathf.PI / 2);
+                float newRatio = Mathf.Lerp(startRatio, endRatio, easedTransitionProgress);
+                SetHitPointRatio(newRatio);
+
+                yield return null;
+            } while (transitionProgress < 1);
+
+            _hitPointAnimationCoroutine = null;
         }
     }
 }

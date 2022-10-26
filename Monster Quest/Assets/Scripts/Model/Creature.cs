@@ -10,43 +10,8 @@ namespace MonsterQuest
     [Serializable]
     public abstract partial class Creature : IRulesHandler, IRulesProvider
     {
-        public enum LifeStatus
-        {
-            Alive,
-            StableUnconscious,
-            UnstableUnconscious,
-            Dead
-        }
-
-        public enum SizeCategory
-        {
-            None,
-            Tiny,
-            Small,
-            Medium,
-            Large,
-            Huge,
-            Gargantuan
-        }
-
-        public static Dictionary<SizeCategory, float> spaceTakenPerSize;
-
         [SerializeReference] protected List<Effect> effectsList;
         [SerializeReference] protected List<Item> itemsList;
-
-        static Creature()
-        {
-            // Define how much space each size category takes up.
-            spaceTakenPerSize = new Dictionary<SizeCategory, float>
-            {
-                { SizeCategory.Tiny, 2.5f },
-                { SizeCategory.Small, 5f },
-                { SizeCategory.Medium, 5f },
-                { SizeCategory.Large, 10f },
-                { SizeCategory.Huge, 15f },
-                { SizeCategory.Gargantuan, 20f }
-            };
-        }
 
         protected Creature()
         {
@@ -64,9 +29,11 @@ namespace MonsterQuest
         [field: SerializeField] public int hitPoints { get; protected set; }
         [field: SerializeField] public LifeStatus lifeStatus { get; protected set; }
 
+        public CreaturePresenter presenter { get; private set; }
+
         // Derived properties
         public abstract SizeCategory size { get; }
-        public float spaceTaken => spaceTakenPerSize[size];
+        public float spaceTaken => SizeHelper.spaceTakenPerSize[size];
 
         public IEnumerable<Effect> effects => effectsList;
         public IEnumerable<Item> items => itemsList;
@@ -79,8 +46,6 @@ namespace MonsterQuest
 
         public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
         protected abstract int proficiencyBonusBase { get; }
-
-        public CreaturePresenter presenter { get; private set; }
 
         public bool isUnconscious => lifeStatus is LifeStatus.StableUnconscious or LifeStatus.UnstableUnconscious;
 
@@ -180,7 +145,7 @@ namespace MonsterQuest
                 Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
             }
 
-            yield break;
+            if (presenter is not null) yield return presenter.Heal();
         }
 
         protected abstract IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit);
