@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MonsterQuest.Effects;
@@ -39,6 +40,10 @@ namespace MonsterQuest
 
         private void Start()
         {
+            // Save game in between rounds.
+            _combatManager.onRoundEnd += SaveGame;
+
+            // Load an existing or start a new game.
             if (loadGameState)
             {
                 _state = loadGameState.gameState;
@@ -52,19 +57,17 @@ namespace MonsterQuest
                 NewGame();
             }
 
+            // Start the simulation.
             StartCoroutine(Simulate());
         }
 
-        public void NewGame()
+        private void NewGame()
         {
-            // Create a new game state.
-            _state = new GameState();
-
             // Create a new party.
             Race humanRace = database.GetRace("human");
             ClassType fighterClassType = database.GetClass("fighter");
 
-            _state.party = new Party(new Character[] { new("Jazlyn", humanRace, fighterClassType, database.characterBodySprites[0]), new("Theron", humanRace, fighterClassType, database.characterBodySprites[1]), new("Dayana", humanRace, fighterClassType, database.characterBodySprites[2]), new("Rolando", humanRace, fighterClassType, database.characterBodySprites[3]) });
+            Party party = new(new Character[] { new("Jazlyn", humanRace, fighterClassType, database.characterBodySprites[0]), new("Theron", humanRace, fighterClassType, database.characterBodySprites[1]), new("Dayana", humanRace, fighterClassType, database.characterBodySprites[2]), new("Rolando", humanRace, fighterClassType, database.characterBodySprites[3]) });
 
             ItemType[] weaponItemTypes = { database.GetItem("greatsword"), database.GetItem("javelin"), database.GetItem("greatsword"), database.GetItem("greataxe") };
 
@@ -72,22 +75,26 @@ namespace MonsterQuest
 
             for (int i = 0; i < 4; i++)
             {
-                _state.party.characters[i].GiveItem(weaponItemTypes[i].Create());
-                _state.party.characters[i].GiveItem(chainShirt.Create());
+                party.characters[i].GiveItem(weaponItemTypes[i].Create());
+                party.characters[i].GiveItem(chainShirt.Create());
             }
 
-            Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
+            // Prepare the monster types to be fought.
+            IEnumerable<MonsterType> monsterTypes = database.monsters.OrderBy(monsterType => monsterType.challengeRating);
 
-            _state.remainingMonsterTypes.AddRange(database.monsters.OrderBy(monsterType => monsterType.challengeRating));
+            // Create a new game state.
+            _state = new GameState(party, monsterTypes);
+
+            Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
         }
 
-        public void LoadGame()
+        private void LoadGame()
         {
             string json = File.ReadAllText(saveFilePath);
             _state = JsonUtility.FromJson<GameState>(json);
         }
 
-        public void SaveGame()
+        private void SaveGame()
         {
             string json = JsonUtility.ToJson(_state);
             File.WriteAllText(saveFilePath, json);
@@ -108,7 +115,7 @@ namespace MonsterQuest
 #endif
         }
 
-        public void DeleteSavedGame()
+        private void DeleteSavedGame()
         {
             File.Delete(saveFilePath);
         }
@@ -120,7 +127,7 @@ namespace MonsterQuest
 
             while (_state.combat is not null || _state.remainingMonsterTypes.Count > 0)
             {
-                // See if we need to create a new combat (it might already exist from a save file).
+                // See if we need to enter a new combat (it might already exist from a save file).
                 if (_state.combat is null)
                 {
                     // Wait a bit before starting new combat.
@@ -132,8 +139,8 @@ namespace MonsterQuest
                     Monster monster = new(monsterType);
                     Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
 
-                    // Create a combat with the monster.
-                    _state.combat = new Combat(_state, monster);
+                    // Enter a combat with the monster.
+                    _state.EnterCombatWithMonster(monster);
                 }
 
                 // Present the monster.
@@ -153,7 +160,7 @@ namespace MonsterQuest
                 }
 
                 // End the combat and save the game before continuing.
-                _state.combat = null;
+                _state.ExitCombat();
                 SaveGame();
             }
 

@@ -9,16 +9,28 @@ namespace MonsterQuest
     [Serializable]
     public class GameState : IRulesHandler
     {
-        public GameState()
+        public GameState(Party party, IEnumerable<MonsterType> monsterTypes)
         {
-            remainingMonsterTypes = new List<MonsterType>();
+            this.party = party;
+
+            remainingMonsterTypes = new List<MonsterType>(monsterTypes);
         }
 
-        [field: SerializeField] public Party party { get; set; }
-        [field: SerializeReference] public Combat combat { get; set; }
+        [field: SerializeField] public Party party { get; private set; }
+        [field: SerializeReference] public Combat combat { get; private set; }
         [field: SerializeField] public List<MonsterType> remainingMonsterTypes { get; private set; }
 
         public IEnumerable<object> rules => party.rules.Concat(combat.rules);
+
+        public void EnterCombatWithMonster(Monster monster)
+        {
+            combat = new Combat(this, monster);
+        }
+
+        public void ExitCombat()
+        {
+            combat = null;
+        }
 
         public IEnumerator CallRules<TRule>(Func<TRule, IEnumerator> callback) where TRule : class
         {

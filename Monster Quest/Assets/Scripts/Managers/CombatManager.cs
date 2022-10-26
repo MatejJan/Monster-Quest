@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace MonsterQuest
 {
     public class CombatManager : MonoBehaviour
     {
+        // Event for end of a combat round.
+        public event Action onRoundEnd;
+
         public IEnumerator Simulate(GameState gameState)
         {
             do
@@ -34,6 +38,7 @@ namespace MonsterQuest
                     gameState.party.RemoveDeadCharacters();
                 }
 
+                onRoundEnd?.Invoke();
             } while (gameState.combat.monster.hitPoints > 0 && gameState.party.characters.Count > 0);
 
             if (gameState.combat.monster.hitPoints == 0)
