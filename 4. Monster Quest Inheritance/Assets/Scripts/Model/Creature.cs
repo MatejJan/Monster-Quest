@@ -8,12 +8,12 @@ namespace MonsterQuest
 {
     public abstract class Creature
     {
-        public Creature(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory size)
+        public Creature(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory)
         {
             this.displayName = displayName;
             this.bodySprite = bodySprite;
             this.hitPointsMaximum = hitPointsMaximum;
-            this.size = size;
+            this.sizeCategory = sizeCategory;
 
             hitPoints = hitPointsMaximum;
         }
@@ -21,12 +21,12 @@ namespace MonsterQuest
         public string displayName { get; private set; }
         public Sprite bodySprite { get; private set; }
         public int hitPointsMaximum { get; private set; }
-        public SizeCategory size { get; private set; }
+        public SizeCategory sizeCategory { get; private set; }
 
         public int hitPoints { get; private set; }
         public CreaturePresenter presenter { get; private set; }
 
-        public float spaceTaken => SizeHelper.spaceTakenPerSize[size];
+        public float spaceInFeet => SizeHelper.spaceInFeetPerSizeCategory[sizeCategory];
         
         public void InitializePresenter(CreaturePresenter creaturePresenter)
         {

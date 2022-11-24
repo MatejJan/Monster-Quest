@@ -351,6 +351,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagedColor: {r: 0.8099989, g: 0.8403326, b: 0.90099996, a: 1}
+  standSprites:
+  - {fileID: 21300000, guid: 722741d42d5ab40bc8d93a9fb39f67d4, type: 3}
+  - {fileID: 21300000, guid: 23d708df13f4b4b49a594dd90c94cb67, type: 3}
+  - {fileID: 21300000, guid: 23d708df13f4b4b49a594dd90c94cb67, type: 3}
+  - {fileID: 21300000, guid: 3278bd074ad0e433ba2fbd2d1a65f77f, type: 3}
+  - {fileID: 21300000, guid: f247a52797af14bfb8cd8c78aefade8e, type: 3}
+  - {fileID: 21300000, guid: f1c3f9f5afe2e4ab38d69dc38c001d69, type: 3}
 --- !u!1 &2658546893901911839
 GameObject:
   m_ObjectHideFlags: 0

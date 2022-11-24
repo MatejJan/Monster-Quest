@@ -1,40 +1,57 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Effects;
-using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace MonsterQuest
 {
-    [CreateAssetMenu(fileName = "New Database", menuName = "Database")]
-    public class Database : ScriptableObject
+    public static class Database
     {
-        public Race[] races;
-        public ClassType[] classes;
-        public MonsterType[] monsters;
-        public ItemType[] items;
+        private static readonly List<RaceType> _raceTypes = new();
+        private static readonly List<ClassType> _classTypes = new();
+        private static readonly List<MonsterType> _monsterTypes = new();
+        private static readonly List<ItemType> _itemTypes = new();
 
-        public Sprite[] standSprites;
-        public Sprite[] characterBodySprites;
+        public static IEnumerable<RaceType> raceTypes => _raceTypes;
+        public static IEnumerable<ClassType> classTypes => _classTypes;
+        public static IEnumerable<MonsterType> monsterTypes => _monsterTypes;
+        public static IEnumerable<ItemType> itemTypes => _itemTypes;
 
-        public GameObject creaturePrefab;
-
-        public Race GetRace(string displayName)
+        public static IEnumerator Initialize()
         {
-            return races.First(race => race.displayName == displayName);
+            yield return Addressables.InitializeAsync();
+
+            // Load all assets.
+            yield return LoadAssets(_raceTypes);
+            yield return LoadAssets(_classTypes);
+            yield return LoadAssets(_monsterTypes);
+            yield return LoadAssets(_itemTypes);
         }
 
-        public ClassType GetClass(string displayName)
+        public static RaceType GetRaceType(string displayName)
         {
-            return classes.First(classType => classType.displayName == displayName);
+            return _raceTypes.First(raceType => raceType.displayName == displayName);
         }
 
-        public MonsterType GetMonster(string displayName)
+        public static ClassType GetClassType(string displayName)
         {
-            return monsters.First(monster => monster.displayName == displayName);
+            return _classTypes.First(classType => classType.displayName == displayName);
         }
 
-        public ItemType GetItem(string displayName)
+        public static MonsterType GetMonsterType(string displayName)
         {
-            return items.First(item => item.displayName == displayName);
+            return _monsterTypes.First(monster => monster.displayName == displayName);
+        }
+
+        public static ItemType GetItemType(string displayName)
+        {
+            return _itemTypes.First(item => item.displayName == displayName);
+        }
+
+        private static IEnumerator LoadAssets<TObject>(List<TObject> list)
+        {
+            yield return Addressables.LoadAssetsAsync<TObject>("database", list.Add);
         }
     }
 }

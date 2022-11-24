@@ -10,8 +10,12 @@ namespace MonsterQuest
     [Serializable]
     public abstract partial class Creature : IRulesHandler, IRulesProvider
     {
+        // Fields
+
         [SerializeReference] protected List<Effect> effectsList;
         [SerializeReference] protected List<Item> itemsList;
+
+        // Constructor
 
         protected Creature()
         {
@@ -22,6 +26,7 @@ namespace MonsterQuest
         }
 
         // State properties
+
         [field: SerializeField] public AbilityScores abilityScores { get; protected set; }
         [field: SerializeField] public int hitPointsMaximum { get; protected set; }
         [field: SerializeField] public string displayName { get; protected set; }
@@ -32,8 +37,9 @@ namespace MonsterQuest
         public CreaturePresenter presenter { get; private set; }
 
         // Derived properties
-        public abstract SizeCategory size { get; }
-        public float spaceTaken => SizeHelper.spaceTakenPerSize[size];
+
+        public abstract SizeCategory sizeCategory { get; }
+        public float spaceInFeet => SizeHelper.spaceInFeetPerSizeCategory[sizeCategory];
 
         public IEnumerable<Effect> effects => effectsList;
         public IEnumerable<Item> items => itemsList;
@@ -49,8 +55,20 @@ namespace MonsterQuest
 
         public bool isUnconscious => lifeStatus is LifeStatus.StableUnconscious or LifeStatus.UnstableUnconscious;
 
-        public IEnumerable<object> rules => new object[] { this }.Concat(effects).Concat(items.SelectMany(item => item.rules));
+        public IEnumerable<object> rules =>
+            new object[]
+            {
+                this
+            }.Concat(effects).Concat(items.SelectMany(item => item.rules));
+
         public string rulesProviderName => indefiniteName;
+
+        // Methods
+
+        protected void Initialize()
+        {
+            hitPoints = hitPointsMaximum;
+        }
 
         public void InitializePresenter(CreaturePresenter creaturePresenter)
         {

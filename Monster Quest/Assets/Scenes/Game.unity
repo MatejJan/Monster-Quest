@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18da46847b544f67b4ae42c7a4d07151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creaturePrefab: {fileID: 2658546893688436781, guid: 757286616b97e4875bd11973767617ef, type: 3}
 --- !u!114 &105512660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,8 +624,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c267670d10cf54d28ab6097fa2c75036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  databaseObject: {fileID: 11400000, guid: 7102d44ed9e6d4a0fbe1c34fd7f7cb28, type: 2}
   loadGameState: {fileID: 0}
+  characterBodySprites:
+  - {fileID: 21300000, guid: 956386156c63c4eee816fc62eaa55e2c, type: 3}
+  - {fileID: 21300000, guid: e12d725ecf6954adf9e66d736a1d0c22, type: 3}
+  - {fileID: 21300000, guid: 05200a5325ada4d1dbd78ee326031452, type: 3}
+  - {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
 --- !u!4 &1066135998
 Transform:
   m_ObjectHideFlags: 0

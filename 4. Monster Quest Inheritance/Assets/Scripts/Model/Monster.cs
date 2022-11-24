@@ -5,7 +5,7 @@ namespace MonsterQuest
 {
     public class Monster : Creature
     {
-        public Monster(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory size, int savingThrowDC) : base(displayName, bodySprite, hitPointsMaximum, size)
+        public Monster(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory, int savingThrowDC) : base(displayName, bodySprite, hitPointsMaximum, sizeCategory)
         {
             this.savingThrowDC = savingThrowDC;
         }

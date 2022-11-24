@@ -6,30 +6,11 @@ namespace MonsterQuest
     [CreateAssetMenu(fileName = "New Monster", menuName = "Monster")]
     public class MonsterType : ScriptableObject
     {
-        public enum TypeCategory
-        {
-            None,
-            Aberration,
-            Beast,
-            Celestial,
-            Construct,
-            Dragon,
-            Elemental,
-            Fey,
-            Fiend,
-            Giant,
-            Humanoid,
-            Monstrosity,
-            Ooze,
-            Plant,
-            Undead
-        }
-
         // Main stat block
         public string displayName;
-        public SizeCategory size;
-        public TypeCategory type;
-        public string[] TypeTags;
+        public SizeCategory sizeCategory;
+        public MonsterTypeCategory typeCategory;
+        public string[] typeTags;
         public string alignment;
         public int armorClass;
         public string hitPointsRoll;
@@ -41,7 +22,7 @@ namespace MonsterQuest
         public DamageType[] damageResistances;
         public DamageType[] damageImmunities;
         public Condition[] conditionImmunities;
-        public SenseRange[] senses;
+        public SenseRange[] senseRanges;
         public bool blind;
         public LanguageAbility[] languageAbilities;
         public int telepathyRange;

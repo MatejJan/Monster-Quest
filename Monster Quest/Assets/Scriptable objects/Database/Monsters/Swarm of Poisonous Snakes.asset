@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
+  m_Name: Swarm of Poisonous Snakes
+  m_EditorClassIdentifier: 
+  displayName: swarm of poisonous snakes
+  sizeCategory: 3
+  typeCategory: 2
+  TypeTags: []
+  alignment: unaligned
+  armorClass: 14
+  hitPointsRoll: 8d8
+  speed:
+    walk: 30
+    burrow: 0
+    climb: 0
+    fly: 0
+    swim: 30
+    hover: 0
+  abilityScores:
+    <strength>k__BackingField:
+      <score>k__BackingField: 8
+    <dexterity>k__BackingField:
+      <score>k__BackingField: 18
+    <constitution>k__BackingField:
+      <score>k__BackingField: 11
+    <intelligence>k__BackingField:
+      <score>k__BackingField: 1
+    <wisdom>k__BackingField:
+      <score>k__BackingField: 10
+    <charisma>k__BackingField:
+      <score>k__BackingField: 3
+  savingThrowBonuses: []
+  skillBonuses: []
+  damageVulnerabilities: 
+  damageResistances: 020000008000000000080000
+  damageImmunities: 
+  conditionImmunities: 02000000040000000500000008000000090000000b0000000c0000000d000000
+  senseRanges:
+  - sense: 1
+    range: 10
+  blind: 0
+  languageAbilities: []
+  telepathyRange: 0
+  challengeRating: 2
+  effects:
+  - {fileID: 11400000, guid: 1241b8a73e06849f2b01fa41209e2cfb, type: 2}
+  items: []
+  bodySprite: {fileID: 21300000, guid: 6e6d8b6cdad08421dbcc5788ae20f90c, type: 3}
+  flyHeight: 0

@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace MonsterQuest
 {
-    public class SizeHelper
+    public static class SizeHelper
     {
-        public static readonly Dictionary<SizeCategory, float> spaceTakenPerSize;
+        public static readonly Dictionary<SizeCategory, float> spaceInFeetPerSizeCategory;
 
         static SizeHelper()
         {
             // Define how much space each size category takes up.
-            spaceTakenPerSize = new Dictionary<SizeCategory, float>
+            spaceInFeetPerSizeCategory = new Dictionary<SizeCategory, float>
             {
                 { SizeCategory.Tiny, 2.5f },
                 { SizeCategory.Small, 5f },

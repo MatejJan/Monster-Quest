@@ -42,7 +42,10 @@ namespace MonsterQuest.Effects
             string roll = IsTargetAConstruct(hit.attackAction.target) ? "4d6" : "2d6";
             _lastDamageRoll = new DamageRoll(roll, DamageType.Bludgeoning, true);
 
-            return new ArrayValue<DamageRoll>(this, new[] { _lastDamageRoll });
+            return new ArrayValue<DamageRoll>(this, new[]
+            {
+                _lastDamageRoll
+            });
         }
 
         public IEnumerator ReactToDamageDealt(DamageAmount damageAmount)
@@ -74,7 +77,7 @@ namespace MonsterQuest.Effects
         {
             if (target is not Monster monster) return false;
 
-            return monster.type.type == MonsterType.TypeCategory.Construct;
+            return monster.type.typeCategory == MonsterTypeCategory.Construct;
         }
     }
 }

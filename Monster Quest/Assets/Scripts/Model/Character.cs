@@ -11,14 +11,15 @@ namespace MonsterQuest
     {
         [SerializeField] private Sprite _bodySprite;
 
-        public Character(string displayName, Race race, ClassType classType, Sprite bodySprite)
+        public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite)
         {
             this.displayName = displayName;
             DebugHelper.StartLog($"Creating {definiteName}.");
 
-            this.race = race;
+            race = raceType.Create(this) as Race;
+            effectsList.Add(race);
 
-            Class characterClass = classType.Create(this) as Class;
+            characterClass = classType.Create(this) as Class;
             effectsList.Add(characterClass);
 
             _bodySprite = bodySprite;
@@ -55,17 +56,19 @@ namespace MonsterQuest
 
             // Calculate hit points at first level.
             hitPointsMaximum = classType.hitPointsBase + abilityScores.constitution.modifier;
-            hitPoints = hitPointsMaximum;
+
+            Initialize();
 
             DebugHelper.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
         }
 
         // State properties
-        [field: SerializeField] public Race race { get; private set; }
+        [field: SerializeReference] public Class characterClass { get; private set; }
+        [field: SerializeReference] public Race race { get; private set; }
         [field: SerializeField] public int level { get; private set; }
 
         // Derived properties
-        public override SizeCategory size => race.size;
+        public override SizeCategory sizeCategory => race.raceType.sizeCategory;
 
         public override Sprite bodySprite => _bodySprite;
         public override float flyHeight => 0;

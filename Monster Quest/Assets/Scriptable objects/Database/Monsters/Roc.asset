@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
+  m_Name: Roc
+  m_EditorClassIdentifier: 
+  displayName: roc
+  sizeCategory: 6
+  typeCategory: 11
+  TypeTags: []
+  alignment: unaligned
+  armorClass: 15
+  hitPointsRoll: 16d20+80
+  speed:
+    walk: 20
+    burrow: 0
+    climb: 0
+    fly: 120
+    swim: 0
+    hover: 0
+  abilityScores:
+    <strength>k__BackingField:
+      <score>k__BackingField: 28
+    <dexterity>k__BackingField:
+      <score>k__BackingField: 10
+    <constitution>k__BackingField:
+      <score>k__BackingField: 20
+    <intelligence>k__BackingField:
+      <score>k__BackingField: 3
+    <wisdom>k__BackingField:
+      <score>k__BackingField: 10
+    <charisma>k__BackingField:
+      <score>k__BackingField: 9
+  savingThrowBonuses:
+  - ability: 2
+    amount: 4
+  - ability: 3
+    amount: 9
+  - ability: 5
+    amount: 4
+  - ability: 6
+    amount: 3
+  skillBonuses:
+  - skill: 13
+    amount: 4
+  damageVulnerabilities: 
+  damageResistances: 
+  damageImmunities: 
+  conditionImmunities: 
+  senseRanges: []
+  blind: 0
+  languageAbilities: []
+  telepathyRange: 0
+  challengeRating: 11
+  effects:
+  - {fileID: 11400000, guid: 72a9f25b8c91b46388e0c7a619e9e92b, type: 2}
+  - {fileID: 11400000, guid: de27f5ce315f2443c90abe3c477929f0, type: 2}
+  items: []
+  bodySprite: {fileID: 21300000, guid: 998b9830b742147aca27c83ee7e6bd06, type: 3}
+  flyHeight: 2

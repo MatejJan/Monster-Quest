@@ -14,6 +14,7 @@ namespace MonsterQuest
         private static readonly int _flyHash = Animator.StringToHash("Fly");
 
         [SerializeField] private Color damagedColor;
+        [SerializeField] private Sprite[] standSprites;
 
         private Animator _bodySpriteAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
@@ -64,7 +65,7 @@ namespace MonsterQuest
 
             foreach (SpriteRenderer standSpriteRenderer in standSpriteRenderers)
             {
-                standSpriteRenderer.sprite = GameManager.database.standSprites[(int)_creature.size - 1];
+                standSpriteRenderer.sprite = standSprites[(int)_creature.sizeCategory - 1];
             }
 
             // Animate flying if needed.
@@ -202,9 +203,9 @@ namespace MonsterQuest
 
         private void SetHitPointRatio(float ratio)
         {
-            float spaceTaken = _creature.spaceTaken * _creatureUnitScale;
-            _hitPointsMaskTransform.localPosition = new Vector3(0, -spaceTaken / 2, 0);
-            _hitPointsMaskTransform.localScale = new Vector3(spaceTaken, spaceTaken * ratio, 1);
+            float spaceInFeet = _creature.spaceInFeet * _creatureUnitScale;
+            _hitPointsMaskTransform.localPosition = new Vector3(0, -spaceInFeet / 2, 0);
+            _hitPointsMaskTransform.localScale = new Vector3(spaceInFeet, spaceInFeet * ratio, 1);
 
             _bodySpriteRenderer.color = Color.Lerp(damagedColor, Color.white, ratio);
 

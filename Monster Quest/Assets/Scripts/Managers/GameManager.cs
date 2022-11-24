@@ -17,8 +17,9 @@ namespace MonsterQuest
         private const string _gameStatesAssetFolderPath = "Assets/Game States";
         private const string _lastGameStateAssetPath = "Assets/Game States/Last.asset";
 
-        [SerializeField] private Database databaseObject;
         [SerializeField] private GameStateAsset loadGameState;
+
+        [SerializeField] private Sprite[] characterBodySprites;
 
         private CombatManager _combatManager;
         private CombatPresenter _combatPresenter;
@@ -27,19 +28,18 @@ namespace MonsterQuest
         private static string saveFilePath => Path.Combine(Application.persistentDataPath, _saveFileName);
         private static bool saveFileExists => File.Exists(saveFilePath);
 
-        public static Database database { get; private set; }
-
         private void Awake()
         {
-            database = databaseObject;
-
             Transform combatTransform = transform.Find("Combat");
             _combatManager = combatTransform.GetComponent<CombatManager>();
             _combatPresenter = combatTransform.GetComponent<CombatPresenter>();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            // Wait for the Manual to be initialized.
+            yield return Database.Initialize();
+
             // Save game in between rounds.
             _combatManager.onRoundEnd += SaveGame;
 
@@ -58,29 +58,43 @@ namespace MonsterQuest
             }
 
             // Start the simulation.
-            StartCoroutine(Simulate());
+            yield return Simulate();
         }
 
         private void NewGame()
         {
             // Create a new party.
-            Race humanRace = database.GetRace("human");
-            ClassType fighterClassType = database.GetClass("fighter");
+            RaceType humanRaceType = Database.GetRaceType("human");
+            ClassType fighterClassType = Database.GetClassType("fighter");
 
-            Party party = new(new Character[] { new("Jazlyn", humanRace, fighterClassType, database.characterBodySprites[0]), new("Theron", humanRace, fighterClassType, database.characterBodySprites[1]), new("Dayana", humanRace, fighterClassType, database.characterBodySprites[2]), new("Rolando", humanRace, fighterClassType, database.characterBodySprites[3]) });
+            Character[] characters =
+            {
+                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[0]),
+                new("Theron", humanRaceType, fighterClassType, characterBodySprites[1]),
+                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[2]),
+                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[3])
+            };
 
-            ItemType[] weaponItemTypes = { database.GetItem("greatsword"), database.GetItem("javelin"), database.GetItem("greatsword"), database.GetItem("greataxe") };
+            Party party = new(characters);
 
-            ItemType chainShirt = database.GetItem("chain shirt");
+            ItemType[] weaponItemTypes =
+            {
+                Database.GetItemType("greatsword"),
+                Database.GetItemType("javelin"),
+                Database.GetItemType("greatsword"),
+                Database.GetItemType("greataxe")
+            };
+
+            ItemType chainShirt = Database.GetItemType("chain shirt");
 
             for (int i = 0; i < 4; i++)
             {
-                party.characters[i].GiveItem(weaponItemTypes[i].Create());
-                party.characters[i].GiveItem(chainShirt.Create());
+                characters[i].GiveItem(weaponItemTypes[i].Create());
+                characters[i].GiveItem(chainShirt.Create());
             }
 
             // Prepare the monster types to be fought.
-            IEnumerable<MonsterType> monsterTypes = database.monsters.OrderBy(monsterType => monsterType.challengeRating);
+            IEnumerable<MonsterType> monsterTypes = Database.monsterTypes.OrderBy(monsterType => monsterType.challengeRating);
 
             // Create a new game state.
             _state = new GameState(party, monsterTypes);
@@ -152,7 +166,7 @@ namespace MonsterQuest
                 yield return _combatManager.Simulate(_state);
 
                 // If everyone died, stop simulation.
-                if (_state.party.characters.Count == 0)
+                if (_state.party.count == 0)
                 {
                     DeleteSavedGame();
 
@@ -164,15 +178,15 @@ namespace MonsterQuest
                 SaveGame();
             }
 
-            switch (_state.party.characters.Count)
+            switch (_state.party.count)
             {
                 case > 1:
-                    Console.WriteLine($"After many grueling fights, the heroes {_state.party.characters} return from the dungeons to live another day.");
+                    Console.WriteLine($"After many grueling fights, the heroes {_state.party} return from the dungeons to live another day.");
 
                     break;
 
                 case 1:
-                    Console.WriteLine($"After many grueling fights, {_state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                    Console.WriteLine($"After many grueling fights, {_state.party.characters.First().displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
 
                     break;
             }

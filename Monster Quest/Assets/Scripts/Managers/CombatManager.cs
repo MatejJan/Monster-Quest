@@ -27,7 +27,7 @@ namespace MonsterQuest
                 // Remove any characters that died while unconscious.
                 gameState.party.RemoveDeadCharacters();
 
-                if (gameState.combat.monster.lifeStatus != LifeStatus.Dead && gameState.party.characters.Count > 0)
+                if (gameState.combat.monster.lifeStatus != LifeStatus.Dead && gameState.party.count > 0)
                 {
                     // Monster's turn.
                     IAction action = gameState.combat.monster.TakeTurn(gameState);
@@ -39,7 +39,7 @@ namespace MonsterQuest
                 }
 
                 onRoundEnd?.Invoke();
-            } while (gameState.combat.monster.hitPoints > 0 && gameState.party.characters.Count > 0);
+            } while (gameState.combat.monster.hitPoints > 0 && gameState.party.count > 0);
 
             if (gameState.combat.monster.hitPoints == 0)
             {

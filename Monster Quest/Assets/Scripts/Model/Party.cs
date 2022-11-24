@@ -8,20 +8,21 @@ namespace MonsterQuest
     [Serializable]
     public class Party : IRulesHandler
     {
+        [SerializeReference] private List<Character> _characters;
+
         public Party(IEnumerable<Character> initialCharacters)
         {
-            characters = new List<Character>(initialCharacters);
+            _characters = new List<Character>(initialCharacters);
         }
 
-        // State properties
-        [field: SerializeReference] public List<Character> characters { get; private set; }
-
         // Derived properties
+        public IEnumerable<Character> characters => _characters;
+        public int count => _characters.Count;
         public IEnumerable<object> rules => characters.SelectMany(character => character.rules);
 
         public void RemoveDeadCharacters()
         {
-            characters.RemoveAll(character => character.lifeStatus == LifeStatus.Dead);
+            _characters.RemoveAll(character => character.lifeStatus == LifeStatus.Dead);
         }
 
         public override string ToString()

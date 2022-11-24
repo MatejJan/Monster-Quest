@@ -23,7 +23,7 @@ namespace MonsterQuest.Effects
             if (attackAction.weapon != parent) return null;
 
             // Small creatures have disadvantage on attack rolls with heavy weapons.
-            if (attackAction.attacker.size > SizeCategory.Small) return null;
+            if (attackAction.attacker.sizeCategory > SizeCategory.Small) return null;
 
             return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
         }

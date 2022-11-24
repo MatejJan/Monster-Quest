@@ -18,7 +18,6 @@ namespace MonsterQuest
             // Roll the monster's hit points.
             DebugHelper.StartLog("Determining hit points.");
             hitPointsMaximum = Math.Max(1, DiceHelper.Roll(type.hitPointsRoll));
-            hitPoints = hitPointsMaximum;
             DebugHelper.EndLog();
 
             // Copy the rest of the properties from the monster type.
@@ -42,6 +41,8 @@ namespace MonsterQuest
                 effectsList.Add(effectType.Create(this));
             }
 
+            Initialize();
+
             DebugHelper.EndLog($"Created {indefiniteName} with {hitPoints} HP.");
         }
 
@@ -49,7 +50,7 @@ namespace MonsterQuest
         [field: SerializeField] public MonsterType type { get; private set; }
 
         // Derived properties
-        public override SizeCategory size => type.size;
+        public override SizeCategory sizeCategory => type.sizeCategory;
 
         public override Sprite bodySprite => type.bodySprite;
         public override float flyHeight => type.flyHeight;

@@ -1,9 +1,12 @@
+using System.Linq;
 using UnityEngine;
 
 namespace MonsterQuest
 {
     public class CombatPresenter : MonoBehaviour
     {
+        [SerializeField] private GameObject creaturePrefab;
+
         private Transform _creaturesTransform;
 
         private void Awake()
@@ -13,14 +16,16 @@ namespace MonsterQuest
 
         public void InitializeParty(GameState gameState)
         {
-            // Create the character views.
-            for (int i = 0; i < gameState.party.characters.Count; i++)
-            {
-                Creature character = gameState.party.characters[i];
+            Character[] characters = gameState.party.characters.ToArray();
 
-                GameObject characterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);
+            // Create the character views.
+            for (int i = 0; i < characters.Length; i++)
+            {
+                Creature character = characters[i];
+
+                GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
                 characterGameObject.name = character.displayName;
-                characterGameObject.transform.position = new Vector3(((gameState.party.characters.Count - 1) * -0.5f + i) * 5, character.spaceTaken / 2, 0);
+                characterGameObject.transform.position = new Vector3(((characters.Length - 1) * -0.5f + i) * 5, character.spaceInFeet / 2, 0);
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(character);
@@ -33,9 +38,9 @@ namespace MonsterQuest
             Combat combat = gameState.combat;
 
             // Create the monster view.
-            GameObject monsterGameObject = Instantiate(GameManager.database.creaturePrefab, _creaturesTransform);
+            GameObject monsterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
             monsterGameObject.name = combat.monster.displayName;
-            monsterGameObject.transform.position = new Vector3(0, -combat.monster.spaceTaken / 2, 0);
+            monsterGameObject.transform.position = new Vector3(0, -combat.monster.spaceInFeet / 2, 0);
 
             CreaturePresenter creaturePresenter = monsterGameObject.GetComponent<CreaturePresenter>();
             creaturePresenter.Initialize(combat.monster);
