@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace MonsterQuest
 {
@@ -33,16 +35,19 @@ namespace MonsterQuest
         private void NewGame()
         {
             // Create a new party.
-            WeaponType greatsword = (WeaponType)Database.GetItemType("greatsword");
-            ArmorType studdedLeather = (ArmorType)Database.GetItemType("studded leather");
-            
-            Party party = new(new Character[]
+            ArmorType studdedLeather = Database.GetItemType<ArmorType>("studded leather");
+
+            WeaponType[] weaponTypes = Database.itemTypes.Where(itemType => itemType is WeaponType { weight: > 0 }).Cast<WeaponType>().ToArray();
+
+            string[] characterNames = { "Jazlyn", "Theron", "Dayana", "Rolando" };
+            List<Character> characters = new();
+
+            for (int i = 0; i < 4; i++)
             {
-                new("Jazlyn", characterBodySprites[0], 10, SizeCategory.Medium, greatsword, studdedLeather), 
-                new("Theron", characterBodySprites[1], 10, SizeCategory.Medium, greatsword, studdedLeather), 
-                new("Dayana", characterBodySprites[2], 10, SizeCategory.Medium, greatsword, studdedLeather), 
-                new("Rolando", characterBodySprites[3], 10, SizeCategory.Medium, greatsword, studdedLeather)
-            });
+                characters.Add(new(characterNames[i], characterBodySprites[i], 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather));
+            }
+            
+            Party party = new(characters);
             
             // Create a new game state.
             _state = new GameState(party);

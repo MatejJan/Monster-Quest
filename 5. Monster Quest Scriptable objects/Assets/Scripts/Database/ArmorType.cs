@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MonsterQuest
 {
-    [CreateAssetMenu(fileName = "New Armor", menuName = "Armor")]
+    [CreateAssetMenu]
     public class ArmorType : ItemType
     {
         public int armorClass;

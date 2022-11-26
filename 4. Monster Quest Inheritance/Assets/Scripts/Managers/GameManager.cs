@@ -21,10 +21,11 @@ namespace MonsterQuest
             _combatPresenter = combatTransform.GetComponent<CombatPresenter>();
         }
         
-        private void Start()
+        private IEnumerator Start()
         {
             NewGame();
-            StartCoroutine(Simulate());
+            
+            yield return Simulate();
         }
         
         private void NewGame()

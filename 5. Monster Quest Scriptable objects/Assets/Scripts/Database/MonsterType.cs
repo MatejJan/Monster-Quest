@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MonsterQuest
 {
-    [CreateAssetMenu(fileName = "New Monster", menuName = "Monster")]
+    [CreateAssetMenu]
     public class MonsterType : ScriptableObject
     {
         public string displayName;

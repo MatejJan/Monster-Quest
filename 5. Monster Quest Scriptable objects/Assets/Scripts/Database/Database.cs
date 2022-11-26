@@ -27,9 +27,9 @@ namespace MonsterQuest
             return _monsterTypes.First(monster => monster.displayName == displayName);
         }
 
-        public static ItemType GetItemType(string displayName)
+        public static T GetItemType<T>(string displayName) where T : class
         {
-            return _itemTypes.First(item => item.displayName == displayName);
+            return _itemTypes.First(item => item.displayName == displayName && item is T) as T;
         }
 
         private static IEnumerator LoadAssets<TObject>(List<TObject> list)
