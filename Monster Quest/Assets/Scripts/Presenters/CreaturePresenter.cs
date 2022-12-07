@@ -8,9 +8,9 @@ namespace MonsterQuest
         private const float _creatureUnitScale = 0.8f;
 
         private static readonly int _attackHash = Animator.StringToHash("Attack");
-        private static readonly int _takeDamageHash = Animator.StringToHash("Take damage");
-        private static readonly int _dieHash = Animator.StringToHash("Die");
-        private static readonly int _liveHash = Animator.StringToHash("Live");
+        private static readonly int _attacked = Animator.StringToHash("Attacked");
+        private static readonly int _attackedToLying = Animator.StringToHash("Attacked to lying");
+        private static readonly int _stand = Animator.StringToHash("Stand");
         private static readonly int _flyHash = Animator.StringToHash("Fly");
 
         [SerializeField] private Color damagedColor;
@@ -19,7 +19,11 @@ namespace MonsterQuest
         private Animator _bodySpriteAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
 
+        private bool _standing;
+
         private Creature _creature;
+
+        private DeathSavingThrowsPresenter _deathSavingThrowsPresenter;
 
         private float _currentHitPointRatio;
         private IEnumerator _hitPointAnimationCoroutine;
@@ -30,6 +34,7 @@ namespace MonsterQuest
         private Transform _bodySpriteTransform;
         private Transform _bodyTransform;
         private Transform _bodyVerticalDisplacementTransform;
+        private Transform _deathSavingThrowsTransform;
         private Transform _hitPointsMaskTransform;
         private Transform _standBaseTransform;
 
@@ -48,6 +53,9 @@ namespace MonsterQuest
             Transform standTransform = transform.Find("Stand");
             _standBaseTransform = standTransform.Find("Base");
             _hitPointsMaskTransform = standTransform.Find("Hit points mask");
+
+            _deathSavingThrowsTransform = transform.Find("UI").Find("Death saving throws");
+            _deathSavingThrowsPresenter = _deathSavingThrowsTransform.GetComponent<DeathSavingThrowsPresenter>();
         }
 
         public void Initialize(Creature creature)
@@ -68,24 +76,79 @@ namespace MonsterQuest
                 standSpriteRenderer.sprite = standSprites[(int)_creature.sizeCategory - 1];
             }
 
+            // Position the death saving throws.
+            float offset = _creature.spaceInFeet * 0.5f + 1.5f;
+            _deathSavingThrowsTransform.localPosition = new Vector3(0, offset, 0);
+
             // Animate flying if needed.
             FlyIfPossible(false);
 
             // Set initial hit points.
             SetHitPointRatio((float)creature.hitPoints / creature.hitPointsMaximum);
+
+            // Start in standing state.
+            _standing = true;
         }
 
-        public void FaceDirection(CardinalDirection direction)
+        public IEnumerator FaceDirection(CardinalDirection direction, bool immediate = false)
         {
             // Get the angle we need to rotate by.
             float angleDegrees = CardinalDirectionHelper.cardinalDirectionRotationsDegrees[direction];
 
+            yield return FaceAngle(angleDegrees, immediate);
+        }
+
+        public IEnumerator FaceCreature(Creature creature, bool immediate = false)
+        {
+            // Get the angle we need to rotate by.
+            Vector3 directionToCreature = creature.presenter.transform.position - transform.position;
+            float angleDegrees = Mathf.Atan2(directionToCreature.y, directionToCreature.x) * Mathf.Rad2Deg;
+
+            yield return FaceAngle(angleDegrees, immediate);
+        }
+
+        private IEnumerator FaceAngle(float angleDegrees, bool immediate)
+        {
             // Account for sprites being positioned in the south direction.
             angleDegrees -= CardinalDirectionHelper.cardinalDirectionRotationsDegrees[CardinalDirection.South];
 
-            // Rotate the body orientation and the stand base.
+            if (immediate)
+            {
+                SetLocalRotation(angleDegrees);
+
+                yield break;
+            }
+
+            yield return StartCoroutine(AnimateLocalRotation(angleDegrees));
+        }
+
+        private IEnumerator AnimateLocalRotation(float angleDegrees)
+        {
+            float startAngleDegrees = _bodyOrientationTransform.localRotation.eulerAngles.z;
+            float deltaAngle = Mathf.DeltaAngle(startAngleDegrees, angleDegrees);
+            angleDegrees = startAngleDegrees + deltaAngle;
+
+            float startTime = Time.time;
+
+            float transitionDuration = Mathf.Abs(angleDegrees - startAngleDegrees) * 0.01f;
+            float transitionProgress;
+
+            do
+            {
+                transitionProgress = transitionDuration > 0 ? (Time.time - startTime) / transitionDuration : 1;
+
+                // Smoothly interpolate to desired height.
+                float currentAngleDegrees = Mathf.SmoothStep(startAngleDegrees, angleDegrees, transitionProgress);
+                SetLocalRotation(currentAngleDegrees);
+
+                yield return null;
+            } while (transitionProgress < 1);
+        }
+
+        private void SetLocalRotation(float angleDegrees)
+        {
+            // Rotate the body orientation.
             _bodyOrientationTransform.localRotation = Quaternion.Euler(0, 0, angleDegrees);
-            _standBaseTransform.localRotation = _bodyOrientationTransform.localRotation;
         }
 
         public IEnumerator Attack()
@@ -96,13 +159,27 @@ namespace MonsterQuest
             yield return new WaitForSeconds(15f / 60f);
         }
 
-        public IEnumerator TakeDamage()
+        public IEnumerator GetAttacked()
         {
-            // Trigger the take damage animation.
-            _bodySpriteAnimator.SetTrigger(_takeDamageHash);
-
             // Update hit points indicator.
             UpdateHitPoints();
+
+            if (_standing && _creature.hitPoints == 0)
+            {
+                // The creature should get attacked and end up lying down.
+                _bodySpriteAnimator.SetTrigger(_attackedToLying);
+                _standing = false;
+
+                // Stop flying.
+                StopFlying();
+
+                yield return new WaitForSeconds(2f);
+            }
+            else
+            {
+                // The creature gets attacked in its current state.
+                _bodySpriteAnimator.SetTrigger(_attacked);
+            }
 
             yield return new WaitForSeconds(1f);
         }
@@ -115,21 +192,11 @@ namespace MonsterQuest
             yield break;
         }
 
-        public IEnumerator FallUnconscious()
-        {
-            // Trigger the die animation.
-            _bodySpriteAnimator.SetTrigger(_dieHash);
-
-            // Update hit points indicator.
-            UpdateHitPoints();
-
-            yield return new WaitForSeconds(1.9f);
-        }
-
         public IEnumerator RegainConsciousness()
         {
-            // Trigger the live animation.
-            _bodySpriteAnimator.SetTrigger(_liveHash);
+            // The creature should stand.
+            _bodySpriteAnimator.SetTrigger(_stand);
+            _standing = true;
 
             // Start flying again.
             FlyIfPossible();
@@ -139,20 +206,19 @@ namespace MonsterQuest
 
         public IEnumerator Die()
         {
-            // Trigger the die animation.
-            _bodySpriteAnimator.SetTrigger(_dieHash);
-
-            // Update hit points indicator.
-            UpdateHitPoints();
-
-            // Stop flying.
-            StopFlying();
-
-            yield return new WaitForSeconds(2f);
-
             Destroy(gameObject);
 
             yield return new WaitForSeconds(0.5f);
+        }
+
+        public IEnumerator PerformDeathSavingThrow(bool success)
+        {
+            yield return _deathSavingThrowsPresenter.AddDeathSavingThrow(success);
+        }
+
+        public void ResetDeathSavingThrows()
+        {
+            _deathSavingThrowsPresenter.Reset();
         }
 
         private void FlyIfPossible(bool transition = true)

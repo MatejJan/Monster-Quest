@@ -21,6 +21,8 @@ namespace MonsterQuest
                     // Critical fails add 2 saving throw failures.
                     _deathSavingThrowFailures += 2;
 
+                    yield return PresentDeathSavingThrows(2, false);
+
                     Console.WriteLine($"{definiteName.ToUpperFirst()} critically fails a death saving throw.");
 
                     break;
@@ -28,6 +30,8 @@ namespace MonsterQuest
                 case 20:
                     // Critical successes regain consciousness with 1 HP.
                     Console.WriteLine($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
+
+                    if (presenter is not null) presenter.ResetDeathSavingThrows();
 
                     yield return Heal(1);
 
@@ -40,12 +44,16 @@ namespace MonsterQuest
 
                     Console.WriteLine($"{definiteName.ToUpperFirst()} fails a death saving throw.");
 
+                    yield return PresentDeathSavingThrows(1, false);
+
                     break;
 
                 default:
                     _deathSavingThrowSuccesses++;
 
                     Console.WriteLine($"{definiteName.ToUpperFirst()} succeeds a death saving throw.");
+
+                    yield return PresentDeathSavingThrows(1, true);
 
                     break;
             }
@@ -72,26 +80,30 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.UnstableUnconscious;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} falls unconscious.");
 
-                if (presenter is not null) yield return presenter.FallUnconscious();
-
                 yield break;
             }
 
             // The creature is unconscious. See if damage was dealt.
             if (remainingDamageAmount > 0)
             {
+                yield return presenter.GetAttacked();
+
                 // When damage was dealt when unconscious, they receive a death saving throw failure (2 on a critical hit).
                 if (hit.wasCritical)
                 {
                     _deathSavingThrowFailures += 2;
 
                     Console.WriteLine($"{definiteName.ToUpperFirst()} suffers two death saving throw failures.");
+
+                    yield return PresentDeathSavingThrows(2, false);
                 }
                 else
                 {
                     _deathSavingThrowFailures++;
 
                     Console.WriteLine($"{definiteName.ToUpperFirst()} suffers a death saving throw failure.");
+
+                    yield return PresentDeathSavingThrows(1, false);
                 }
 
                 // Destabilize if necessary.
@@ -124,6 +136,19 @@ namespace MonsterQuest
 
                 _deathSavingThrowFailures = 0;
                 _deathSavingThrowSuccesses = 0;
+
+                if (presenter is not null) presenter.ResetDeathSavingThrows();
+            }
+        }
+
+        private IEnumerator PresentDeathSavingThrows(int amount, bool success)
+        {
+            if (presenter is not null)
+            {
+                for (int i = 0; i < amount; i++)
+                {
+                    yield return presenter.PerformDeathSavingThrow(success);
+                }
             }
         }
     }

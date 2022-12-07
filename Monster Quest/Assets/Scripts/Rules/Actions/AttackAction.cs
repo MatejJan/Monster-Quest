@@ -36,6 +36,9 @@ namespace MonsterQuest
             target = newTarget ?? target;
             DebugHelper.EndLog();
 
+            // Face the target.
+            yield return attacker.presenter.FaceCreature(target);
+
             // Determine whether the attack is a hit or a miss.
             bool wasHit = false;
             bool wasCritical = false;

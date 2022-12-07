@@ -101,6 +101,8 @@ namespace MonsterQuest
                 hitPoints = 0;
             }
 
+            if (presenter is not null) yield return presenter.GetAttacked();
+
             if (hitPoints == 0)
             {
                 yield return TakeDamageAtZeroHP(remainingAmount, damage.hit);
@@ -108,8 +110,6 @@ namespace MonsterQuest
             else
             {
                 Console.WriteLine($"{definiteName.ToUpperFirst()} has {hitPoints} HP left.");
-
-                if (presenter is not null) yield return presenter.TakeDamage();
             }
         }
     }

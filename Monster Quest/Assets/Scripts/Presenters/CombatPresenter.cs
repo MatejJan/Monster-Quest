@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace MonsterQuest
             _creaturesTransform = transform.Find("Creatures");
         }
 
-        public void InitializeParty(GameState gameState)
+        public IEnumerator InitializeParty(GameState gameState)
         {
             Character[] characters = gameState.party.characters.ToArray();
 
@@ -29,11 +30,12 @@ namespace MonsterQuest
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(character);
-                creaturePresenter.FaceDirection(CardinalDirection.South);
+
+                yield return creaturePresenter.FaceDirection(CardinalDirection.South, true);
             }
         }
 
-        public void InitializeMonster(GameState gameState)
+        public IEnumerator InitializeMonster(GameState gameState)
         {
             Combat combat = gameState.combat;
 
@@ -44,7 +46,8 @@ namespace MonsterQuest
 
             CreaturePresenter creaturePresenter = monsterGameObject.GetComponent<CreaturePresenter>();
             creaturePresenter.Initialize(combat.monster);
-            creaturePresenter.FaceDirection(CardinalDirection.North);
+
+            yield return creaturePresenter.FaceDirection(CardinalDirection.North, true);
         }
     }
 }

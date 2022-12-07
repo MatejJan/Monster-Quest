@@ -94,7 +94,8 @@ namespace MonsterQuest
             }
 
             // Prepare the monster types to be fought.
-            IEnumerable<MonsterType> monsterTypes = Database.monsterTypes.OrderBy(monsterType => monsterType.challengeRating);
+            IList<MonsterType> monsterTypes = Database.monsterTypes.ToList();
+            monsterTypes.Shuffle();
 
             // Create a new game state.
             _state = new GameState(party, monsterTypes);
@@ -137,7 +138,7 @@ namespace MonsterQuest
         private IEnumerator Simulate()
         {
             // Present the characters.
-            _combatPresenter.InitializeParty(_state);
+            yield return _combatPresenter.InitializeParty(_state);
 
             while (_state.combat is not null || _state.remainingMonsterTypes.Count > 0)
             {
@@ -158,7 +159,7 @@ namespace MonsterQuest
                 }
 
                 // Present the monster.
-                _combatPresenter.InitializeMonster(_state);
+                yield return _combatPresenter.InitializeMonster(_state);
 
                 yield return new WaitForSeconds(1);
 
