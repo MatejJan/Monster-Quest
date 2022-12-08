@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -23,8 +24,16 @@ namespace MonsterQuest.Effects
     [Serializable]
     public class Class : Effect, IWeaponProficiencyRule, IArmorProficiencyRule
     {
-        public Class(ClassType type, object parent) : base(type, parent) { }
+        public Class(ClassType type, object parent) : base(type, parent)
+        {
+            level = 1;
+            availableHitDice = level;
+        }
+
         public ClassType classType => (ClassType)type;
+
+        [field: SerializeField] public int level { get; private set; }
+        [field: SerializeField] public int availableHitDice { get; private set; }
 
         public ArrayValue<ArmorCategory> GetArmorProficiency(Creature creature)
         {
@@ -40,6 +49,24 @@ namespace MonsterQuest.Effects
             if (creature != parent) return null;
 
             return new ArrayValue<WeaponCategory>(this, classType.weaponProficiencies);
+        }
+
+        public IEnumerator SpendHitDice()
+        {
+            if (parent is not Character character) yield break;
+
+            int rollResult = DiceHelper.Roll(classType.hitDice);
+
+            int hitPointsHealed = rollResult + character.abilityScores.constitution.modifier;
+
+            availableHitDice--;
+
+            yield return character.Heal(hitPointsHealed);
+        }
+
+        public void RegainHitDice(int amount)
+        {
+            availableHitDice = Math.Min(level, availableHitDice + amount);
         }
     }
 }

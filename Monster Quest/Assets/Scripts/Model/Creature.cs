@@ -164,7 +164,7 @@ namespace MonsterQuest
             if (presenter is not null) yield return presenter.Die();
         }
 
-        public IEnumerator Heal(int amount)
+        public virtual IEnumerator Heal(int amount)
         {
             hitPoints = Math.Min(hitPoints + amount, hitPointsMaximum);
 

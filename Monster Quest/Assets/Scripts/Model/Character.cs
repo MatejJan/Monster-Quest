@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Effects;
@@ -70,7 +71,6 @@ namespace MonsterQuest
         // State properties
         [field: SerializeReference] public Class characterClass { get; private set; }
         [field: SerializeReference] public Race race { get; private set; }
-        [field: SerializeField] public int level { get; private set; }
 
         // Derived properties
         public override SizeCategory sizeCategory => race.raceType.sizeCategory;
@@ -78,7 +78,7 @@ namespace MonsterQuest
         public override Sprite bodySprite => _bodySprite;
         public override float flyHeight => 0;
 
-        protected override int proficiencyBonusBase => level;
+        protected override int proficiencyBonusBase => characterClass.level;
 
         public override bool[] deathSavingThrows => _deathSavingThrows.ToArray();
 
@@ -109,6 +109,14 @@ namespace MonsterQuest
             }
 
             return base.TakeTurn(gameState);
+        }
+
+        public IEnumerator TakeShortRest()
+        {
+            if (hitPoints <= hitPointsMaximum / 2 && characterClass.availableHitDice > 0)
+            {
+                yield return characterClass.SpendHitDice();
+            }
         }
     }
 }

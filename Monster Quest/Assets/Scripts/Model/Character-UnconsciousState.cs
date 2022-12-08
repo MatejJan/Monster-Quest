@@ -4,6 +4,14 @@ namespace MonsterQuest
 {
     public partial class Character
     {
+        public override IEnumerator Heal(int amount)
+        {
+            // Characters reset saving throws when healing.
+            ResetDeathSavingThrows();
+
+            yield return base.Heal(amount);
+        }
+
         public void Stabilize()
         {
             lifeStatus = LifeStatus.StableUnconscious;

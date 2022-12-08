@@ -173,8 +173,13 @@ namespace MonsterQuest
                     break;
                 }
 
-                // End the combat and save the game before continuing.
+                // End the combat.
                 _state.ExitCombat();
+
+                // Take a short rest between fights.
+                yield return _state.party.TakeShortRest();
+
+                // save the game before a new fight.
                 SaveGame();
             }
 
