@@ -1,29 +1,23 @@
 using System.Collections;
-using UnityEngine;
 
 namespace MonsterQuest
 {
     public partial class Character
     {
-        [SerializeField] private int _deathSavingThrowFailures;
-        [SerializeField] private int _deathSavingThrowSuccesses;
-
         public IEnumerator HandleUnconsciousState()
         {
             // Unstable unconscious characters must make a death saving throw.
             if (lifeStatus != LifeStatus.UnstableUnconscious) yield break;
 
-            int deathSavingThrow = DiceHelper.Roll("d20");
+            int deathSavingThrowRollResult = DiceHelper.Roll("d20");
 
-            switch (deathSavingThrow)
+            switch (deathSavingThrowRollResult)
             {
                 case 1:
-                    // Critical fails add 2 saving throw failures.
-                    _deathSavingThrowFailures += 2;
-
-                    yield return PresentDeathSavingThrows(2, false);
-
                     Console.WriteLine($"{definiteName.ToUpperFirst()} critically fails a death saving throw.");
+
+                    // Critical fails add 2 saving throw failures.
+                    yield return ApplyDeathSavingThrows(2, false, deathSavingThrowRollResult);
 
                     break;
 
@@ -31,29 +25,25 @@ namespace MonsterQuest
                     // Critical successes regain consciousness with 1 HP.
                     Console.WriteLine($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
 
-                    if (presenter is not null) presenter.ResetDeathSavingThrows();
+                    yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
+
+                    ResetDeathSavingThrows();
 
                     yield return Heal(1);
-
-                    if (presenter is not null) yield return presenter.RegainConsciousness();
 
                     break;
 
                 case < 10:
-                    _deathSavingThrowFailures++;
-
                     Console.WriteLine($"{definiteName.ToUpperFirst()} fails a death saving throw.");
 
-                    yield return PresentDeathSavingThrows(1, false);
+                    yield return ApplyDeathSavingThrows(1, false, deathSavingThrowRollResult);
 
                     break;
 
                 default:
-                    _deathSavingThrowSuccesses++;
-
                     Console.WriteLine($"{definiteName.ToUpperFirst()} succeeds a death saving throw.");
 
-                    yield return PresentDeathSavingThrows(1, true);
+                    yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
 
                     break;
             }
@@ -69,6 +59,8 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.Dead;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} instantly dies.");
 
+                if (presenter is not null) yield return presenter.GetAttacked(true);
+
                 if (presenter is not null) yield return presenter.Die();
 
                 yield break;
@@ -80,30 +72,28 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.UnstableUnconscious;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} falls unconscious.");
 
+                if (presenter is not null) yield return presenter.GetAttacked();
+
                 yield break;
             }
 
             // The creature is unconscious. See if damage was dealt.
             if (remainingDamageAmount > 0)
             {
-                yield return presenter.GetAttacked();
+                if (presenter is not null) yield return presenter.GetAttacked();
 
                 // When damage was dealt when unconscious, they receive a death saving throw failure (2 on a critical hit).
                 if (hit.wasCritical)
                 {
-                    _deathSavingThrowFailures += 2;
-
                     Console.WriteLine($"{definiteName.ToUpperFirst()} suffers two death saving throw failures.");
 
-                    yield return PresentDeathSavingThrows(2, false);
+                    yield return ApplyDeathSavingThrows(2, false);
                 }
                 else
                 {
-                    _deathSavingThrowFailures++;
-
                     Console.WriteLine($"{definiteName.ToUpperFirst()} suffers a death saving throw failure.");
 
-                    yield return PresentDeathSavingThrows(1, false);
+                    yield return ApplyDeathSavingThrows(1, false);
                 }
 
                 // Destabilize if necessary.
@@ -119,7 +109,7 @@ namespace MonsterQuest
         private IEnumerator HandleDeathSavingThrows()
         {
             // If the character fails 3 death saving throws, they die.
-            if (_deathSavingThrowFailures >= 3)
+            if (deathSavingThrowFailures >= 3)
             {
                 lifeStatus = LifeStatus.Dead;
 
@@ -129,27 +119,29 @@ namespace MonsterQuest
             }
 
             // If the character succeeds 3 death saving throws, they stabilize.
-            if (_deathSavingThrowSuccesses >= 3)
+            if (deathSavingThrowSuccesses >= 3)
             {
                 lifeStatus = LifeStatus.StableUnconscious;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} stabilizes.");
 
-                _deathSavingThrowFailures = 0;
-                _deathSavingThrowSuccesses = 0;
-
-                if (presenter is not null) presenter.ResetDeathSavingThrows();
+                ResetDeathSavingThrows();
             }
         }
 
-        private IEnumerator PresentDeathSavingThrows(int amount, bool success)
+        private IEnumerator ApplyDeathSavingThrows(int amount, bool success, int? rollResult = null)
         {
-            if (presenter is not null)
+            for (int i = 0; i < amount; i++)
             {
-                for (int i = 0; i < amount; i++)
-                {
-                    yield return presenter.PerformDeathSavingThrow(success);
-                }
+                _deathSavingThrows.Add(success);
+
+                if (presenter is not null) yield return presenter.PerformDeathSavingThrow(success, i == 0 ? rollResult : null);
             }
+        }
+
+        private void ResetDeathSavingThrows()
+        {
+            _deathSavingThrows.Clear();
+            if (presenter is not null) presenter.ResetDeathSavingThrows();
         }
     }
 }

@@ -6,8 +6,11 @@ namespace MonsterQuest
     public class DeathSavingThrowsPresenter : MonoBehaviour
     {
         private static readonly int _fail = Animator.StringToHash("Fail");
+        private static readonly int _failState = Animator.StringToHash("Death saving throw fail");
 
         [SerializeField] private GameObject deathSavingThrowPrefab;
+
+        private GameObject _lastDeathSavingThrow;
 
         public void Reset()
         {
@@ -19,20 +22,46 @@ namespace MonsterQuest
             SetXPosition(0);
         }
 
-        public IEnumerator AddDeathSavingThrow(bool success)
+        public void AddDeathSavingThrow(bool success)
+        {
+            InstantiateSavingThrow();
+
+            if (!success)
+            {
+                _lastDeathSavingThrow.GetComponent<Animator>().Play(_failState, 0, 1);
+            }
+        }
+
+        private void InstantiateSavingThrow()
         {
             // Instantiate a new death saving throw.
             int index = transform.childCount;
-            GameObject deathSavingThrow = Instantiate(deathSavingThrowPrefab, transform);
-            deathSavingThrow.transform.localPosition = new Vector3(index, 0, 0);
+            _lastDeathSavingThrow = Instantiate(deathSavingThrowPrefab, transform);
+            _lastDeathSavingThrow.transform.localPosition = new Vector3(index, 0, 0);
+
+            // Recenter the UI.
+            SetXPosition(-index / 2f);
+        }
+
+        public Vector3 StartDeathSavingThrow()
+        {
+            // Instantiate a new death saving throw.
+            int index = transform.childCount;
+            _lastDeathSavingThrow = Instantiate(deathSavingThrowPrefab, transform);
+            _lastDeathSavingThrow.transform.localPosition = new Vector3(index, 0, 0);
 
             // Recenter the UI.
             SetXPosition(-index / 2f);
 
+            return _lastDeathSavingThrow.transform.position;
+        }
+
+        public IEnumerator EndDeathSavingThrow(bool success)
+        {
             // Unless it was a success, animate the failure.
             if (!success)
             {
-                deathSavingThrow.GetComponent<Animator>().SetTrigger(_fail);
+                _lastDeathSavingThrow.GetComponent<Animator>().SetTrigger(_fail);
             }
 
             yield return new WaitForSeconds(1);

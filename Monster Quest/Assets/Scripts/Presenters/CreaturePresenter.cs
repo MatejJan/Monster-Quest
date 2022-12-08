@@ -8,22 +8,31 @@ namespace MonsterQuest
         private const float _creatureUnitScale = 0.8f;
 
         private static readonly int _attackHash = Animator.StringToHash("Attack");
-        private static readonly int _attacked = Animator.StringToHash("Attacked");
-        private static readonly int _attackedToLying = Animator.StringToHash("Attacked to lying");
-        private static readonly int _stand = Animator.StringToHash("Stand");
+        private static readonly int _attackedHash = Animator.StringToHash("Attacked");
+        private static readonly int _attackedToLyingHash = Animator.StringToHash("Attacked to lying");
+        private static readonly int _attackedToInstantDeathHash = Animator.StringToHash("Attacked to instant death");
+        private static readonly int _standHash = Animator.StringToHash("Stand");
         private static readonly int _flyHash = Animator.StringToHash("Fly");
+        private static readonly int _lyingStateHash = Animator.StringToHash("Attacked standing to lying");
+
+        private static readonly int _stableHash = Animator.StringToHash("Stable");
+        private static readonly int _deathSavingThrowFailuresHash = Animator.StringToHash("Death saving throw failures");
 
         [SerializeField] private Color damagedColor;
         [SerializeField] private Sprite[] standSprites;
 
         private Animator _bodySpriteAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
+        private Animator _standAnimator;
+
+        private bool _destroyed;
 
         private bool _standing;
 
         private Creature _creature;
 
         private DeathSavingThrowsPresenter _deathSavingThrowsPresenter;
+        private DicePresenter _dicePresenter;
 
         private float _currentHitPointRatio;
         private IEnumerator _hitPointAnimationCoroutine;
@@ -51,11 +60,15 @@ namespace MonsterQuest
             _bodySpriteAnimator = _bodySpriteTransform.GetComponent<Animator>();
 
             Transform standTransform = transform.Find("Stand");
+            _standAnimator = standTransform.GetComponent<Animator>();
+
             _standBaseTransform = standTransform.Find("Base");
             _hitPointsMaskTransform = standTransform.Find("Hit points mask");
 
             _deathSavingThrowsTransform = transform.Find("UI").Find("Death saving throws");
             _deathSavingThrowsPresenter = _deathSavingThrowsTransform.GetComponent<DeathSavingThrowsPresenter>();
+
+            _dicePresenter = GameObject.Find("Dice").GetComponent<DicePresenter>();
         }
 
         public void Initialize(Creature creature)
@@ -76,18 +89,34 @@ namespace MonsterQuest
                 standSpriteRenderer.sprite = standSprites[(int)_creature.sizeCategory - 1];
             }
 
-            // Position the death saving throws.
-            float offset = _creature.spaceInFeet * 0.5f + 1.5f;
-            _deathSavingThrowsTransform.localPosition = new Vector3(0, offset, 0);
-
             // Animate flying if needed.
-            FlyIfPossible(false);
+            if (_creature.lifeStatus == LifeStatus.Alive) FlyIfPossible(false);
 
             // Set initial hit points.
             SetHitPointRatio((float)creature.hitPoints / creature.hitPointsMaximum);
 
-            // Start in standing state.
-            _standing = true;
+            // Set initial standing/lying state.
+            _standing = creature.hitPoints > 0;
+
+            if (!_standing)
+            {
+                _bodySpriteAnimator.Play(_lyingStateHash, 0, 1);
+            }
+
+            // Set initial stable state.
+            UpdateStableStatus();
+
+            // Position the death saving throws.
+            float offset = _creature.spaceInFeet * 0.5f + 1.5f;
+            _deathSavingThrowsTransform.localPosition = new Vector3(0, offset, 0);
+
+            // Set initial death saving throws.
+            UpdateDeathSavingThrowFailures();
+
+            foreach (bool deathSavingThrow in _creature.deathSavingThrows)
+            {
+                _deathSavingThrowsPresenter.AddDeathSavingThrow(deathSavingThrow);
+            }
         }
 
         public IEnumerator FaceDirection(CardinalDirection direction, bool immediate = false)
@@ -100,6 +129,9 @@ namespace MonsterQuest
 
         public IEnumerator FaceCreature(Creature creature, bool immediate = false)
         {
+            // Make sure the creature is not destroyed.
+            if (creature == null || creature.presenter == null) yield break;
+
             // Get the angle we need to rotate by.
             Vector3 directionToCreature = creature.presenter.transform.position - transform.position;
             float angleDegrees = Mathf.Atan2(directionToCreature.y, directionToCreature.x) * Mathf.Rad2Deg;
@@ -135,6 +167,8 @@ namespace MonsterQuest
 
             do
             {
+                if (_destroyed) yield break;
+
                 transitionProgress = transitionDuration > 0 ? (Time.time - startTime) / transitionDuration : 1;
 
                 // Smoothly interpolate to desired height.
@@ -159,15 +193,24 @@ namespace MonsterQuest
             yield return new WaitForSeconds(15f / 60f);
         }
 
-        public IEnumerator GetAttacked()
+        public IEnumerator GetAttacked(bool instantDeath = false)
         {
             // Update hit points indicator.
             UpdateHitPoints();
 
             if (_standing && _creature.hitPoints == 0)
             {
-                // The creature should get attacked and end up lying down.
-                _bodySpriteAnimator.SetTrigger(_attackedToLying);
+                if (instantDeath)
+                {
+                    // The more extreme version of dying should play.
+                    _bodySpriteAnimator.SetTrigger(_attackedToInstantDeathHash);
+                }
+                else
+                {
+                    // The creature should get attacked and end up lying down.
+                    _bodySpriteAnimator.SetTrigger(_attackedToLyingHash);
+                }
+
                 _standing = false;
 
                 // Stop flying.
@@ -178,7 +221,7 @@ namespace MonsterQuest
             else
             {
                 // The creature gets attacked in its current state.
-                _bodySpriteAnimator.SetTrigger(_attacked);
+                _bodySpriteAnimator.SetTrigger(_attackedHash);
             }
 
             yield return new WaitForSeconds(1f);
@@ -192,10 +235,15 @@ namespace MonsterQuest
             yield break;
         }
 
+        public void UpdateStableStatus()
+        {
+            _standAnimator.SetBool(_stableHash, _creature.lifeStatus != LifeStatus.UnstableUnconscious);
+        }
+
         public IEnumerator RegainConsciousness()
         {
             // The creature should stand.
-            _bodySpriteAnimator.SetTrigger(_stand);
+            _bodySpriteAnimator.SetTrigger(_standHash);
             _standing = true;
 
             // Start flying again.
@@ -207,18 +255,35 @@ namespace MonsterQuest
         public IEnumerator Die()
         {
             Destroy(gameObject);
+            _destroyed = true;
 
             yield return new WaitForSeconds(0.5f);
         }
 
-        public IEnumerator PerformDeathSavingThrow(bool success)
+        public IEnumerator PerformDeathSavingThrow(bool success, int? rollResult = null)
         {
-            yield return _deathSavingThrowsPresenter.AddDeathSavingThrow(success);
+            Vector3 deathSavingThrowPosition = _deathSavingThrowsPresenter.StartDeathSavingThrow();
+
+            if (rollResult is not null)
+            {
+                yield return _dicePresenter.RollD20(rollResult.Value, deathSavingThrowPosition + Vector3.right * 2.5f);
+            }
+
+            yield return _deathSavingThrowsPresenter.EndDeathSavingThrow(success);
+
+            _dicePresenter.EndRoll();
+            UpdateDeathSavingThrowFailures();
         }
 
         public void ResetDeathSavingThrows()
         {
             _deathSavingThrowsPresenter.Reset();
+            UpdateDeathSavingThrowFailures();
+        }
+
+        private void UpdateDeathSavingThrowFailures()
+        {
+            _standAnimator.SetInteger(_deathSavingThrowFailuresHash, _creature.deathSavingThrowFailures);
         }
 
         private void FlyIfPossible(bool transition = true)

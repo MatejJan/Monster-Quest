@@ -19,7 +19,7 @@ MonoBehaviour:
     <savingThrowAbility>k__BackingField: 0
     <savingThrowDC>k__BackingField: 0
   - <roll>k__BackingField: 1d6
-    <type>k__BackingField: 136
+    <type>k__BackingField: 8
     <isExtraDamage>k__BackingField: 1
     <savingThrowAbility>k__BackingField: 0
     <savingThrowDC>k__BackingField: 0

@@ -10,6 +10,7 @@ namespace MonsterQuest
     public partial class Character : Creature, IArmorClassRule
     {
         [SerializeField] private Sprite _bodySprite;
+        [SerializeField] private List<bool> _deathSavingThrows;
 
         public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite)
         {
@@ -57,6 +58,10 @@ namespace MonsterQuest
             // Calculate hit points at first level.
             hitPointsMaximum = classType.hitPointsBase + abilityScores.constitution.modifier;
 
+            // Prepare death saving throws.
+            _deathSavingThrows = new List<bool>();
+
+            // Finalize creature initialization.
             Initialize();
 
             DebugHelper.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
@@ -74,6 +79,8 @@ namespace MonsterQuest
         public override float flyHeight => 0;
 
         protected override int proficiencyBonusBase => level;
+
+        public override bool[] deathSavingThrows => _deathSavingThrows.ToArray();
 
         public IntegerValue GetArmorClass(Creature creature)
         {

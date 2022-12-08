@@ -14,6 +14,7 @@ namespace MonsterQuest
 
         [SerializeReference] protected List<Effect> effectsList;
         [SerializeReference] protected List<Item> itemsList;
+        [SerializeField] private LifeStatus _lifeStatus;
 
         // Constructor
 
@@ -32,7 +33,16 @@ namespace MonsterQuest
         [field: SerializeField] public string displayName { get; protected set; }
 
         [field: SerializeField] public int hitPoints { get; protected set; }
-        [field: SerializeField] public LifeStatus lifeStatus { get; protected set; }
+
+        public LifeStatus lifeStatus
+        {
+            get => _lifeStatus;
+            set
+            {
+                _lifeStatus = value;
+                if (presenter is not null) presenter.UpdateStableStatus();
+            }
+        }
 
         public CreaturePresenter presenter { get; private set; }
 
@@ -54,6 +64,9 @@ namespace MonsterQuest
         protected abstract int proficiencyBonusBase { get; }
 
         public bool isUnconscious => lifeStatus is LifeStatus.StableUnconscious or LifeStatus.UnstableUnconscious;
+        public abstract bool[] deathSavingThrows { get; }
+        public int deathSavingThrowSuccesses => deathSavingThrows.Count(result => result);
+        public int deathSavingThrowFailures => deathSavingThrows.Count(result => !result);
 
         public IEnumerable<object> rules =>
             new object[]
@@ -161,6 +174,8 @@ namespace MonsterQuest
                 lifeStatus = LifeStatus.Alive;
 
                 Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
+
+                if (presenter is not null) yield return presenter.RegainConsciousness();
             }
 
             if (presenter is not null) yield return presenter.Heal();

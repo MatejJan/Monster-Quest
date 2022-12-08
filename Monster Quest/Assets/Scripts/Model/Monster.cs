@@ -8,6 +8,8 @@ namespace MonsterQuest
     [Serializable]
     public class Monster : Creature, IArmorClassRule, IDamageTypeRule, IAttackAbilityRule, IAttackRollModifierRule
     {
+        private static readonly bool[] _deathSavingThrows = Array.Empty<bool>();
+
         public Monster(MonsterType type)
         {
             this.type = type;
@@ -56,6 +58,8 @@ namespace MonsterQuest
         public override float flyHeight => type.flyHeight;
 
         protected override int proficiencyBonusBase => (int)type.challengeRating;
+
+        public override bool[] deathSavingThrows => _deathSavingThrows;
 
         public IntegerValue GetArmorClass(Creature creature)
         {
@@ -111,6 +115,8 @@ namespace MonsterQuest
         protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit)
         {
             // Monsters immediately die.
+            if (presenter is not null) yield return presenter.GetAttacked(remainingDamageAmount >= hitPointsMaximum);
+
             yield return Die();
         }
     }
