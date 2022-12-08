@@ -51,9 +51,21 @@ namespace MonsterQuest.Effects
             return new ArrayValue<WeaponCategory>(this, classType.weaponProficiencies);
         }
 
+        public void LevelUp(out int hitPointsMaximumIncrease)
+        {
+            Character character = parent as Character;
+
+            int rollResult = DiceHelper.Roll(classType.hitDice);
+
+            hitPointsMaximumIncrease = rollResult + character.abilityScores.constitution.modifier;
+
+            level++;
+            availableHitDice++;
+        }
+
         public IEnumerator SpendHitDice()
         {
-            if (parent is not Character character) yield break;
+            Character character = parent as Character;
 
             int rollResult = DiceHelper.Roll(classType.hitDice);
 

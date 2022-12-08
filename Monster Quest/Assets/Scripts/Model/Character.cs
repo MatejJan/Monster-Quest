@@ -65,6 +65,8 @@ namespace MonsterQuest
             // Finalize creature initialization.
             Initialize();
 
+            LevelUp();
+
             DebugHelper.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
         }
 
@@ -81,6 +83,8 @@ namespace MonsterQuest
         protected override int proficiencyBonusBase => characterClass.level;
 
         public override bool[] deathSavingThrows => _deathSavingThrows.ToArray();
+
+        // Public methods
 
         public IntegerValue GetArmorClass(Creature creature)
         {
@@ -113,10 +117,20 @@ namespace MonsterQuest
 
         public IEnumerator TakeShortRest()
         {
-            if (hitPoints <= hitPointsMaximum / 2 && characterClass.availableHitDice > 0)
+            while (hitPoints <= hitPointsMaximum / 2 && characterClass.availableHitDice > 0)
             {
                 yield return characterClass.SpendHitDice();
             }
+        }
+
+        // Private methods
+
+        public void LevelUp()
+        {
+            characterClass.LevelUp(out int hitPointsMaximumIncrease);
+
+            hitPointsMaximum += hitPointsMaximumIncrease;
+            hitPoints += hitPointsMaximumIncrease;
         }
     }
 }
