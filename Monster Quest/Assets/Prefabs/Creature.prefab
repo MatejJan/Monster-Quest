@@ -314,6 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2658546893688436780}
   - component: {fileID: 2658546893688436947}
+  - component: {fileID: 6674383398229918142}
   m_Layer: 0
   m_Name: Creature
   m_TagString: Untagged
@@ -359,6 +360,26 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3278bd074ad0e433ba2fbd2d1a65f77f, type: 3}
   - {fileID: 21300000, guid: f247a52797af14bfb8cd8c78aefade8e, type: 3}
   - {fileID: 21300000, guid: f1c3f9f5afe2e4ab38d69dc38c001d69, type: 3}
+--- !u!95 &6674383398229918142
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658546893688436781}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: de1347541ddd949a9bda846688668963, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2658546893901911839
 GameObject:
   m_ObjectHideFlags: 0

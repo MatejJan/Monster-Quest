@@ -6,30 +6,23 @@ namespace MonsterQuest
     public class DicePresenter : MonoBehaviour
     {
         [SerializeField] private GameObject d20Prefab;
-        private GameObject _lastDiceObject;
 
-        public IEnumerator RollD20(int result, Vector3 position)
+        public IEnumerator RollD20(Vector3 position, int rollResult, bool? success = null)
         {
-            yield return Roll(d20Prefab, result, position);
+            yield return Roll(d20Prefab, position, rollResult, success);
         }
 
-        private IEnumerator Roll(GameObject prefab, int result, Vector3 position)
+        private IEnumerator Roll(GameObject prefab, Vector3 position, int rollResult, bool? success)
         {
             // Place the dice on the correct depth layer.
             position.z = transform.position.z;
 
             // Instantiate the dice prefab at specified position.
-            _lastDiceObject = Instantiate(prefab, position, Quaternion.identity, transform);
+            GameObject diceObject = Instantiate(prefab, position, Quaternion.identity, transform);
 
-            DiceRollPresenter diceRollPresenter = _lastDiceObject.GetComponent<DiceRollPresenter>();
+            DiceRollPresenter diceRollPresenter = diceObject.GetComponent<DiceRollPresenter>();
 
-            yield return diceRollPresenter.Roll(result);
-        }
-
-        public void EndRoll()
-        {
-            Destroy(_lastDiceObject);
-            _lastDiceObject = null;
+            yield return diceRollPresenter.Roll(rollResult, success);
         }
     }
 }

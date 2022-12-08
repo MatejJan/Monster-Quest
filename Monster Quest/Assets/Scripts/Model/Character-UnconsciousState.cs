@@ -4,6 +4,13 @@ namespace MonsterQuest
 {
     public partial class Character
     {
+        public void Stabilize()
+        {
+            lifeStatus = LifeStatus.StableUnconscious;
+
+            ResetDeathSavingThrows();
+        }
+
         public IEnumerator HandleUnconsciousState()
         {
             // Unstable unconscious characters must make a death saving throw.
@@ -121,10 +128,9 @@ namespace MonsterQuest
             // If the character succeeds 3 death saving throws, they stabilize.
             if (deathSavingThrowSuccesses >= 3)
             {
-                lifeStatus = LifeStatus.StableUnconscious;
-                Console.WriteLine($"{definiteName.ToUpperFirst()} stabilizes.");
+                Console.WriteLine($"{definiteName.ToUpperFirst()} succeeded 3 times and they stabilize.");
 
-                ResetDeathSavingThrows();
+                Stabilize();
             }
         }
 

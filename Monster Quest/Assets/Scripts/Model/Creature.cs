@@ -133,11 +133,16 @@ namespace MonsterQuest
 
         public bool MakeAbilityCheck(Ability ability, int successAmount)
         {
+            return MakeAbilityCheck(ability, successAmount, out _);
+        }
+
+        public bool MakeAbilityCheck(Ability ability, int successAmount, out int rollResult)
+        {
             DebugHelper.StartLog($"{definiteName.ToUpperFirst()} is making a DC {successAmount} {ability} check …");
 
-            int roll = DiceHelper.Roll("d20");
+            rollResult = DiceHelper.Roll("d20");
             int abilityModifier = abilityScores[ability].modifier;
-            bool result = roll + abilityModifier >= successAmount;
+            bool result = rollResult + abilityModifier >= successAmount;
 
             DebugHelper.EndLog($"The check {(result ? "succeeds" : "fails")}.");
 

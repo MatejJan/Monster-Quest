@@ -94,8 +94,7 @@ namespace MonsterQuest
             }
 
             // Prepare the monster types to be fought.
-            IList<MonsterType> monsterTypes = Database.monsterTypes.ToList();
-            monsterTypes.Shuffle();
+            IList<MonsterType> monsterTypes = Database.monsterTypes.OrderBy(monster => monster.challengeRating).ToList();
 
             // Create a new game state.
             _state = new GameState(party, monsterTypes);

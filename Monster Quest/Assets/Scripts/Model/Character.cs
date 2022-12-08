@@ -99,6 +99,15 @@ namespace MonsterQuest
                 return new BeUnconsciousAction(this);
             }
 
+            // See if there are any unstable party members and take the ones with the most death saving throw failures.
+            Character unstableCharacter = gameState.party.characters.Where(character => character.lifeStatus == LifeStatus.UnstableUnconscious).OrderByDescending(character => character.deathSavingThrowFailures).FirstOrDefault();
+
+            // Attempt to stabilize them if our wisdom is at least average.
+            if (unstableCharacter?.deathSavingThrowFailures > 0 && abilityScores.wisdom >= 10)
+            {
+                return new StabilizeCreatureAction(this, unstableCharacter);
+            }
+
             return base.TakeTurn(gameState);
         }
     }

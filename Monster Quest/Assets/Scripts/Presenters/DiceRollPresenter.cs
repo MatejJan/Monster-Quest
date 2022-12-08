@@ -8,19 +8,19 @@ namespace MonsterQuest
     public class DiceRollPresenter : MonoBehaviour
     {
         private const float _rollDuration = 1.5f;
-        private const int _rollRotations = 3;
-        private static readonly Color _clearColor = new(1, 1, 1, 0);
+        private const float _outcomeDuration = 0.5f;
+        private static readonly int _succeedHash = Animator.StringToHash("Succeed");
+        private static readonly int _failHash = Animator.StringToHash("Fail");
 
         [SerializeField] private int diceSides;
-
-        private SpriteRenderer _spriteRenderer;
+        private Animator _animator;
 
         private void Awake()
         {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
         }
 
-        public IEnumerator Roll(int result)
+        public IEnumerator Roll(int result, bool? success)
         {
             // Set numbers on dice sides.
             List<int> displayedNumbers = new();
@@ -46,27 +46,25 @@ namespace MonsterQuest
                 displayedNumbers.Add(number);
             }
 
-            return Rotate();
+            yield return new WaitForSeconds(_rollDuration);
+
+            if (success.HasValue)
+            {
+                // Transition to correct state.
+                _animator.SetTrigger(success.Value ? _succeedHash : _failHash);
+
+                StartCoroutine(DestroyAfterSeconds(_outcomeDuration));
+            }
+            else
+            {
+                yield return DestroyAfterSeconds(0);
+            }
         }
 
-        private IEnumerator Rotate()
+        private IEnumerator DestroyAfterSeconds(float seconds)
         {
-            float startTime = Time.time;
-            float transitionProgress;
-
-            do
-            {
-                transitionProgress = (Time.time - startTime) / _rollDuration;
-
-                // Ease out to desired ratio.
-                float easedTransitionProgress = Mathf.Sin(transitionProgress * Mathf.PI / 2);
-                float angleDegrees = Mathf.Lerp(0, _rollRotations * 360, easedTransitionProgress);
-
-                transform.localRotation = Quaternion.Euler(0, 0, angleDegrees);
-                _spriteRenderer.color = Color.Lerp(_clearColor, Color.white, transitionProgress);
-
-                yield return null;
-            } while (transitionProgress < 1);
+            yield return new WaitForSeconds(seconds);
+            Destroy(gameObject);
         }
     }
 }

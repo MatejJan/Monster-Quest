@@ -37,7 +37,7 @@ namespace MonsterQuest
             DebugHelper.EndLog();
 
             // Face the target.
-            yield return attacker.presenter.FaceCreature(target);
+            if (attacker.presenter is not null) yield return attacker.presenter.FaceCreature(target);
 
             // Determine whether the attack is a hit or a miss.
             bool wasHit = false;
