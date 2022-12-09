@@ -10,6 +10,9 @@ namespace MonsterQuest
             // Only provide information for the current attacker.
             if (attackAction.attacker != this) return null;
 
+            bool advantage = false;
+            bool disadvantage = false;
+
             // Attacker has a disadvantage if they are wearing armor (including a shield) they are not proficient in.
             Item[] armorItems = items.Where(item => item.GetEffect<Armor>() is not null).ToArray();
 
@@ -24,8 +27,25 @@ namespace MonsterQuest
 
                 if (!proficientArmorCategories.Contains(armorType.category))
                 {
-                    return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
+                    disadvantage = true;
                 }
+            }
+
+            // Attacker has an advantage if they are attacking an unconscious target.
+            if (attackAction.target.isUnconscious)
+            {
+                advantage = true;
+            }
+
+            // Return an attack roll method if only one of the two conditions is met.
+            if (advantage && !disadvantage)
+            {
+                return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Advantage);
+            }
+
+            if (!advantage && disadvantage)
+            {
+                return new MultipleValue<AttackRollMethod>(this, AttackRollMethod.Disadvantage);
             }
 
             return null;

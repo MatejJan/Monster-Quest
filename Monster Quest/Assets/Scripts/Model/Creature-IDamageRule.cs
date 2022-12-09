@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace MonsterQuest
 {
-    public abstract partial class Creature : IDamageRule
+    public abstract partial class Creature : IReactToDamageRule
     {
         public IEnumerator ReactToDamage(Damage damage)
         {

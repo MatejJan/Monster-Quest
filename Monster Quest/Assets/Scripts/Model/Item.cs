@@ -42,5 +42,10 @@ namespace MonsterQuest
         {
             return effects.OfType<T>();
         }
+
+        public bool HasEffect<T>()
+        {
+            return effects.Any(effect => effect is T);
+        }
     }
 }

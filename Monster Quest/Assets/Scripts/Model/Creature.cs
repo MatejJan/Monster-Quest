@@ -88,13 +88,29 @@ namespace MonsterQuest
             presenter = creaturePresenter;
         }
 
-        public void GiveItem(Item item)
+        public void GiveItem(GameState gameState, Item item)
         {
-            itemsList.Add(item);
+            gameState.MutateRules(() => itemsList.Add(item));
+        }
+
+        public void RemoveItem(GameState gameState, Item item)
+        {
+            gameState.MutateRules(() => itemsList.Remove(item));
         }
 
         public virtual IAction TakeTurn(GameState gameState)
         {
+            // If you have less than half health, use any available healing items.
+            if (hitPoints < hitPointsMaximum / 2)
+            {
+                Item healingItem = items.FirstOrDefault(item => item.HasEffect<HealingItem>());
+
+                if (healingItem is not null)
+                {
+                    return new UseItemAction(gameState, this, healingItem);
+                }
+            }
+
             // Perform an attack with a random attack.
             List<Attack> attackEffects = new();
 
@@ -172,13 +188,13 @@ namespace MonsterQuest
 
             if (lifeStatus == LifeStatus.Alive)
             {
-                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
+                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
             }
             else
             {
                 lifeStatus = LifeStatus.Alive;
 
-                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}");
+                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
 
                 if (presenter is not null) yield return presenter.RegainConsciousness();
             }

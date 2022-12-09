@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace MonsterQuest
 {
-    public interface IDamageRule
+    public interface IReactToDamageRule
     {
         public IEnumerator ReactToDamage(Damage damage)
         {

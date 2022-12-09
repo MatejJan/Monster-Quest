@@ -14,7 +14,7 @@ namespace MonsterQuest.Effects
     }
 
     [Serializable]
-    public class MaceOfSmiting : Effect, IAttackRollModifierRule, IDamageRollModifierRule, IDamageRollRule, IDamageRule
+    public class MaceOfSmiting : Effect, IAttackRollModifierRule, IDamageRollModifierRule, IDamageRollRule, IReactToDamageRule
     {
         private DamageRoll _lastDamageRoll;
 

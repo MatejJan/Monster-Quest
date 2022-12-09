@@ -63,6 +63,8 @@ namespace MonsterQuest
 
         private void NewGame()
         {
+            int challengeRating = 5;
+
             // Create a new party.
             RaceType humanRaceType = Database.GetRaceType("human");
             ClassType fighterClassType = Database.GetClassType("fighter");
@@ -77,6 +79,22 @@ namespace MonsterQuest
 
             Party party = new(characters);
 
+            // Prepare the monster types to be fought.
+            IList<MonsterType> monsterTypes = Database.monsterTypes.Where(monster => monster.challengeRating >= challengeRating).OrderBy(monster => monster.challengeRating).ToList();
+
+            // Create a new game state.
+            _state = new GameState(party, monsterTypes);
+
+            // Level up the characters to the challenge rating.
+            foreach (Character character in characters)
+            {
+                while (character.characterClass.level < challengeRating)
+                {
+                    character.LevelUp();
+                }
+            }
+
+            // Give characters equipment.
             ItemType[] weaponItemTypes =
             {
                 Database.GetItemType("greatsword"),
@@ -87,18 +105,20 @@ namespace MonsterQuest
 
             ItemType chainShirt = Database.GetItemType("chain shirt");
 
+            ItemType potionOfHealing = Database.GetItemType("potion of healing");
+
             for (int i = 0; i < 4; i++)
             {
-                characters[i].GiveItem(weaponItemTypes[i].Create());
-                characters[i].GiveItem(chainShirt.Create());
+                characters[i].GiveItem(_state, weaponItemTypes[i].Create());
+                characters[i].GiveItem(_state, chainShirt.Create());
+
+                for (int j = 0; j < challengeRating; j++)
+                {
+                    characters[i].GiveItem(_state, potionOfHealing.Create());
+                }
             }
 
-            // Prepare the monster types to be fought.
-            IList<MonsterType> monsterTypes = Database.monsterTypes.OrderBy(monster => monster.challengeRating).ToList();
-
-            // Create a new game state.
-            _state = new GameState(party, monsterTypes);
-
+            // Output intro.
             Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
         }
 

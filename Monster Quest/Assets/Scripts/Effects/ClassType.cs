@@ -69,11 +69,11 @@ namespace MonsterQuest.Effects
 
             int rollResult = DiceHelper.Roll(classType.hitDice);
 
-            int hitPointsHealed = rollResult + character.abilityScores.constitution.modifier;
+            int hitPointsRegained = rollResult + character.abilityScores.constitution.modifier;
 
             availableHitDice--;
 
-            yield return character.Heal(hitPointsHealed);
+            yield return character.Heal(hitPointsRegained);
         }
 
         public void RegainHitDice(int amount)

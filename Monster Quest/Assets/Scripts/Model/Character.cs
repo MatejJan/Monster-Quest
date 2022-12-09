@@ -65,8 +65,6 @@ namespace MonsterQuest
             // Finalize creature initialization.
             Initialize();
 
-            LevelUp();
-
             DebugHelper.EndLog($"Created {definiteName} with {hitPointsMaximum} HP.");
         }
 
@@ -103,7 +101,21 @@ namespace MonsterQuest
                 return new BeUnconsciousAction(this);
             }
 
-            // See if there are any unstable party members and take the ones with the most death saving throw failures.
+            // See if there are any unconscious party members and take the one with the most death saving throw failures.
+            Character unconsciousCharacter = gameState.party.characters.Where(character => character.isUnconscious).OrderByDescending(character => character.deathSavingThrowFailures).FirstOrDefault();
+
+            // If you have any available healing items, administer them.
+            if (unconsciousCharacter is not null)
+            {
+                Item healingItem = items.FirstOrDefault(item => item.HasEffect<HealingItem>());
+
+                if (healingItem is not null)
+                {
+                    return new UseItemAction(gameState, this, healingItem, unconsciousCharacter);
+                }
+            }
+
+            // See if there are any unstable party members and take the one with the most death saving throw failures.
             Character unstableCharacter = gameState.party.characters.Where(character => character.lifeStatus == LifeStatus.UnstableUnconscious).OrderByDescending(character => character.deathSavingThrowFailures).FirstOrDefault();
 
             // Attempt to stabilize them if our wisdom is at least average.
@@ -117,7 +129,7 @@ namespace MonsterQuest
 
         public IEnumerator TakeShortRest()
         {
-            while (hitPoints <= hitPointsMaximum / 2 && characterClass.availableHitDice > 0)
+            while (hitPoints <= hitPointsMaximum * 0.75f && characterClass.availableHitDice > 0)
             {
                 yield return characterClass.SpendHitDice();
             }

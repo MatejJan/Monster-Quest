@@ -43,8 +43,8 @@ namespace MonsterQuest
             bool wasHit = false;
             bool wasCritical = false;
 
-            // Attacks on unconscious targets is always a critical hit.
-            if (target.isUnconscious)
+            // Attacks on unconscious targets within 5 feet is always a critical hit.
+            if (target.isUnconscious && gameState.combat.GetDistance(attacker, target) <= 5)
             {
                 wasHit = true;
                 wasCritical = true;
@@ -200,7 +200,10 @@ namespace MonsterQuest
             DebugHelper.EndLog();
 
             // Apply the damage.
-            yield return gameState.CallRules((IDamageRule rule) => rule.ReactToDamage(damage));
+            yield return gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamage(damage));
+
+            // Inform that damage was dealt.
+            yield return gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamageDealt(damage));
         }
     }
 }
