@@ -37,7 +37,7 @@ namespace MonsterQuest
         public LifeStatus lifeStatus
         {
             get => _lifeStatus;
-            set
+            protected set
             {
                 _lifeStatus = value;
                 if (presenter is not null) presenter.UpdateStableStatus();

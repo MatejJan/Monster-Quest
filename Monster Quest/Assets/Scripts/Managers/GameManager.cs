@@ -63,7 +63,7 @@ namespace MonsterQuest
 
         private void NewGame()
         {
-            int challengeRating = 5;
+            int challengeRating = 1;
 
             // Create a new party.
             RaceType humanRaceType = Database.GetRaceType("human");
