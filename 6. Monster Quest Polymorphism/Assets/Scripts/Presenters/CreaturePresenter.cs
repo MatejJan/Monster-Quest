@@ -53,6 +53,7 @@ namespace MonsterQuest
             _bodyTransform = transform.Find("Body");
 
             _bodyVerticalDisplacementTransform = _bodyTransform.Find("Vertical displacement");
+
             _bodyOrientationTransform = _bodyVerticalDisplacementTransform.Find("Orientation");
 
             _bodySpriteTransform = _bodyOrientationTransform.Find("Sprite");

@@ -61,10 +61,11 @@ namespace MonsterQuest
                 int remainingDamageAmount = Math.Abs(hitPoints);
                 hitPoints = 0;
 
-                TakeDamageAtZeroHP(remainingDamageAmount);
+                yield return TakeDamageAtZeroHP(remainingDamageAmount);
             }
             else
             {
+                Console.WriteLine($"{displayName} has {hitPoints} HP left.");
                 yield return presenter.TakeDamage();
             }
         }

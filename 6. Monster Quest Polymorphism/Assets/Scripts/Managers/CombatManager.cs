@@ -20,6 +20,8 @@ namespace MonsterQuest
                 // Heroes' turn.
                 foreach (Character character in gameState.party.characters)
                 {
+                    if (character.lifeStatus != LifeStatus.Alive) continue;
+                    
                     yield return character.presenter.Attack();
                     
                     int damageAmount = DiceHelper.Roll(character.weaponType.damageRoll);
@@ -32,7 +34,7 @@ namespace MonsterQuest
                     if (monster.hitPoints == 0) break;
                 }
 
-                if (monster.hitPoints > 0)
+                if (monster.lifeStatus == LifeStatus.Alive)
                 {
                     // Monster's turn.
                     yield return monster.presenter.Attack();
@@ -47,18 +49,15 @@ namespace MonsterQuest
                     Console.WriteLine($"The {monster.displayName} hits {attackedHero.displayName} with {selectedWeaponType.displayName} for {damageAmount} damage.");
                     yield return attackedHero.ReactToDamage(damageAmount);
                     
-                    Console.WriteLine($"{attackedHero.displayName} has {attackedHero.hitPoints} HP left.");
-
-                    if (attackedHero.hitPoints == 0)
+                    if (attackedHero.lifeStatus == LifeStatus.Dead)
                     {
-                        Console.WriteLine($"{attackedHero.displayName} meets an untimely end.");
                         gameState.party.characters.Remove(attackedHero);
                     }
                 }
                 
-            } while (monster.hitPoints > 0 && gameState.party.characters.Count > 0);
+            } while (monster.lifeStatus == LifeStatus.Alive && gameState.party.characters.Count > 0);
 
-            if (monster.hitPoints == 0)
+            if (monster.lifeStatus == LifeStatus.Dead)
             {
                 Console.WriteLine($"The {monster.displayName} collapses and the heroes celebrate their victory!");
             }

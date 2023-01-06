@@ -67,7 +67,7 @@ namespace MonsterQuest
                 Monster monster = new(monsterType);
                 
                 _state.EnterCombatWithMonster(monster);
-                _combatPresenter.InitializeMonster(_state);
+                yield return _combatPresenter.InitializeMonster(_state);
                 yield return _combatManager.Simulate(_state);
 
                 if (_state.party.characters.Count == 0) break;

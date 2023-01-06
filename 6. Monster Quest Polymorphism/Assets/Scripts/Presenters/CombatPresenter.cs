@@ -35,7 +35,7 @@ namespace MonsterQuest
             }
         }
 
-        public void InitializeMonster(GameState gameState)
+        public IEnumerator InitializeMonster(GameState gameState)
         {
             Combat combat = gameState.combat;
 
@@ -47,7 +47,7 @@ namespace MonsterQuest
             CreaturePresenter creaturePresenter = monsterGameObject.GetComponent<CreaturePresenter>();
             creaturePresenter.Initialize(combat.monster);
 
-            var _ = creaturePresenter.FaceDirection(CardinalDirection.North, true);
+            yield return creaturePresenter.FaceDirection(CardinalDirection.North, true);
         }
     }
 }

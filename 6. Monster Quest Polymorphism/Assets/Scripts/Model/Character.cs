@@ -6,7 +6,7 @@ namespace MonsterQuest
 {
     public class Character : Creature
     {
-        private List<bool> _deathSavingThrows;
+        private List<bool> _deathSavingThrows = new();
         
         public Character(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory, WeaponType weaponType, ArmorType armorType) : base(displayName, bodySprite, sizeCategory)
         {
@@ -24,7 +24,36 @@ namespace MonsterQuest
 
         protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount)
         {
-            yield return presenter.Die();
+            if (remainingDamageAmount >= hitPointsMaximum)
+            {
+                Console.WriteLine($"{displayName} takes so much damage they immediately die.");
+                lifeStatus = LifeStatus.Dead;
+                yield return presenter.TakeDamage(remainingDamageAmount >= hitPointsMaximum);
+                yield return presenter.Die();
+                yield break;
+            }
+            
+            if (lifeStatus == LifeStatus.Alive)
+            {
+                Console.WriteLine($"{displayName} falls unconscious.");
+                lifeStatus = LifeStatus.UnstableUnconscious;
+                yield return presenter.TakeDamage();
+                yield break;
+            }
+            
+            Console.WriteLine($"{displayName} fails a death saving throw.");
+            lifeStatus = LifeStatus.UnstableUnconscious;
+            yield return presenter.TakeDamage();
+            
+            _deathSavingThrows.Add(false);
+            yield return presenter.PerformDeathSavingThrow(false);
+            
+            if (deathSavingThrowFailures >= 3)
+            {
+                Console.WriteLine($"{displayName} meets an untimely end.");
+                lifeStatus = LifeStatus.Dead;
+                yield return presenter.Die();
+            }
         }
     }
 }

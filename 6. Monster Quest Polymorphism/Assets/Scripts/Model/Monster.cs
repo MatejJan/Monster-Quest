@@ -23,6 +23,7 @@ namespace MonsterQuest
         protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount)
         {
             lifeStatus = LifeStatus.Dead;
+            yield return presenter.TakeDamage(remainingDamageAmount >= hitPointsMaximum);
             yield return presenter.Die();
         }
     }
