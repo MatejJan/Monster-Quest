@@ -19,12 +19,5 @@ namespace MonsterQuest
         
         public MonsterType type { get; private set; }
         public override bool[] deathSavingThrows => _deathSavingThrows;
-        
-        protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount)
-        {
-            lifeStatus = LifeStatus.Dead;
-            yield return presenter.TakeDamage(remainingDamageAmount >= hitPointsMaximum);
-            yield return presenter.Die();
-        }
     }
 }

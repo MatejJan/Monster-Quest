@@ -27,9 +27,7 @@ namespace MonsterQuest
             if (remainingDamageAmount >= hitPointsMaximum)
             {
                 Console.WriteLine($"{displayName} takes so much damage they immediately die.");
-                lifeStatus = LifeStatus.Dead;
-                yield return presenter.TakeDamage(remainingDamageAmount >= hitPointsMaximum);
-                yield return presenter.Die();
+                yield return base.TakeDamageAtZeroHP(remainingDamageAmount);
                 yield break;
             }
             

@@ -528,6 +528,51 @@ Transform:
   m_Father: {fileID: 105512658}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &727931268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727931269}
+  - component: {fileID: 727931270}
+  m_Layer: 0
+  m_Name: Dice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727931269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727931268}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1066135998}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &727931270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727931268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a61029dbbe5d412c8d4da6d5a99bb78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  d20Prefab: {fileID: 3572330661785395411, guid: 30f162701196c40229ec005991ff38f3, type: 3}
 --- !u!1 &898057732
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +704,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 105512658}
+  - {fileID: 727931269}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -680,9 +726,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 05200a5325ada4d1dbd78ee326031452, type: 3}
   - {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
   monsterTypes:
-  - {fileID: 11400000, guid: 74ff0a96b98ac41cdb58eaf3ab4f94a5, type: 2}
-  - {fileID: 11400000, guid: daeba81460efc458ebbf19e0b932529f, type: 2}
-  - {fileID: 11400000, guid: 6292211193a004416bd7ec39354c6c85, type: 2}
   - {fileID: 11400000, guid: cf4563540ac464e8caa28ed453353a90, type: 2}
 --- !u!1 &1088585501
 GameObject:
