@@ -142,9 +142,20 @@ namespace MonsterQuest
                 }
             }
 
-            // Choose a random target.
+            // Attack a target.
+            Creature target;
             IEnumerable<Creature> hostileCreatures = gameState.combat.creaturesInOrderOfInitiative.Where(creature => creature.isAlive && gameState.combat.AreHostile(this, creature));
-            Creature target = RandomHelper.Element(hostileCreatures);
+
+            if (abilityScores.intelligence >= 8)
+            {
+                // Smart creatures attack the hostile with the lowest hit points.
+                target = hostileCreatures.OrderBy(creature => creature.hitPoints).First();
+            }
+            else
+            {
+                // Others attack randomly.
+                target = RandomHelper.Element(hostileCreatures);
+            }
 
             return new AttackAction(gameState, this, target, attackEffect, attackItem, attackAbility);
         }

@@ -89,9 +89,11 @@ namespace MonsterQuest
             // Add creatures from highest initiative to lowest, breaking ties in the process.
             _creaturesInOrderOfInitiative = new List<Creature>();
 
-            for (int initiative = 20; initiative >= 1; initiative--)
+            IEnumerable<IGrouping<int, KeyValuePair<object, int>>> initiativeGroups = initiativesByPerformer.GroupBy(entry => entry.Value).OrderByDescending(group => group.Key);
+
+            foreach (IGrouping<int, KeyValuePair<object, int>> initiativeGroup in initiativeGroups)
             {
-                List<object> performers = initiativesByPerformer.Where(entry => entry.Value == initiative).Select(entry => entry.Key).ToList();
+                List<object> performers = initiativeGroup.Select(performerEntry => performerEntry.Key).ToList();
 
                 // Shuffle the performers for a random order within the same initiative roll.
                 performers.Shuffle();
@@ -107,6 +109,11 @@ namespace MonsterQuest
                         _creaturesInOrderOfInitiative.Add(character);
                     }
                 }
+            }
+
+            if (_creaturesInOrderOfInitiative.Count != gameState.party.aliveCount + _monsters.Count)
+            {
+                Console.WriteLine("dffff");
             }
         }
     }

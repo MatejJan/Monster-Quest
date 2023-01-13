@@ -248,7 +248,7 @@ namespace MonsterQuest
             List<MonsterType> remainingMonsterTypes = new(Database.monsterTypes);
             List<Monster> monsters = new();
 
-            while (totalChallengeRating < maxTotalChallengeRating)
+            while (totalChallengeRating < maxTotalChallengeRating && monsters.Count < 5)
             {
                 float remainingChallengeRating = maxTotalChallengeRating - totalChallengeRating;
 
@@ -259,8 +259,10 @@ namespace MonsterQuest
                 // Choose a random monster type.
                 MonsterType monsterType = RandomHelper.Element(monsterTypes);
 
-                // Create a random amount of monsters of this type (max 3, without exceeding the challenge rating).
-                int maxCount = Math.Min(3, Mathf.FloorToInt(remainingChallengeRating / Math.Max(0.5f, monsterType.challengeRating)));
+                // Create a random amount of monsters of this type (max 3, without exceeding the challenge rating or 5 total monsters).
+                int maxCount = Mathf.FloorToInt(remainingChallengeRating / Math.Max(0.5f, monsterType.challengeRating));
+                maxCount = Math.Min(5 - monsters.Count, Math.Min(3, maxCount));
+
                 int count = Random.Range(1, maxCount + 1);
 
                 for (int i = 0; i < count; i++)
