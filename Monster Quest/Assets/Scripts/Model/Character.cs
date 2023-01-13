@@ -80,7 +80,7 @@ namespace MonsterQuest
 
         protected override int proficiencyBonusBase => characterClass.level;
 
-        public override bool[] deathSavingThrows => _deathSavingThrows.ToArray();
+        public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
 
         // Public methods
 
@@ -96,7 +96,7 @@ namespace MonsterQuest
         public override IAction TakeTurn(GameState gameState)
         {
             // An unconscious character must perform a death saving throw action.
-            if (lifeStatus != LifeStatus.Alive)
+            if (lifeStatus != LifeStatus.Conscious)
             {
                 return new BeUnconsciousAction(this);
             }
@@ -116,7 +116,7 @@ namespace MonsterQuest
             }
 
             // See if there are any unstable party members and take the one with the most death saving throw failures.
-            Character unstableCharacter = gameState.party.characters.Where(character => character.lifeStatus == LifeStatus.UnstableUnconscious).OrderByDescending(character => character.deathSavingThrowFailures).FirstOrDefault();
+            Character unstableCharacter = gameState.party.characters.Where(character => character.lifeStatus == LifeStatus.UnconsciousUnstable).OrderByDescending(character => character.deathSavingThrowFailures).FirstOrDefault();
 
             // Attempt to stabilize them if our wisdom is at least average.
             if (unstableCharacter?.deathSavingThrowFailures > 0 && abilityScores.wisdom >= 10)

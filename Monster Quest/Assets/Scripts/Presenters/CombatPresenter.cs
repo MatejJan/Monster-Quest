@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -17,37 +18,39 @@ namespace MonsterQuest
 
         public IEnumerator InitializeParty(GameState gameState)
         {
-            Character[] characters = gameState.party.characters.ToArray();
-
-            // Create the character views.
-            for (int i = 0; i < characters.Length; i++)
-            {
-                Creature character = characters[i];
-
-                GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
-                characterGameObject.name = character.displayName;
-                characterGameObject.transform.position = new Vector3(((characters.Length - 1) * -0.5f + i) * 5, character.spaceInFeet / 2, 0);
-
-                CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
-                creaturePresenter.Initialize(character);
-
-                yield return creaturePresenter.FaceDirection(CardinalDirection.South, true);
-            }
+            yield return InitializeCreatures(gameState.party.characters, 0, CardinalDirection.South);
         }
 
-        public IEnumerator InitializeMonster(GameState gameState)
+        public IEnumerator InitializeMonsters(GameState gameState)
         {
-            Combat combat = gameState.combat;
+            yield return InitializeCreatures(gameState.combat.monsters, 0, CardinalDirection.North);
+        }
 
-            // Create the monster view.
-            GameObject monsterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
-            monsterGameObject.name = combat.monster.displayName;
-            monsterGameObject.transform.position = new Vector3(0, -combat.monster.spaceInFeet / 2, 0);
+        private IEnumerator InitializeCreatures(IEnumerable<Creature> creatures, float y, CardinalDirection direction)
+        {
+            Creature[] creaturesArray = creatures.ToArray();
 
-            CreaturePresenter creaturePresenter = monsterGameObject.GetComponent<CreaturePresenter>();
-            creaturePresenter.Initialize(combat.monster);
+            float totalWidth = creaturesArray.Sum(creature => creature.spaceInFeet);
+            float currentX = -totalWidth / 2;
+            Vector3 facingDirection = CardinalDirectionHelper.cardinalDirectionVectors[direction];
 
-            yield return creaturePresenter.FaceDirection(CardinalDirection.North, true);
+            foreach (Creature creature in creaturesArray)
+            {
+                currentX += creature.spaceInFeet;
+
+                if (!creature.isAlive) continue;
+
+                float spaceRadius = creature.spaceInFeet / 2;
+
+                GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
+                characterGameObject.name = creature.displayName;
+                characterGameObject.transform.position = new Vector3(currentX - spaceRadius, y, 0) - facingDirection * spaceRadius;
+
+                CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
+                creaturePresenter.Initialize(creature);
+
+                yield return creaturePresenter.FaceDirection(direction, true);
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MonsterQuest
         {
             IEnumerable<string> amountParts = amounts.Select(amount => amount.roll.type.ToString().ToLowerInvariant());
 
-            return $"{StringHelper.JoinWithAnd(amountParts)} damage";
+            return $"{EnglishHelper.JoinWithAnd(amountParts)} damage";
         }
     }
 }

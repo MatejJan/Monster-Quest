@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MonsterQuest.Effects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,8 +20,8 @@ namespace MonsterQuest
         private const string _lastGameStateAssetPath = "Assets/Game States/Last.asset";
 
         [SerializeField] private GameStateAsset loadGameState;
-
         [SerializeField] private Sprite[] characterBodySprites;
+        [SerializeField] private int charactersStartingLevel;
 
         private CombatManager _combatManager;
         private CombatPresenter _combatPresenter;
@@ -63,8 +65,6 @@ namespace MonsterQuest
 
         private void NewGame()
         {
-            int challengeRating = 1;
-
             // Create a new party.
             RaceType humanRaceType = Database.GetRaceType("human");
             ClassType fighterClassType = Database.GetClassType("fighter");
@@ -79,16 +79,13 @@ namespace MonsterQuest
 
             Party party = new(characters);
 
-            // Prepare the monster types to be fought.
-            IList<MonsterType> monsterTypes = Database.monsterTypes.Where(monster => monster.challengeRating >= challengeRating).OrderBy(monster => monster.challengeRating).ToList();
-
             // Create a new game state.
-            _state = new GameState(party, monsterTypes);
+            _state = new GameState(party);
 
-            // Level up the characters to the challenge rating.
+            // Level up the characters to the desired starting level.
             foreach (Character character in characters)
             {
-                while (character.characterClass.level < challengeRating)
+                while (character.characterClass.level < charactersStartingLevel)
                 {
                     character.LevelUp();
                 }
@@ -112,7 +109,7 @@ namespace MonsterQuest
                 characters[i].GiveItem(_state, weaponItemTypes[i].Create());
                 characters[i].GiveItem(_state, chainShirt.Create());
 
-                for (int j = 0; j < challengeRating; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     characters[i].GiveItem(_state, potionOfHealing.Create());
                 }
@@ -159,7 +156,7 @@ namespace MonsterQuest
             // Present the characters.
             yield return _combatPresenter.InitializeParty(_state);
 
-            while (_state.combat is not null || _state.remainingMonsterTypes.Count > 0)
+            while (true)
             {
                 // See if we need to enter a new combat (it might already exist from a save file).
                 if (_state.combat is null)
@@ -167,18 +164,48 @@ namespace MonsterQuest
                     // Wait a bit before starting new combat.
                     yield return new WaitForSeconds(1);
 
-                    // Create the next monster.
-                    MonsterType monsterType = _state.remainingMonsterTypes[0];
-                    _state.remainingMonsterTypes.RemoveAt(0);
-                    Monster monster = new(monsterType);
-                    Console.WriteLine($"Watch out, {monster.indefiniteName} with {monster.hitPoints} HP appears!");
+                    // Enter combat with a new set of monsters.
+                    List<Monster> monsters = CreateMonsters();
+                    _state.EnterCombatWithMonsters(monsters);
 
-                    // Enter a combat with the monster.
-                    _state.EnterCombatWithMonster(monster);
+                    if (monsters.Count == 1)
+                    {
+                        Console.WriteLine($"Watch out, {monsters[0].indefiniteName} with {monsters[0].hitPoints} HP appears!");
+                    }
+                    else
+                    {
+                        Dictionary<MonsterType, IEnumerable<Monster>> monsterGroupsByType = _state.combat.GetMonsterGroupsByType();
+                        List<string> monsterGroupDescriptions = new();
+                        int totalHP = 0;
+
+                        foreach (KeyValuePair<MonsterType, IEnumerable<Monster>> monsterGroupEntry in monsterGroupsByType)
+                        {
+                            totalHP += monsterGroupEntry.Value.Sum(monster => monster.hitPoints);
+
+                            string displayName = monsterGroupEntry.Key.displayName;
+                            int count = monsterGroupEntry.Value.Count();
+                            string description;
+
+                            if (count == 1)
+                            {
+                                description = EnglishHelper.GetIndefiniteNounForm(displayName);
+                            }
+                            else
+                            {
+                                description = $"{count} {EnglishHelper.GetPluralNounForm(displayName)}";
+                            }
+
+                            monsterGroupDescriptions.Add(description);
+                        }
+
+                        string monstersDescription = EnglishHelper.JoinWithAnd(monsterGroupDescriptions);
+
+                        Console.WriteLine($"Watch out, {monstersDescription} with {totalHP} total HP appears!");
+                    }
                 }
 
-                // Present the monster.
-                yield return _combatPresenter.InitializeMonster(_state);
+                // Present the monsters.
+                yield return _combatPresenter.InitializeMonsters(_state);
 
                 yield return new WaitForSeconds(1);
 
@@ -186,7 +213,7 @@ namespace MonsterQuest
                 yield return _combatManager.Simulate(_state);
 
                 // If everyone died, stop simulation.
-                if (_state.party.count == 0)
+                if (_state.party.aliveCount == 0)
                 {
                     DeleteSavedGame();
 
@@ -199,22 +226,56 @@ namespace MonsterQuest
                 // Take a short rest between fights.
                 yield return _state.party.TakeShortRest();
 
+                // Gain a health potion as a reward.
+                foreach (Character character in _state.party.aliveCharacters)
+                {
+                    character.GiveItem(_state, Database.GetItemType("potion of healing").Create());
+                }
+
                 // save the game before a new fight.
                 SaveGame();
             }
 
-            switch (_state.party.count)
+            Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
+        }
+
+        private List<Monster> CreateMonsters()
+        {
+            // Create a group of monsters where the total challenge rating doesn't exceed characters total levels.
+            float maxTotalChallengeRating = _state.party.characters.Where(character => character.isAlive).Sum(character => character.characterClass.level) / 4f;
+            float totalChallengeRating = 0;
+
+            List<MonsterType> remainingMonsterTypes = new(Database.monsterTypes);
+            List<Monster> monsters = new();
+
+            while (totalChallengeRating < maxTotalChallengeRating)
             {
-                case > 1:
-                    Console.WriteLine($"After many grueling fights, the heroes {_state.party} return from the dungeons to live another day.");
+                float remainingChallengeRating = maxTotalChallengeRating - totalChallengeRating;
 
-                    break;
+                List<MonsterType> monsterTypes = remainingMonsterTypes.Where(monster => monster.challengeRating <= remainingChallengeRating).ToList();
 
-                case 1:
-                    Console.WriteLine($"After many grueling fights, {_state.party.characters.First().displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                if (!monsterTypes.Any()) break;
 
-                    break;
+                // Choose a random monster type.
+                MonsterType monsterType = RandomHelper.Element(monsterTypes);
+
+                // Create a random amount of monsters of this type (max 3, without exceeding the challenge rating).
+                int maxCount = Math.Min(3, Mathf.FloorToInt(remainingChallengeRating / Math.Max(0.5f, monsterType.challengeRating)));
+                int count = Random.Range(1, maxCount + 1);
+
+                for (int i = 0; i < count; i++)
+                {
+                    monsters.Add(new Monster(monsterType));
+                }
+
+                totalChallengeRating += Math.Max(1, monsterType.challengeRating * count);
+                remainingMonsterTypes.Remove(monsterType);
             }
+
+            // Shuffle the monsters for a random display order.
+            monsters.Shuffle();
+
+            return monsters;
         }
     }
 }

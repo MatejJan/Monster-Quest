@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -11,43 +12,42 @@ namespace MonsterQuest
 
         public IEnumerator Simulate(GameState gameState)
         {
-            do
+            bool hostileGroupsArePresent;
+
+            void UpdateIfHostileGroupsArePresent()
             {
-                // Heroes' turn.
-                foreach (Character character in gameState.party.characters)
+                hostileGroupsArePresent = gameState.combat.GetHostileGroups().Count() > 1;
+            }
+
+            UpdateIfHostileGroupsArePresent();
+
+            // Keep simulating while we have groups that are hostile to each other.
+            while (hostileGroupsArePresent)
+            {
+                // Simulate a round of combat.
+                foreach (Creature creature in gameState.combat.creaturesInOrderOfInitiative)
                 {
-                    IAction action = character.TakeTurn(gameState);
+                    if (creature.lifeStatus == LifeStatus.Dead) continue;
+
+                    IAction action = creature.TakeTurn(gameState);
 
                     yield return action?.Execute();
 
-                    // Stop attacking if the monster died.
-                    if (gameState.combat.monster.hitPoints == 0) break;
-                }
+                    UpdateIfHostileGroupsArePresent();
 
-                // Remove any characters that died while unconscious.
-                gameState.party.RemoveDeadCharacters();
-
-                if (gameState.combat.monster.lifeStatus != LifeStatus.Dead && gameState.party.count > 0)
-                {
-                    // Monster's turn.
-                    IAction action = gameState.combat.monster.TakeTurn(gameState);
-
-                    yield return action?.Execute();
-
-                    // Remove the characters that died from the attack.
-                    gameState.party.RemoveDeadCharacters();
+                    if (!hostileGroupsArePresent) break;
                 }
 
                 onRoundEnd?.Invoke();
-            } while (gameState.combat.monster.hitPoints > 0 && gameState.party.count > 0);
+            }
 
-            if (gameState.combat.monster.hitPoints == 0)
+            if (gameState.party.aliveCount > 0)
             {
                 Console.WriteLine("The heroes celebrate their victory!");
             }
             else
             {
-                Console.WriteLine($"The party has failed and {gameState.combat.monster.definiteName} continues to attack unsuspecting adventurers.");
+                Console.WriteLine("The party has failed and the monsters continue to attack unsuspecting adventurers.");
             }
         }
     }

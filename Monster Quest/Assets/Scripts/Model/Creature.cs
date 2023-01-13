@@ -63,8 +63,10 @@ namespace MonsterQuest
         public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
         protected abstract int proficiencyBonusBase { get; }
 
-        public bool isUnconscious => lifeStatus is LifeStatus.StableUnconscious or LifeStatus.UnstableUnconscious;
-        public abstract bool[] deathSavingThrows { get; }
+        public bool isAlive => lifeStatus is not LifeStatus.Dead;
+        public bool isUnconscious => lifeStatus is LifeStatus.UnconsciousStable or LifeStatus.UnconsciousUnstable;
+
+        public abstract IEnumerable<bool> deathSavingThrows { get; }
         public int deathSavingThrowSuccesses => deathSavingThrows.Count(result => result);
         public int deathSavingThrowFailures => deathSavingThrows.Count(result => !result);
 
@@ -141,7 +143,7 @@ namespace MonsterQuest
             }
 
             // Choose a random target.
-            IEnumerable<Creature> hostileCreatures = gameState.combat.GetCreatures().Where(creature => gameState.combat.AreHostile(this, creature));
+            IEnumerable<Creature> hostileCreatures = gameState.combat.creaturesInOrderOfInitiative.Where(creature => creature.isAlive && gameState.combat.AreHostile(this, creature));
             Creature target = RandomHelper.Element(hostileCreatures);
 
             return new AttackAction(gameState, this, target, attackEffect, attackItem, attackAbility);
@@ -161,6 +163,24 @@ namespace MonsterQuest
             bool result = rollResult + abilityModifier >= successAmount;
 
             DebugHelper.EndLog($"The check {(result ? "succeeds" : "fails")}.");
+
+            return result;
+        }
+
+        public int MakeAbilityRoll(Ability ability)
+        {
+            return MakeAbilityRoll(ability, out _);
+        }
+
+        public int MakeAbilityRoll(Ability ability, out int rollResult)
+        {
+            DebugHelper.StartLog($"{definiteName.ToUpperFirst()} is making a {ability} roll …");
+
+            rollResult = DiceHelper.Roll("d20");
+            int abilityModifier = abilityScores[ability].modifier;
+            int result = rollResult + abilityModifier;
+
+            DebugHelper.EndLog($"They roll a {rollResult} for a total of {result}.");
 
             return result;
         }
@@ -186,13 +206,13 @@ namespace MonsterQuest
 
             Console.Write($"{definiteName.ToUpperFirst()} heals {amount} HP and ");
 
-            if (lifeStatus == LifeStatus.Alive)
+            if (lifeStatus == LifeStatus.Conscious)
             {
                 Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
             }
             else
             {
-                lifeStatus = LifeStatus.Alive;
+                lifeStatus = LifeStatus.Conscious;
 
                 Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
 

@@ -31,7 +31,12 @@ namespace MonsterQuest
             DamageAmountAlterationValue[] immunityValues = validValues.Where(value => value.immunity).ToArray();
 
             // There must be at least one value provider in the category for the category to be active.
-            DamageAlteration result = new() { vulnerability = vulnerabilityValues.Length > 0, resistance = resistanceValues.Length > 0, immunity = immunityValues.Length > 0 };
+            DamageAlteration result = new()
+            {
+                vulnerability = vulnerabilityValues.Length > 0,
+                resistance = resistanceValues.Length > 0,
+                immunity = immunityValues.Length > 0
+            };
 
             #region Verbose output
 
@@ -44,7 +49,7 @@ namespace MonsterQuest
 
                 if (categories.Count > 0)
                 {
-                    Console.WriteLine($"The target is {StringHelper.JoinWithAnd(categories)} to this damage.");
+                    Console.WriteLine($"The target is {EnglishHelper.JoinWithAnd(categories)} to this damage.");
 
                     foreach (DamageAmountAlterationValue value in vulnerabilityValues)
                     {

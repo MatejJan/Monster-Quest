@@ -12,22 +12,27 @@ namespace MonsterQuest
         private bool _callingRules;
         private List<Action> _rulesMutationActions;
 
-        public GameState(Party party, IEnumerable<MonsterType> monsterTypes)
+        public GameState(Party party)
         {
             this.party = party;
-
-            remainingMonsterTypes = new List<MonsterType>(monsterTypes);
         }
 
-        [field: SerializeField] public Party party { get; private set; }
+        // State properties
+
+        [field: SerializeReference] public Party party { get; private set; }
         [field: SerializeReference] public Combat combat { get; private set; }
-        [field: SerializeField] public List<MonsterType> remainingMonsterTypes { get; private set; }
+        [field: SerializeField] public int combatsFoughtCount { get; private set; }
+
+        // Derived properties
 
         public IEnumerable<object> rules => party.rules.Concat(combat.rules);
 
-        public void EnterCombatWithMonster(Monster monster)
+        // Methods 
+
+        public void EnterCombatWithMonsters(IEnumerable<Monster> monsters)
         {
-            combat = new Combat(this, monster);
+            combat = new Combat(this, monsters);
+            combatsFoughtCount++;
         }
 
         public void ExitCombat()

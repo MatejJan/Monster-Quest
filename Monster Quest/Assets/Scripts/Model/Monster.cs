@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using MonsterQuest.Effects;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ namespace MonsterQuest
 
         protected override int proficiencyBonusBase => (int)type.challengeRating;
 
-        public override bool[] deathSavingThrows => _deathSavingThrows;
+        public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
 
         public IntegerValue GetArmorClass(Creature creature)
         {
@@ -115,6 +116,7 @@ namespace MonsterQuest
         protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit)
         {
             // Monsters immediately die.
+            lifeStatus = LifeStatus.Dead;
             if (presenter is not null) yield return presenter.GetAttacked(remainingDamageAmount >= hitPointsMaximum);
 
             yield return Die();

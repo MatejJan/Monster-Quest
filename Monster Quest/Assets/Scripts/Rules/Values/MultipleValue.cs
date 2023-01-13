@@ -31,7 +31,7 @@ namespace MonsterQuest
 
             if (Console.verbose)
             {
-                Console.WriteLine($"Values are {(items.Count > 0 ? StringHelper.JoinWithAnd(items) : "empty")}.");
+                Console.WriteLine($"Values are {(items.Count > 0 ? EnglishHelper.JoinWithAnd(items) : "empty")}.");
 
                 foreach (MultipleValue<T> value in validValues)
                 {

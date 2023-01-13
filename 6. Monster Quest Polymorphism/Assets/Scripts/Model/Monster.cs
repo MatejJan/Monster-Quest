@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -18,6 +18,6 @@ namespace MonsterQuest
         }
         
         public MonsterType type { get; private set; }
-        public override bool[] deathSavingThrows => _deathSavingThrows;
+        public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
     }
 }

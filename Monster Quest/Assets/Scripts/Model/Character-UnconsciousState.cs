@@ -14,7 +14,7 @@ namespace MonsterQuest
 
         public void Stabilize()
         {
-            lifeStatus = LifeStatus.StableUnconscious;
+            lifeStatus = LifeStatus.UnconsciousStable;
 
             ResetDeathSavingThrows();
         }
@@ -22,7 +22,7 @@ namespace MonsterQuest
         public IEnumerator HandleUnconsciousState()
         {
             // Unstable unconscious characters must make a death saving throw.
-            if (lifeStatus != LifeStatus.UnstableUnconscious) yield break;
+            if (lifeStatus != LifeStatus.UnconsciousUnstable) yield break;
 
             int deathSavingThrowRollResult = DiceHelper.Roll("d20");
 
@@ -82,9 +82,9 @@ namespace MonsterQuest
             }
 
             // Alive characters fall unconscious.
-            if (lifeStatus == LifeStatus.Alive)
+            if (lifeStatus == LifeStatus.Conscious)
             {
-                lifeStatus = LifeStatus.UnstableUnconscious;
+                lifeStatus = LifeStatus.UnconsciousUnstable;
                 Console.WriteLine($"{definiteName.ToUpperFirst()} falls unconscious.");
 
                 if (presenter is not null) yield return presenter.GetAttacked();
@@ -112,9 +112,9 @@ namespace MonsterQuest
                 }
 
                 // Destabilize if necessary.
-                if (lifeStatus == LifeStatus.StableUnconscious)
+                if (lifeStatus == LifeStatus.UnconsciousStable)
                 {
-                    lifeStatus = LifeStatus.UnstableUnconscious;
+                    lifeStatus = LifeStatus.UnconsciousUnstable;
                 }
             }
 

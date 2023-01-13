@@ -93,7 +93,7 @@ namespace MonsterQuest
             }
 
             // Animate flying if needed.
-            if (_creature.lifeStatus == LifeStatus.Alive) FlyIfPossible(false);
+            if (_creature.lifeStatus == LifeStatus.Conscious) FlyIfPossible(false);
 
             // Set initial hit points.
             SetHitPointRatio((float)creature.hitPoints / creature.hitPointsMaximum);

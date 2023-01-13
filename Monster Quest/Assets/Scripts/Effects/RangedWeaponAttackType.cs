@@ -33,7 +33,7 @@ namespace MonsterQuest.Effects
             }
 
             // Shooting next to a hostile creature results in a disadvantage.
-            Creature nearestHostileCreature = attackAction.gameState.combat.GetCreatures().Where(creature => attackAction.gameState.combat.AreHostile(attackAction.attacker, creature)).OrderBy(hostile => attackAction.gameState.combat.GetDistance(attackAction.attacker, hostile)).First();
+            Creature nearestHostileCreature = attackAction.gameState.combat.creaturesInOrderOfInitiative.Where(creature => attackAction.gameState.combat.AreHostile(attackAction.attacker, creature)).OrderBy(hostile => attackAction.gameState.combat.GetDistance(attackAction.attacker, hostile)).First();
 
             if (nearestHostileCreature is not null && attackAction.gameState.combat.GetDistance(attackAction.attacker, nearestHostileCreature) <= 5)
             {

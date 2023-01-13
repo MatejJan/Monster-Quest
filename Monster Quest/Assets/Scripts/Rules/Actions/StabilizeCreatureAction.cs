@@ -25,7 +25,7 @@ namespace MonsterQuest
 
             if (character.presenter is not null) yield return character.presenter.PerformAbilityCheck(success, rollResult);
 
-            Console.Write($"{character.definiteName.ToUpperFirst()} administer first aid to {target.definiteName} {(success ? "and manages" : "but fails")} to stabilize them.");
+            Console.WriteLine($"{character.definiteName.ToUpperFirst()} administer first aid to {target.definiteName} {(success ? "and manages" : "but fails")} to stabilize them.");
 
             if (success) target.Stabilize();
 

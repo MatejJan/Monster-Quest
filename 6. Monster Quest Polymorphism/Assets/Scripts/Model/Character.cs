@@ -20,16 +20,18 @@ namespace MonsterQuest
         public WeaponType weaponType { get; private set; }
         public ArmorType armorType { get; private set; }
 
-        public override bool[] deathSavingThrows => _deathSavingThrows.ToArray();
+        public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
 
-        protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount)
+        protected override IEnumerator TakeDamageAtZeroHP()
         {
-            if (remainingDamageAmount >= hitPointsMaximum)
+            if (hitPoints <= -hitPointsMaximum)
             {
                 Console.WriteLine($"{displayName} takes so much damage they immediately die.");
-                yield return base.TakeDamageAtZeroHP(remainingDamageAmount);
+                yield return base.TakeDamageAtZeroHP();
                 yield break;
             }
+
+            hitPoints = 0;
             
             if (lifeStatus == LifeStatus.Alive)
             {

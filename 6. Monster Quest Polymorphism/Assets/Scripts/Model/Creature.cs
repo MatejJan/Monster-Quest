@@ -28,7 +28,7 @@ namespace MonsterQuest
 
         public float spaceInFeet => SizeHelper.spaceInFeetPerSizeCategory[sizeCategory];
         
-        public abstract bool[] deathSavingThrows { get; }
+        public abstract IEnumerable<bool> deathSavingThrows { get; }
         public int deathSavingThrowSuccesses => deathSavingThrows.Count(result => result);
         public int deathSavingThrowFailures => deathSavingThrows.Count(result => !result);
         
@@ -58,10 +58,7 @@ namespace MonsterQuest
             
             if (hitPoints <= 0)
             {
-                int remainingDamageAmount = Math.Abs(hitPoints);
-                hitPoints = 0;
-
-                yield return TakeDamageAtZeroHP(remainingDamageAmount);
+                yield return TakeDamageAtZeroHP();
             }
             else
             {
@@ -70,10 +67,10 @@ namespace MonsterQuest
             }
         }
         
-        protected virtual IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount)
+        protected virtual IEnumerator TakeDamageAtZeroHP()
         {
             lifeStatus = LifeStatus.Dead;
-            yield return presenter.TakeDamage(remainingDamageAmount >= hitPointsMaximum);
+            yield return presenter.TakeDamage(hitPoints <= -hitPointsMaximum);
             yield return presenter.Die();
         }
     }
