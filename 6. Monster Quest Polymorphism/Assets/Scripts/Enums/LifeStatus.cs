@@ -2,9 +2,9 @@ namespace MonsterQuest
 {
     public enum LifeStatus
     {
-        Alive,
-        StableUnconscious,
-        UnstableUnconscious,
+        Conscious,
+        UnconsciousStable,
+        UnconsciousUnstable,
         Dead
     }
 }

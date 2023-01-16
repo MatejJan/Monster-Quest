@@ -12,6 +12,8 @@ namespace MonsterQuest
         
         public List<Character> characters { get; private set; }
         
+        public int aliveCount => characters.Count(character => character.isAlive);
+        
         public override string ToString()
         {
             return StringHelper.JoinWithAnd(characters.Select(character => character.displayName));

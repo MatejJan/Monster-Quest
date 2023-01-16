@@ -9,53 +9,32 @@ namespace MonsterQuest
     {
         public IEnumerator Simulate(GameState gameState)
         {
-            var random = new System.Random();
-
             Monster monster = gameState.combat.monster;
+            Party party = gameState.party;
 
             Console.WriteLine($"Watch out, {monster.displayName} with {monster.hitPoints} HP appears!");
 
+            List<Creature> creaturesInOrderOfInitiative = new(party.characters);
+            creaturesInOrderOfInitiative.Add(monster);
+            
+            ListHelper.ShuffleList(creaturesInOrderOfInitiative);
+
+            bool combatResolved = false;
+            
             do
             {
-                // Heroes' turn.
-                foreach (Character character in gameState.party.characters)
+                foreach (Creature creature in creaturesInOrderOfInitiative)
                 {
-                    if (character.lifeStatus != LifeStatus.Alive) continue;
-                    
-                    yield return character.presenter.Attack();
-                    
-                    int damageAmount = DiceHelper.Roll(character.weaponType.damageRoll);
-                    
-                    Console.WriteLine($"{character.displayName} hits the {monster.displayName} with {character.weaponType.displayName} for {damageAmount} damage.");
-                    yield return monster.ReactToDamage(damageAmount);
+                    if (creature.lifeStatus != LifeStatus.Conscious) continue;
 
-                    Console.WriteLine($"The {monster.displayName} has {monster.hitPoints} HP left.");
+                    IAction action = creature.TakeTurn(gameState);
+                    yield return action.Execute();
 
-                    if (monster.hitPoints == 0) break;
-                }
-
-                if (monster.lifeStatus == LifeStatus.Alive)
-                {
-                    // Monster's turn.
-                    yield return monster.presenter.Attack();
-                    
-                    int randomHeroIndex = random.Next(0, gameState.party.characters.Count);
-                    Character attackedHero = gameState.party.characters[randomHeroIndex];
-                    Console.WriteLine($"The {monster.displayName} attacks {attackedHero.displayName}!");
-
-                    WeaponType selectedWeaponType = monster.type.weaponTypes[random.Next(monster.type.weaponTypes.Length)];
-                    int damageAmount = DiceHelper.Roll(selectedWeaponType.damageRoll);
-                    
-                    Console.WriteLine($"The {monster.displayName} hits {attackedHero.displayName} with {selectedWeaponType.displayName} for {damageAmount} damage.");
-                    yield return attackedHero.ReactToDamage(damageAmount);
-                    
-                    if (attackedHero.lifeStatus == LifeStatus.Dead)
-                    {
-                        gameState.party.characters.Remove(attackedHero);
-                    }
+                    combatResolved = monster.lifeStatus == LifeStatus.Dead || party.aliveCount == 0;
+                    if (combatResolved) break;
                 }
                 
-            } while (monster.lifeStatus == LifeStatus.Alive && gameState.party.characters.Count > 0);
+            } while (!combatResolved);
 
             if (monster.lifeStatus == LifeStatus.Dead)
             {

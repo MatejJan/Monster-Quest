@@ -21,7 +21,14 @@ namespace MonsterQuest
         public ArmorType armorType { get; private set; }
 
         public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
+        
+        public override int armorClass => armorType.armorClass;
 
+        public override IAction TakeTurn(GameState gameState)
+        {
+            return new AttackAction(this, gameState.combat.monster, weaponType);
+        }
+        
         protected override IEnumerator TakeDamageAtZeroHP()
         {
             if (hitPoints <= -hitPointsMaximum)
@@ -33,16 +40,16 @@ namespace MonsterQuest
 
             hitPoints = 0;
             
-            if (lifeStatus == LifeStatus.Alive)
+            if (lifeStatus == LifeStatus.Conscious)
             {
                 Console.WriteLine($"{displayName} falls unconscious.");
-                lifeStatus = LifeStatus.UnstableUnconscious;
+                lifeStatus = LifeStatus.UnconsciousUnstable;
                 yield return presenter.TakeDamage();
                 yield break;
             }
             
             Console.WriteLine($"{displayName} fails a death saving throw.");
-            lifeStatus = LifeStatus.UnstableUnconscious;
+            lifeStatus = LifeStatus.UnconsciousUnstable;
             yield return presenter.TakeDamage();
             
             _deathSavingThrows.Add(false);

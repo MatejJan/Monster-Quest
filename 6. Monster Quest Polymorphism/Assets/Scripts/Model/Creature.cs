@@ -32,6 +32,8 @@ namespace MonsterQuest
         public int deathSavingThrowSuccesses => deathSavingThrows.Count(result => result);
         public int deathSavingThrowFailures => deathSavingThrows.Count(result => !result);
         
+        public abstract int armorClass { get; }
+        
         public LifeStatus lifeStatus
         {
             get => _lifeStatus;
@@ -42,6 +44,9 @@ namespace MonsterQuest
             }
         }
         
+        public bool isUnconscious => lifeStatus is LifeStatus.UnconsciousUnstable or LifeStatus.UnconsciousStable;
+        public bool isAlive => lifeStatus is not LifeStatus.Dead;
+        
         protected void Initialize()
         {
             hitPoints = hitPointsMaximum;
@@ -51,6 +56,8 @@ namespace MonsterQuest
         {
             presenter = creaturePresenter;
         }
+
+        public abstract IAction TakeTurn(GameState gameState);
         
         public IEnumerator ReactToDamage(int damageAmount)
         {
