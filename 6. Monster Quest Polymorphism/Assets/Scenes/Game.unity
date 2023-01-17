@@ -726,7 +726,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 05200a5325ada4d1dbd78ee326031452, type: 3}
   - {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
   monsterTypes:
-  - {fileID: 11400000, guid: cf4563540ac464e8caa28ed453353a90, type: 2}
+  - {fileID: 11400000, guid: daeba81460efc458ebbf19e0b932529f, type: 2}
+  - {fileID: 11400000, guid: 6292211193a004416bd7ec39354c6c85, type: 2}
 --- !u!1 &1088585501
 GameObject:
   m_ObjectHideFlags: 0

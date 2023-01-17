@@ -555,6 +555,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5037584384035298870, guid: 259140107d8114ab89de9143c107ccf3, type: 3}
+      propertyPath: diceSides
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6255815735205409464, guid: 259140107d8114ab89de9143c107ccf3, type: 3}
       propertyPath: m_Name
       value: D20

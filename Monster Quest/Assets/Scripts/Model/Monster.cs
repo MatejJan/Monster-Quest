@@ -113,10 +113,11 @@ namespace MonsterQuest
             return new ArrayValue<DamageType>(this, type.damageVulnerabilities);
         }
 
-        protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit)
+        protected override IEnumerator TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit)
         {
             // Monsters immediately die.
             lifeStatus = LifeStatus.Dead;
+
             if (presenter is not null) yield return presenter.GetAttacked(remainingDamageAmount >= hitPointsMaximum);
 
             yield return Die();

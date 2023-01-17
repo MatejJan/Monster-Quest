@@ -66,7 +66,7 @@ namespace MonsterQuest
             yield return HandleDeathSavingThrows();
         }
 
-        protected override IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit)
+        protected override IEnumerator TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit)
         {
             // Characters instantly die if the remaining damage they would have taken is greater or equal to their maximum HP.
             if (remainingDamageAmount >= hitPointsMaximum)

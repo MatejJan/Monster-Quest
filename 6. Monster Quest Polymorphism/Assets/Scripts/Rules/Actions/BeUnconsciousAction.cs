@@ -1,21 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace MonsterQuest
 {
-    public class BeUnconsciousAction : MonoBehaviour
+    public class BeUnconsciousAction : IAction
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        private Character _character;
         
+        public BeUnconsciousAction(Character character)
+        {
+            _character = character;
         }
 
-        // Update is called once per frame
-        void Update()
+        public IEnumerator Execute()
         {
-        
+            yield return _character.HandleUnconsciousState();
         }
     }
 }

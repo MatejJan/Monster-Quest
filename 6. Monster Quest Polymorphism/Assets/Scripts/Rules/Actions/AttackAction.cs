@@ -82,7 +82,7 @@ namespace MonsterQuest
             Console.WriteLine($"The {_attacker.displayName} hits {_target.displayName} with {_weaponType.displayName} for {damageAmount} damage.");
             
             // Apply the damage.
-            yield return _target.ReactToDamage(damageAmount);
+            yield return _target.ReactToDamage(damageAmount, wasCritical);
         }
     }
 }

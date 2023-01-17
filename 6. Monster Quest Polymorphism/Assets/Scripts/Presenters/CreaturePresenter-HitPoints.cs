@@ -20,7 +20,7 @@ namespace MonsterQuest
 
         private void UpdateHitPoints()
         {
-            AnimateToHitPointRatio((float)_creature.hitPoints / _creature.hitPointsMaximum);
+            AnimateToHitPointRatio(Mathf.Max(0f, _creature.hitPoints) / _creature.hitPointsMaximum);
         }
 
         private void AnimateToHitPointRatio(float ratio)

@@ -13,6 +13,8 @@ namespace MonsterQuest
         public List<Character> characters { get; private set; }
         
         public int aliveCount => characters.Count(character => character.isAlive);
+
+        public IEnumerable<Character> aliveCharacters => characters.Where(character => character.isAlive);
         
         public override string ToString()
         {

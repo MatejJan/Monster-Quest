@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,7 +29,7 @@ namespace MonsterQuest
             // Attack a random character with a random weapon.
             WeaponType weaponType = type.weaponTypes[Random.Range(0, type.weaponTypes.Length)];
             
-            Character target = gameState.party.characters[Random.Range(0, gameState.party.characters.Count)];
+            Character target = gameState.party.aliveCharacters.ToArray()[Random.Range(0, gameState.party.aliveCount)];
 
             return new AttackAction(this, target, weaponType);
         }

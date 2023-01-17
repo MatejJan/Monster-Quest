@@ -176,11 +176,11 @@ namespace MonsterQuest
                     {
                         Dictionary<MonsterType, IEnumerable<Monster>> monsterGroupsByType = _state.combat.GetMonsterGroupsByType();
                         List<string> monsterGroupDescriptions = new();
-                        int totalHP = 0;
+                        int totalHitPoints = 0;
 
                         foreach (KeyValuePair<MonsterType, IEnumerable<Monster>> monsterGroupEntry in monsterGroupsByType)
                         {
-                            totalHP += monsterGroupEntry.Value.Sum(monster => monster.hitPoints);
+                            totalHitPoints += monsterGroupEntry.Value.Sum(monster => monster.hitPoints);
 
                             string displayName = monsterGroupEntry.Key.displayName;
                             int count = monsterGroupEntry.Value.Count();
@@ -200,7 +200,7 @@ namespace MonsterQuest
 
                         string monstersDescription = EnglishHelper.JoinWithAnd(monsterGroupDescriptions);
 
-                        Console.WriteLine($"Watch out, {monstersDescription} with {totalHP} total HP appears!");
+                        Console.WriteLine($"Watch out, {monstersDescription} with {totalHitPoints} total HP appears!");
                     }
                 }
 

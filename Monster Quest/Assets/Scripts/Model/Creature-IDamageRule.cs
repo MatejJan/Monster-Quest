@@ -103,7 +103,7 @@ namespace MonsterQuest
 
             if (hitPoints == 0)
             {
-                yield return TakeDamageAtZeroHP(remainingAmount, damage.hit);
+                yield return TakeDamageAtZeroHitPoints(remainingAmount, damage.hit);
             }
             else
             {

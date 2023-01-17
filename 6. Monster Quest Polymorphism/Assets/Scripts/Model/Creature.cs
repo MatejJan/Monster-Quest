@@ -59,13 +59,13 @@ namespace MonsterQuest
 
         public abstract IAction TakeTurn(GameState gameState);
         
-        public IEnumerator ReactToDamage(int damageAmount)
+        public IEnumerator ReactToDamage(int damageAmount, bool wasCriticalHit)
         {
             hitPoints -= damageAmount;
             
             if (hitPoints <= 0)
             {
-                yield return TakeDamageAtZeroHP();
+                yield return TakeDamageAtZeroHitPoints(wasCriticalHit);
             }
             else
             {
@@ -74,11 +74,33 @@ namespace MonsterQuest
             }
         }
         
-        protected virtual IEnumerator TakeDamageAtZeroHP()
+        protected virtual IEnumerator TakeDamageAtZeroHitPoints(bool wasCriticalHit)
         {
             lifeStatus = LifeStatus.Dead;
             yield return presenter.TakeDamage(hitPoints <= -hitPointsMaximum);
             yield return presenter.Die();
+        }
+        
+        public virtual IEnumerator Heal(int amount)
+        {
+            hitPoints = Math.Min(hitPoints + amount, hitPointsMaximum);
+
+            Console.Write($"{displayName} heals {amount} HP and ");
+
+            if (lifeStatus == LifeStatus.Conscious)
+            {
+                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
+            }
+            else
+            {
+                lifeStatus = LifeStatus.Conscious;
+
+                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
+
+                if (presenter is not null) yield return presenter.RegainConsciousness();
+            }
+
+            if (presenter is not null) yield return presenter.Heal();
         }
     }
 }

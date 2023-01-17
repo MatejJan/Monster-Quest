@@ -233,6 +233,6 @@ namespace MonsterQuest
             if (presenter is not null) yield return presenter.Heal();
         }
 
-        protected abstract IEnumerator TakeDamageAtZeroHP(int remainingDamageAmount, Hit hit);
+        protected abstract IEnumerator TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit);
     }
 }

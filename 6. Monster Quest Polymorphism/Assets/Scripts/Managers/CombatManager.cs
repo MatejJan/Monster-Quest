@@ -25,7 +25,7 @@ namespace MonsterQuest
             {
                 foreach (Creature creature in creaturesInOrderOfInitiative)
                 {
-                    if (creature.lifeStatus != LifeStatus.Conscious) continue;
+                    if (creature.lifeStatus == LifeStatus.Dead) continue;
 
                     IAction action = creature.TakeTurn(gameState);
                     yield return action.Execute();
