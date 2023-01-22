@@ -15,7 +15,7 @@ namespace MonsterQuest
         public int armorClass;
         public string hitPointsRoll;
         public Speed speed;
-        public AbilityScores abilityScores = new();
+        public AbilityScores abilityScores;
         public SavingThrowBonus[] savingThrowBonuses;
         public SkillBonus[] skillBonuses;
         public DamageType[] damageVulnerabilities;

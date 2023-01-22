@@ -23,14 +23,6 @@ namespace MonsterQuest
             hitPointsMaximum = Math.Max(1, DiceHelper.Roll(type.hitPointsRoll));
             DebugHelper.EndLog();
 
-            // Copy the rest of the properties from the monster type.
-            foreach (Ability ability in Enum.GetValues(typeof(Ability)))
-            {
-                if (ability == Ability.None) continue;
-
-                abilityScores[ability].score = type.abilityScores[ability];
-            }
-
             // Give items to the monster.
             foreach (ItemType itemType in type.items)
             {
@@ -53,6 +45,7 @@ namespace MonsterQuest
         [field: SerializeField] public MonsterType type { get; private set; }
 
         // Derived properties
+        public override AbilityScores abilityScores => type.abilityScores;
         public override SizeCategory sizeCategory => type.sizeCategory;
 
         public override Sprite bodySprite => type.bodySprite;

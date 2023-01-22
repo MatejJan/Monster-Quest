@@ -22,13 +22,10 @@ namespace MonsterQuest
         {
             effectsList = new List<Effect>();
             itemsList = new List<Item>();
-
-            abilityScores = new AbilityScores();
         }
 
         // State properties
 
-        [field: SerializeField] public AbilityScores abilityScores { get; protected set; }
         [field: SerializeField] public int hitPointsMaximum { get; protected set; }
         [field: SerializeField] public string displayName { get; protected set; }
 
@@ -48,6 +45,7 @@ namespace MonsterQuest
 
         // Derived properties
 
+        public abstract AbilityScores abilityScores { get; }
         public abstract SizeCategory sizeCategory { get; }
         public float spaceInFeet => SizeHelper.spaceInFeetPerSizeCategory[sizeCategory];
 
@@ -138,7 +136,7 @@ namespace MonsterQuest
                 // If the weapon has a finesse property, use the higher of the two ability scores.
                 if (parentItem.GetEffect<Finesse>() is not null)
                 {
-                    attackAbility = abilityScores.strength > abilityScores.dexterity ? Ability.Strength : Ability.Dexterity;
+                    attackAbility = abilityScores.strength.score > abilityScores.dexterity.score ? Ability.Strength : Ability.Dexterity;
                 }
             }
 

@@ -12,6 +12,7 @@ namespace MonsterQuest
     {
         [SerializeField] private Sprite _bodySprite;
         [SerializeField] private List<bool> _deathSavingThrows;
+        [SerializeField] private AbilityScores _abilityScores;
 
         public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite)
         {
@@ -26,11 +27,11 @@ namespace MonsterQuest
 
             _bodySprite = bodySprite;
 
-            // Generate possible ability scores.
+            // Generate ability scores.
             DebugHelper.StartLog("Rolling ability scores …");
-            List<int> possibleAbilityScores = new();
+            _abilityScores = new AbilityScores();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 1; i <= 6; i++)
             {
                 // Roll 4d6 and remove the lowest dice.
                 List<int> rolls = new();
@@ -42,22 +43,17 @@ namespace MonsterQuest
 
                 rolls.Sort();
                 rolls.RemoveAt(0);
-                possibleAbilityScores.Add(rolls.Sum());
-            }
+                int score = rolls.Sum();
 
-            // Randomly assign ability scores.
-            possibleAbilityScores.Shuffle();
-
-            for (int i = 0; i < 6; i++)
-            {
-                abilityScores[(Ability)(i + 1)].score = possibleAbilityScores[i];
-                DebugHelper.Log($"{(Ability)(i + 1)}: {possibleAbilityScores[i]}");
+                Ability ability = (Ability)i;
+                _abilityScores[ability].score = score;
+                DebugHelper.Log($"{ability}: {score}");
             }
 
             DebugHelper.EndLog();
 
             // Calculate hit points at first level.
-            hitPointsMaximum = classType.hitPointsBase + abilityScores.constitution.modifier;
+            hitPointsMaximum = classType.hitPointsBase + _abilityScores.constitution.modifier;
 
             // Prepare death saving throws.
             _deathSavingThrows = new List<bool>();
@@ -73,6 +69,7 @@ namespace MonsterQuest
         [field: SerializeReference] public Race race { get; private set; }
 
         // Derived properties
+        public override AbilityScores abilityScores => _abilityScores;
         public override SizeCategory sizeCategory => race.raceType.sizeCategory;
 
         public override Sprite bodySprite => _bodySprite;
