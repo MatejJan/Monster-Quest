@@ -257,7 +257,7 @@ namespace MonsterQuest
                 if (!monsterTypes.Any()) break;
 
                 // Choose a random monster type.
-                MonsterType monsterType = RandomHelper.Element(monsterTypes);
+                MonsterType monsterType = EnumerableHelper.Random(monsterTypes);
 
                 // Create a random amount of monsters of this type (max 3, without exceeding the challenge rating or 5 total monsters).
                 int maxCount = Mathf.FloorToInt(remainingChallengeRating / Math.Max(0.5f, monsterType.challengeRating));

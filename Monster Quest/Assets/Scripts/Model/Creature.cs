@@ -124,7 +124,7 @@ namespace MonsterQuest
             // See if we have any attacks, otherwise we can't do anything.
             if (attackEffects.Count == 0) return null;
 
-            Attack attackEffect = RandomHelper.Element(attackEffects);
+            Attack attackEffect = attackEffects.Random();
             Item attackItem = null;
             Ability? attackAbility = null;
 
@@ -152,7 +152,7 @@ namespace MonsterQuest
             else
             {
                 // Others attack randomly.
-                target = RandomHelper.Element(hostileCreatures);
+                target = hostileCreatures.Random();
             }
 
             return new AttackAction(gameState, this, target, attackEffect, attackItem, attackAbility);
