@@ -6,6 +6,9 @@ namespace MonsterQuest
     [Serializable]
     public class AbilityScores
     {
+        public bool justChecking;
+        public AbilityScore wonderful;
+
         public AbilityScores()
         {
             strength = new AbilityScore();

@@ -45,6 +45,7 @@ namespace MonsterQuest
             public float fly;
             public float swim;
             public bool hover;
+            [field: SerializeField] public float teleport { get; set; }
         }
 
         [Serializable]

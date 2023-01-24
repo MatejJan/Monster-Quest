@@ -1,0 +1,20 @@
+#ability-scores {
+    flex-direction: row;
+}
+
+.ability-score {
+    flex-grow: 1;
+    flex-shrink: 0;
+    -unity-text-align: upper-left;
+}
+
+.ability-score .name {
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+}
+
+.ability-score .value {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

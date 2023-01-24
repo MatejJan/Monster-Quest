@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/USS/MonsterType.uss?fileID=7433441132597879392&amp;guid=e8495f5dfc979473387bee201e60f241&amp;type=3#MonsterType" />
+    <ui:VisualElement name="name" style="margin-bottom: 5px;">
+        <ui:TextField picking-mode="Ignore" name="display-name" tooltip="Monster name" binding-path="displayName" text="monster name" style="font-size: 16px; -unity-font-style: bold;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="description" style="flex-direction: row; -unity-font-style: italic; margin-bottom: 5px;">
+        <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size" />
+        <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type" />
+        <ui:Label text="," display-tooltip-when-elided="true" />
+        <ui:TextField picking-mode="Ignore" name="alignment" binding-path="alignment" text="lawful good" style="min-width: auto; flex-grow: 1;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="statistics">
+        <uie:IntegerField label="Armor Class" value="10" name="armor-class" binding-path="armorClass" style="-unity-font-style: normal; flex-direction: row;" />
+        <ui:TextField picking-mode="Ignore" label="Hit Points" text="2d6" name="hit-points-roll" binding-path="hitPointsRoll" />
+        <uie:PropertyField binding-path="speed" name="speed" />
+    </ui:VisualElement>
+    <ui:VisualElement name="ability-scores-area">
+        <uie:PropertyField name="ability-scores" binding-path="abilityScores" />
+    </ui:VisualElement>
+</ui:UXML>

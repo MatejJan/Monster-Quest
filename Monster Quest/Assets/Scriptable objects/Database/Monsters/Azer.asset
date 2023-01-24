@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: azer
   sizeCategory: 3
   typeCategory: 6
-  TypeTags: []
+  typeTags: []
   alignment: lawful neutral
   armorClass: 15
   hitPointsRoll: 6d8+12
@@ -26,7 +26,11 @@ MonoBehaviour:
     fly: 0
     swim: 0
     hover: 0
+    <teleport>k__BackingField: 0
   abilityScores:
+    justChecking: 1
+    wonderful:
+      <score>k__BackingField: 0
     <strength>k__BackingField:
       <score>k__BackingField: 17
     <dexterity>k__BackingField:
