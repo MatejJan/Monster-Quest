@@ -1,36 +1,45 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/USS/MonsterType.uss?fileID=7433441132597879392&amp;guid=e8495f5dfc979473387bee201e60f241&amp;type=3#MonsterType" />
+    <Style src="project://database/Assets/Editor/USS/MonsterType.uss?fileID=7433441132597879392&amp;guid=e8495f5dfc979473387bee201e60f241&amp;type=3#MonsterType"/>
     <ui:VisualElement name="name" style="margin-bottom: 5px;">
-        <ui:TextField picking-mode="Ignore" name="display-name" tooltip="Monster name" binding-path="displayName" text="monster name" style="font-size: 16px; -unity-font-style: bold;" />
+        <ui:TextField picking-mode="Ignore" name="display-name" tooltip="Monster name" binding-path="displayName"
+                      text="monster name" style="font-size: 16px; -unity-font-style: bold;"/>
     </ui:VisualElement>
     <ui:VisualElement name="description" style="-unity-font-style: italic; margin-bottom: 5px;">
         <ui:VisualElement name="description-row1" style="flex-direction: row;">
-            <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size" />
-            <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type" />
-            <ui:Label text="," display-tooltip-when-elided="true" />
-            <ui:TextField picking-mode="Ignore" name="alignment" binding-path="alignment" text="lawful good" style="min-width: auto; flex-grow: 1;" />
+            <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size"/>
+            <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type"/>
+            <ui:Label text="," display-tooltip-when-elided="true"/>
+            <ui:TextField name="alignment" binding-path="alignment" style="min-width: auto; flex-grow: 1;"/>
         </ui:VisualElement>
         <ui:VisualElement name="description-row2">
-            <uie:PropertyField binding-path="typeTags" name="type-tags" label="Tags" />
+            <uie:PropertyField binding-path="typeTags" name="type-tags"/>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="statistics1">
-        <uie:IntegerField label="Armor Class" value="10" name="armor-class" binding-path="armorClass" class="value-field" style="-unity-font-style: normal; flex-direction: row;" />
-        <ui:TextField picking-mode="Ignore" label="Hit Points" text="2d6" name="hit-points-roll" binding-path="hitPointsRoll" class="value-field" />
-        <uie:PropertyField binding-path="speed" name="speed" label="Speed" />
+        <uie:IntegerField label="Armor Class" name="armor-class" binding-path="armorClass" class="value-field"/>
+        <ui:TextField label="Hit Points" name="hit-points-roll" binding-path="hitPointsRoll" class="value-field"/>
+        <uie:PropertyField binding-path="speed" name="speed" label="Speed"/>
     </ui:VisualElement>
-    <ui:VisualElement name="ability-scores-area" style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
-        <uie:PropertyField name="ability-scores" binding-path="abilityScores" />
+    <ui:VisualElement name="ability-scores-area"
+                      style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
+        <uie:PropertyField name="ability-scores" binding-path="abilityScores"/>
     </ui:VisualElement>
     <ui:VisualElement name="statistics2">
-        <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws" />
-        <uie:PropertyField binding-path="skillBonuses" name="skill-bonuses" label="Skills" />
-        <uie:PropertyField name="damage-vulnerabilities" binding-path="damageVulnerabilities" label="Damage Vulnerabilities" />
-        <uie:PropertyField name="damage-resistances" binding-path="damageResistances" label="Damage Resistances" />
-        <uie:PropertyField name="damage-immunities" binding-path="damageImmunities" label="Damage Immunities" />
-        <uie:PropertyField name="condition-immunities" binding-path="conditionImmunities" label="Condition Immunities" />
-        <uie:PropertyField binding-path="senseRanges" name="sense-ranges" label="Senses" />
-        <ui:Toggle label="Blind" binding-path="blind" name="blind" />
-        <uie:PropertyField name="language-abilities" binding-path="languageAbilities" />
+        <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws"/>
+        <uie:PropertyField binding-path="skillBonuses" name="skill-bonuses" label="Skills"/>
+        <uie:PropertyField name="damage-vulnerabilities" binding-path="damageVulnerabilities"
+                           label="Damage Vulnerabilities"/>
+        <uie:PropertyField name="damage-resistances" binding-path="damageResistances" label="Damage Resistances"/>
+        <uie:PropertyField name="damage-immunities" binding-path="damageImmunities" label="Damage Immunities"/>
+        <uie:PropertyField name="condition-immunities" binding-path="conditionImmunities" label="Condition Immunities"/>
+        <uie:PropertyField binding-path="senseRanges" name="sense-ranges" label="Senses"/>
+        <ui:Toggle binding-path="blind" name="blind" label="Blind"/>
+        <uie:PropertyField name="language-abilities" binding-path="languageAbilities" label="Languages"/>
+        <uie:IntegerField binding-path="telepathyRange" name="telepathy-range" label="Telepathy"/>
+        <ui:VisualElement name="challenge-rating-area" style="flex-direction: row; align-items: center;">
+            <uie:FloatField name="challenge-rating" label="Challenge" binding-path="challengeRating" class="value-field"
+                            style="flex-grow: 1; flex-shrink: 1;"/>
+            <ui:Label display-tooltip-when-elided="true" name="experience-points"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -11,6 +11,13 @@ namespace MonsterQuest.Editor
     public class MonsterTypeInspector : UnityEditor.Editor
     {
         [SerializeField] private VisualTreeAsset layout;
+        private IntegerField _telepathyRangeField;
+        private Toggle _blindToggle;
+
+        private Toggle _languageAbilitiesToggle;
+
+        private Toggle _senseRangesToggle;
+
         private VisualElement _root;
 
         public override VisualElement CreateInspectorGUI()
@@ -30,12 +37,33 @@ namespace MonsterQuest.Editor
         {
             _root.UnregisterCallback<GeometryChangedEvent>(InitialRefresh);
             OnSerializedObjectUpdated(null);
+
+            _blindToggle = _root.Q<Toggle>("blind");
+            _senseRangesToggle = _root.Q("sense-ranges").Q<Toggle>();
+            _senseRangesToggle.RegisterValueChangedCallback(UpdateBlindVisibility);
+            UpdateBlindVisibility(null);
+
+            _telepathyRangeField = _root.Q<IntegerField>("telepathy-range");
+            _languageAbilitiesToggle = _root.Q("language-abilities").Q<Toggle>();
+            _languageAbilitiesToggle.RegisterValueChangedCallback(UpdateTelepathyRangeVisibility);
+            UpdateTelepathyRangeVisibility(null);
+        }
+
+        private void UpdateBlindVisibility(ChangeEvent<bool> _)
+        {
+            _blindToggle.style.display = _senseRangesToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void UpdateTelepathyRangeVisibility(ChangeEvent<bool> _)
+        {
+            _telepathyRangeField.style.display = _languageAbilitiesToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void OnSerializedObjectUpdated(SerializedObject _)
         {
             if (serializedObject.targetObject is not MonsterType monsterType) return;
 
+            UpdateTags(monsterType);
             UpdateSpeed(monsterType);
             UpdateSavingThrowBonuses(monsterType);
             UpdateSkillBonuses(monsterType);
@@ -44,6 +72,22 @@ namespace MonsterQuest.Editor
             UpdateDamageImmunities(monsterType);
             UpdateConditionImmunities(monsterType);
             UpdateSenseRanges(monsterType);
+            UpdateLanguageAbilities(monsterType);
+            UpdateXP(monsterType);
+        }
+
+        private void UpdateTags(MonsterType monsterType)
+        {
+            string description = "";
+
+            if (monsterType.typeTags.Length > 0)
+            {
+                description = $"({string.Join(", ", monsterType.typeTags)})";
+            }
+
+            PropertyField propertyField = _root.Q<PropertyField>("type-tags");
+            Label label = propertyField.Q<Label>(className: "unity-foldout__text");
+            label.text = description;
         }
 
         private void UpdateSpeed(MonsterType monsterType)
@@ -130,6 +174,39 @@ namespace MonsterQuest.Editor
 
             descriptions.Add($"passive Perception {monsterType.passivePerception}");
             UpdateFoldoutLabel("sense-ranges", string.Join(", ", descriptions));
+        }
+
+        private void UpdateLanguageAbilities(MonsterType monsterType)
+        {
+            List<string> descriptions = monsterType.languageAbilities.Where(ability => ability.canSpeak).Select(ability => ability.language.ToString()).ToList();
+            Language[] understoodLanguages = monsterType.languageAbilities.Where(ability => !ability.canSpeak).Select(ability => ability.language).ToArray();
+
+            if (understoodLanguages.Length > 0)
+            {
+                string understoodDescription = $"understands {EnglishHelper.JoinWithAnd(understoodLanguages)} but can't speak";
+
+                if (descriptions.Count > 0)
+                {
+                    understoodDescription += $" {(understoodLanguages.Length == 1 ? "it" : "them")}";
+                }
+
+                descriptions.Add(understoodDescription);
+            }
+
+            if (monsterType.telepathyRange > 0)
+            {
+                descriptions.Add($"telepathy {monsterType.telepathyRange} ft.");
+            }
+
+            if (descriptions.Count == 0) descriptions.Add("—");
+
+            UpdateFoldoutLabel("language-abilities", string.Join(", ", descriptions));
+        }
+
+        private void UpdateXP(MonsterType monsterType)
+        {
+            Label xpLabel = _root.Q<Label>("experience-points");
+            xpLabel.text = $" ({monsterType.experiencePoints} XP)";
         }
 
         private void UpdateFoldoutLabel(string propertyFieldName, string extraText)

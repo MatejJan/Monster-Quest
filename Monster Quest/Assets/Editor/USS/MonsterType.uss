@@ -11,6 +11,7 @@
 
 .property-list .property-value {
     flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .value-field Label {
@@ -25,4 +26,8 @@
 .unity-foldout__text {
     white-space: normal;
     margin-right: 70px;
+}
+
+.property-list .property-value .unity-toggle__label {
+    min-width: auto;
 }
