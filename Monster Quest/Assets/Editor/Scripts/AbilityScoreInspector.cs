@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -7,7 +8,8 @@ namespace MonsterQuest.Editor
     [CustomPropertyDrawer(typeof(AbilityScore))]
     public class AbilityScoreInspector : PropertyDrawer
     {
-        private readonly Label _modifier = new();
+        private Label _modifier;
+        private SerializedProperty _property;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
@@ -19,16 +21,19 @@ namespace MonsterQuest.Editor
             score.AddToClassList("score");
             root.Add(score);
 
+            _modifier = new Label();
             root.Add(_modifier);
-            _modifier.TrackPropertyValue(property, UpdateModifier);
-            UpdateModifier(property);
+
+            _property = property;
+            _modifier.TrackSerializedObjectValue(property.serializedObject, UpdateModifier);
+            UpdateModifier(null);
 
             return root;
         }
 
-        private void UpdateModifier(SerializedProperty property)
+        private void UpdateModifier(SerializedObject _)
         {
-            AbilityScore abilityScore = property.serializedObject as AbilityScore;
+            AbilityScore abilityScore = _property.GetUnderlyingValue() as AbilityScore;
             _modifier.text = $"({abilityScore.modifier:+#;-#;+0})";
         }
     }

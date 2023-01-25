@@ -3,18 +3,27 @@
     <ui:VisualElement name="name" style="margin-bottom: 5px;">
         <ui:TextField picking-mode="Ignore" name="display-name" tooltip="Monster name" binding-path="displayName" text="monster name" style="font-size: 16px; -unity-font-style: bold;" />
     </ui:VisualElement>
-    <ui:VisualElement name="description" style="flex-direction: row; -unity-font-style: italic; margin-bottom: 5px;">
-        <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size" />
-        <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type" />
-        <ui:Label text="," display-tooltip-when-elided="true" />
-        <ui:TextField picking-mode="Ignore" name="alignment" binding-path="alignment" text="lawful good" style="min-width: auto; flex-grow: 1;" />
+    <ui:VisualElement name="description" style="-unity-font-style: italic; margin-bottom: 5px;">
+        <ui:VisualElement name="description-row1" style="flex-direction: row;">
+            <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size" />
+            <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type" />
+            <ui:Label text="," display-tooltip-when-elided="true" />
+            <ui:TextField picking-mode="Ignore" name="alignment" binding-path="alignment" text="lawful good" style="min-width: auto; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="description-row2">
+            <uie:PropertyField binding-path="typeTags" name="type-tags" label="Tags" />
+        </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="statistics">
+    <ui:VisualElement name="statistics1">
         <uie:IntegerField label="Armor Class" value="10" name="armor-class" binding-path="armorClass" style="-unity-font-style: normal; flex-direction: row;" />
         <ui:TextField picking-mode="Ignore" label="Hit Points" text="2d6" name="hit-points-roll" binding-path="hitPointsRoll" />
         <uie:PropertyField binding-path="speed" name="speed" />
     </ui:VisualElement>
-    <ui:VisualElement name="ability-scores-area">
+    <ui:VisualElement name="ability-scores-area" style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
         <uie:PropertyField name="ability-scores" binding-path="abilityScores" />
+    </ui:VisualElement>
+    <ui:VisualElement name="statistics2">
+        <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws" />
+        <uie:PropertyField binding-path="skillBonuses" name="skills" label="Skills" />
     </ui:VisualElement>
 </ui:UXML>
