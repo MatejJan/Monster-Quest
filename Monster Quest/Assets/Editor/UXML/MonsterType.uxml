@@ -15,15 +15,22 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="statistics1">
-        <uie:IntegerField label="Armor Class" value="10" name="armor-class" binding-path="armorClass" style="-unity-font-style: normal; flex-direction: row;" />
-        <ui:TextField picking-mode="Ignore" label="Hit Points" text="2d6" name="hit-points-roll" binding-path="hitPointsRoll" />
-        <uie:PropertyField binding-path="speed" name="speed" />
+        <uie:IntegerField label="Armor Class" value="10" name="armor-class" binding-path="armorClass" class="value-field" style="-unity-font-style: normal; flex-direction: row;" />
+        <ui:TextField picking-mode="Ignore" label="Hit Points" text="2d6" name="hit-points-roll" binding-path="hitPointsRoll" class="value-field" />
+        <uie:PropertyField binding-path="speed" name="speed" label="Speed" />
     </ui:VisualElement>
     <ui:VisualElement name="ability-scores-area" style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
         <uie:PropertyField name="ability-scores" binding-path="abilityScores" />
     </ui:VisualElement>
     <ui:VisualElement name="statistics2">
         <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws" />
-        <uie:PropertyField binding-path="skillBonuses" name="skills" label="Skills" />
+        <uie:PropertyField binding-path="skillBonuses" name="skill-bonuses" label="Skills" />
+        <uie:PropertyField name="damage-vulnerabilities" binding-path="damageVulnerabilities" label="Damage Vulnerabilities" />
+        <uie:PropertyField name="damage-resistances" binding-path="damageResistances" label="Damage Resistances" />
+        <uie:PropertyField name="damage-immunities" binding-path="damageImmunities" label="Damage Immunities" />
+        <uie:PropertyField name="condition-immunities" binding-path="conditionImmunities" label="Condition Immunities" />
+        <uie:PropertyField binding-path="senseRanges" name="sense-ranges" label="Senses" />
+        <ui:Toggle label="Blind" binding-path="blind" name="blind" />
+        <uie:PropertyField name="language-abilities" binding-path="languageAbilities" />
     </ui:VisualElement>
 </ui:UXML>

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -36,6 +37,20 @@ namespace MonsterQuest
         public Sprite bodySprite;
         public float flyHeight;
 
+        // Derived properties
+
+        public int passivePerception
+        {
+            get
+            {
+                SkillBonus perceptionBonus = skillBonuses.FirstOrDefault(bonus => bonus.skill == Skill.Perception);
+
+                return 10 + (perceptionBonus?.amount ?? abilityScores.wisdom.modifier);
+            }
+        }
+
+        // Classes
+
         [Serializable]
         public class Speed
         {
@@ -45,7 +60,6 @@ namespace MonsterQuest
             public float fly;
             public float swim;
             public bool hover;
-            [field: SerializeField] public float teleport { get; set; }
         }
 
         [Serializable]

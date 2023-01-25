@@ -12,3 +12,17 @@
 .property-list .property-value {
     flex-grow: 1;
 }
+
+.value-field Label {
+    -unity-font-style: bold;
+}
+
+.unity-foldout__input {
+    flex-grow: 0;
+    flex-shrink: 1;
+}
+
+.unity-foldout__text {
+    white-space: normal;
+    margin-right: 70px;
+}
