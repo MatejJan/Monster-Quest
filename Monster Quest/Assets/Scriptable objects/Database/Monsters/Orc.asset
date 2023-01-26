@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: orc
   sizeCategory: 3
   typeCategory: 10
-  TypeTags:
+  typeTags:
   - orc
   alignment: chaotic evil
   armorClass: 12

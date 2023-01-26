@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: young red dragon
   sizeCategory: 4
   typeCategory: 5
-  TypeTags: []
+  typeTags: []
   alignment: chaotic evil
   armorClass: 18
   hitPointsRoll: 17d10+85

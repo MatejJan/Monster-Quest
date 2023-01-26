@@ -23,7 +23,7 @@ namespace MonsterQuest
 
         public override string ToString()
         {
-            return $"{roll} {(isExtraDamage ? "extra " : "")}{type.ToString().ToLowerInvariant()} damage";
+            return $"{roll} {(isExtraDamage ? "extra " : "")}{type.ToString().ToLower()} damage";
         }
     }
 }

@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3512b3dfc5bcd490aa06f030db69fa30, type: 3}
   m_Name: Greatsword Melee Weapon Attack
   m_EditorClassIdentifier: 
+  targetType: -1
   damageRolls:
   - <roll>k__BackingField: 2d6
     <type>k__BackingField: 2048
     <isExtraDamage>k__BackingField: 0
+    <savingThrowAbility>k__BackingField: 0
+    <savingThrowDC>k__BackingField: 0
+  attackAbility: 0
+  customAttackModifiers: 0
+  attackRollModifier: 0
+  damageRollModifier: 0
+  displayName: greatsword
+  descriptionVerb: 
+  descriptionObject: 
   reach: 5

@@ -17,7 +17,7 @@ namespace MonsterQuest
 
         public override string ToString()
         {
-            IEnumerable<string> amountParts = amounts.Select(amount => amount.roll.type.ToString().ToLowerInvariant());
+            IEnumerable<string> amountParts = amounts.Select(amount => amount.roll.type.ToString().ToLower());
 
             return $"{EnglishHelper.JoinWithAnd(amountParts)} damage";
         }

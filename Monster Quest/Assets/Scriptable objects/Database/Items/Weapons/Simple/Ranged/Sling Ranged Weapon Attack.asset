@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a45e36a6e6f784221a6fc8fef815868c, type: 3}
   m_Name: Sling Ranged Weapon Attack
   m_EditorClassIdentifier: 
+  targetType: -1
   damageRolls:
   - <roll>k__BackingField: 1d4
     <type>k__BackingField: 2
@@ -22,6 +23,7 @@ MonoBehaviour:
   customAttackModifiers: 0
   attackRollModifier: 0
   damageRollModifier: 0
+  displayName: sling
   descriptionVerb: 
   descriptionObject: 
   range: 30

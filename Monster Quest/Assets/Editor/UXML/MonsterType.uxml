@@ -42,4 +42,29 @@
             <ui:Label display-tooltip-when-elided="true" name="experience-points"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="special-traits-area" class="stat-bloc-section" style="margin-top: 20px; display: none;">
+        <ui:VisualElement name="special-traits"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="actions-area" class="stat-bloc-section">
+        <ui:Label text="Actions" class="title"/>
+        <ui:VisualElement name="actions"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="legendary-actions-area" class="stat-bloc-section" style="display: none;">
+        <ui:Label text="Legendary Actions" class="title"/>
+        <ui:VisualElement name="legendary-actions"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="extra-sections" style="margin-top: 20px;">
+        <ui:VisualElement name="rule-providers" class="extra-section">
+            <ui:Label text="Rule Providers"/>
+            <uie:PropertyField name="effects" binding-path="effects"/>
+            <uie:PropertyField name="items" binding-path="items"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="visuals" class="extra-section">
+            <ui:Label text="Visuals"/>
+            <uie:ObjectField name="body-sprite" binding-path="bodySprite" label="Body Sprite"
+                             type="UnityEngine.Sprite, UnityEngine.CoreModule"/>
+            <uie:FloatField name="fly-height" binding-path="flyHeight" label="Fly Height"/>
+            <ui:Image name="preview" style="max-height: 200px; margin-top: 20px;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

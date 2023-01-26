@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MonsterQuest.Effects;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -25,8 +26,6 @@ namespace MonsterQuest.Editor
             _root = new VisualElement();
             layout.CloneTree(_root);
 
-            //InspectorElement.FillDefaultInspector(root, serializedObject, this);
-
             _root.TrackSerializedObjectValue(serializedObject, OnSerializedObjectUpdated);
             _root.RegisterCallback<GeometryChangedEvent>(InitialRefresh);
 
@@ -51,11 +50,15 @@ namespace MonsterQuest.Editor
 
         private void UpdateBlindVisibility(ChangeEvent<bool> _)
         {
+            if (_senseRangesToggle is null) return;
+
             _blindToggle.style.display = _senseRangesToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void UpdateTelepathyRangeVisibility(ChangeEvent<bool> _)
         {
+            if (_languageAbilitiesToggle is null) return;
+
             _telepathyRangeField.style.display = _languageAbilitiesToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
@@ -73,20 +76,25 @@ namespace MonsterQuest.Editor
             UpdateConditionImmunities(monsterType);
             UpdateSenseRanges(monsterType);
             UpdateLanguageAbilities(monsterType);
-            UpdateXP(monsterType);
+            UpdateExperiencePoints(monsterType);
+            UpdateRules(monsterType);
+            UpdatePreview(monsterType);
         }
 
         private void UpdateTags(MonsterType monsterType)
         {
             string description = "";
 
-            if (monsterType.typeTags.Length > 0)
+            if (monsterType.typeTags?.Length > 0)
             {
                 description = $"({string.Join(", ", monsterType.typeTags)})";
             }
 
             PropertyField propertyField = _root.Q<PropertyField>("type-tags");
             Label label = propertyField.Q<Label>(className: "unity-foldout__text");
+
+            if (label is null) return;
+
             label.text = description;
         }
 
@@ -203,17 +211,54 @@ namespace MonsterQuest.Editor
             UpdateFoldoutLabel("language-abilities", string.Join(", ", descriptions));
         }
 
-        private void UpdateXP(MonsterType monsterType)
+        private void UpdateExperiencePoints(MonsterType monsterType)
         {
-            Label xpLabel = _root.Q<Label>("experience-points");
-            xpLabel.text = $" ({monsterType.experiencePoints} XP)";
+            Label experiencePointsLabel = _root.Q<Label>("experience-points");
+            experiencePointsLabel.text = $" ({monsterType.experiencePoints} XP)";
         }
 
         private void UpdateFoldoutLabel(string propertyFieldName, string extraText)
         {
             PropertyField propertyField = _root.Q<PropertyField>(propertyFieldName);
             Label label = propertyField.Q<Label>(className: "unity-foldout__text");
+
+            if (label is null) return;
+
             label.text = $"<b>{propertyField.label}</b> {extraText}";
+        }
+
+        private void UpdateRules(MonsterType monsterType)
+        {
+            VisualElement actions = _root.Q("actions");
+            actions.Clear();
+
+            IEnumerable<EffectType> effects = monsterType.effects.Concat(monsterType.items.SelectMany(item => item.effects));
+
+            IEnumerable<AttackType> attacks = effects.Where(effect => effect is AttackType).Cast<AttackType>();
+
+            foreach (AttackType attack in attacks)
+            {
+                AddRule(actions, attack.displayName, attack.typeName, attack.description);
+            }
+        }
+
+        private void AddRule(VisualElement parent, string ruleName, string type, string description)
+        {
+            type = type is null ? "" : $" {type}.";
+
+            Label label = new()
+            {
+                text = $"<i><b>{ruleName.ToUpperFirst()}.</b>{type.ToStartCase()}</i> {description}"
+            };
+
+            label.AddToClassList("rule");
+            parent.Add(label);
+        }
+
+        private void UpdatePreview(MonsterType monsterType)
+        {
+            Image preview = _root.Q<Image>("preview");
+            preview.sprite = monsterType.bodySprite;
         }
     }
 }

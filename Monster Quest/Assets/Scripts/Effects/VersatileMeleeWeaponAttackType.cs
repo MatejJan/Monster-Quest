@@ -13,6 +13,15 @@ namespace MonsterQuest.Effects
         {
             return new VersatileMeleeWeaponAttack(this, parent);
         }
+
+        protected override string GetDamageRollDescription(DamageRoll damageRoll, int? damageModifier = null)
+        {
+            string mainDescription = base.GetDamageRollDescription(damageRoll, damageModifier);
+
+            if (damageRoll != damageRolls[0]) return mainDescription;
+
+            return $"{mainDescription}, or {twoHandedDamageRoll}{GetDamageModifierDescription(damageModifier, false)} {damageRoll.type.ToString().ToLower()} damage if used with two hands to make a melee attack";
+        }
     }
 
     [Serializable]

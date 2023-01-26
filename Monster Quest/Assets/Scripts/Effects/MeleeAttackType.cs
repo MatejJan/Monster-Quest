@@ -5,6 +5,11 @@ namespace MonsterQuest.Effects
     public abstract class MeleeAttackType : AttackType
     {
         public int reach = 5;
+
+        protected override string GetDistanceDescription()
+        {
+            return $"reach {reach} ft.";
+        }
     }
 
     [Serializable]

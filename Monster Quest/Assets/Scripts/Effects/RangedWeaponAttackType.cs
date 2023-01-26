@@ -9,6 +9,13 @@ namespace MonsterQuest.Effects
     {
         public int longRange;
 
+        public override string typeName => "ranged weapon attack";
+
+        protected override string GetDistanceDescription()
+        {
+            return $"range {range}/{longRange} ft.";
+        }
+
         public override Effect Create(object parent)
         {
             return new RangedWeaponAttack(this, parent);

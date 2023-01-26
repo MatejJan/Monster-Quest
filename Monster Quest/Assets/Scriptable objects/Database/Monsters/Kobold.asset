@@ -15,7 +15,8 @@ MonoBehaviour:
   displayName: kobold
   sizeCategory: 2
   typeCategory: 10
-  TypeTags: []
+  typeTags:
+  - kobold
   alignment: lawful evil
   armorClass: 12
   hitPointsRoll: 2d6-2

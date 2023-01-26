@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f84c7251e7497da9b346344003b190, type: 3}
   m_Name: Swarm of Poisonous Snakes Bites Swarm Melee Weapon Attack
   m_EditorClassIdentifier: 
+  targetType: 1
   damageRolls:
   - <roll>k__BackingField: 2d6
     <type>k__BackingField: 128
@@ -27,6 +28,7 @@ MonoBehaviour:
   customAttackModifiers: 1
   attackRollModifier: 6
   damageRollModifier: 0
+  displayName: bites
   descriptionVerb: bites
   descriptionObject: 
   reach: 0

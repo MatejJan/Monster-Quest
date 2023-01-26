@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3512b3dfc5bcd490aa06f030db69fa30, type: 3}
   m_Name: Troll Claw Melee Weapon Attack
   m_EditorClassIdentifier: 
+  targetType: 0
   damageRolls:
   - <roll>k__BackingField: 2d6
     <type>k__BackingField: 2048
@@ -22,6 +23,7 @@ MonoBehaviour:
   customAttackModifiers: 0
   attackRollModifier: 0
   damageRollModifier: 0
+  displayName: claw
   descriptionVerb: 
   descriptionObject: its claw
   reach: 5

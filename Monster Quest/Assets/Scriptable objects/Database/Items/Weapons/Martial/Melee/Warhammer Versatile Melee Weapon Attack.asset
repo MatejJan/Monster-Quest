@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbfba0ee3442460eafb648e23c7fab1, type: 3}
   m_Name: Warhammer Versatile Melee Weapon Attack
   m_EditorClassIdentifier: 
+  targetType: -1
   damageRolls:
   - <roll>k__BackingField: 1d8
     <type>k__BackingField: 2
@@ -22,6 +23,7 @@ MonoBehaviour:
   customAttackModifiers: 0
   attackRollModifier: 0
   damageRollModifier: 0
+  displayName: warhammer
   descriptionVerb: 
   descriptionObject: 
   reach: 5

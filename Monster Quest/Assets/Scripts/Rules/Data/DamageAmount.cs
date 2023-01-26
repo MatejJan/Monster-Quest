@@ -58,7 +58,7 @@ namespace MonsterQuest
 
         public override string ToString()
         {
-            return $"{value} {roll.type.ToString().ToLowerInvariant()} damage";
+            return $"{value} {roll.type.ToString().ToLower()} damage";
         }
     }
 }

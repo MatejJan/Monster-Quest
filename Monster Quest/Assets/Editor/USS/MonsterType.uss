@@ -31,3 +31,27 @@
 .property-list .property-value .unity-toggle__label {
     min-width: auto;
 }
+
+.extra-section {
+    margin-top: 10px;
+}
+
+.extra-section > Label {
+    -unity-font-style: bold;
+    margin-bottom: 5px;
+}
+
+.stat-bloc-section {
+    margin-top: 10px;
+}
+
+.stat-bloc-section .title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--unity-colors-default-text);
+}
+
+.rule {
+    white-space: normal;
+}

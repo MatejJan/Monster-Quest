@@ -10,6 +10,22 @@ namespace MonsterQuest.Effects
         {
             return new SwarmMeleeWeaponAttack(this, parent);
         }
+
+        protected override string GetDamageRollDescription(DamageRoll damageRoll, int? damageModifier = null)
+        {
+            string mainDescription = base.GetDamageRollDescription(damageRoll, damageModifier);
+
+            if (damageRoll != damageRolls[0]) return mainDescription;
+
+            DamageRoll halvedDamageRoll = new(DiceHelper.GetRollWithHalfTheDice(damageRoll.roll), damageRoll.type, damageRoll.isExtraDamage, damageRoll.savingThrowAbility, damageRoll.savingThrowDC);
+
+            return $"{mainDescription}, or {GetDamageRollDescription(halvedDamageRoll, damageModifier)} if the swarm has half of its hit points or fewer";
+        }
+
+        protected override string GetTargetDescription()
+        {
+            return $"one {targetType.GetDescription()} in the swarm’s space";
+        }
     }
 
     [Serializable]
