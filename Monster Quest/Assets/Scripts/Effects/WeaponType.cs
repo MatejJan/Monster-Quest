@@ -5,9 +5,29 @@ using UnityEngine;
 namespace MonsterQuest.Effects
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Effects/Weapon")]
-    public class WeaponType : EffectType
+    public class WeaponType : EffectType, IRulesProvider, IInformativeMonsterAttackAttackAbilityRule, IInformativeMonsterAttackAttackRollModifierRule
     {
         public WeaponCategory[] categories;
+
+        public SingleValue<Ability> GetAttackAbility(InformativeMonsterAttackAction attackAction)
+        {
+            // Only provide information for the current weapon.
+            if (!attackAction.weapon.effects.Contains(this)) return null;
+
+            // Melee weapons use Strength, ranged weapons use Dexterity.
+            return new SingleValue<Ability>(this, HasCategory(WeaponCategory.Ranged) ? Ability.Dexterity : Ability.Strength);
+        }
+
+        public IntegerValue GetAttackRollModifier(InformativeMonsterAttackAction attackAction)
+        {
+            // Only provide information for the current weapon.
+            if (!attackAction.weapon.effects.Contains(this)) return null;
+
+            // Assume the monster is proficient with this weapon.
+            return new IntegerValue(this, modifierValue: attackAction.attacker.proficiencyBonus);
+        }
+
+        public string rulesProviderName => name;
 
         public bool HasCategory(WeaponCategory category)
         {

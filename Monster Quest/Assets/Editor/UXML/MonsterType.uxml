@@ -41,6 +41,10 @@
                             style="flex-grow: 1; flex-shrink: 1;"/>
             <ui:Label display-tooltip-when-elided="true" name="experience-points"/>
         </ui:VisualElement>
+        <ui:VisualElement name="proficiency-bonus-area" class="unity-base-field">
+            <ui:Label text="Proficiency Bonus" style="-unity-font-style: bold;" class="unity-base-field__label"/>
+            <ui:Label name="proficiency-bonus"/>
+        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="special-traits-area" class="stat-bloc-section" style="margin-top: 20px; display: none;">
         <ui:VisualElement name="special-traits"/>
@@ -48,6 +52,10 @@
     <ui:VisualElement name="actions-area" class="stat-bloc-section">
         <ui:Label text="Actions" class="title"/>
         <ui:VisualElement name="actions"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="reactions-area" class="stat-bloc-section" style="display: none;">
+        <ui:Label text="Reactions" class="title"/>
+        <ui:VisualElement name="reactions"/>
     </ui:VisualElement>
     <ui:VisualElement name="legendary-actions-area" class="stat-bloc-section" style="display: none;">
         <ui:Label text="Legendary Actions" class="title"/>

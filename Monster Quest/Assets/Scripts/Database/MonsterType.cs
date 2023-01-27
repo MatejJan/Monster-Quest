@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using MonsterQuest.Effects;
 using UnityEngine;
 
 namespace MonsterQuest
 {
     [CreateAssetMenu(fileName = "New Monster", menuName = "Monster")]
-    public class MonsterType : ScriptableObject
+    public class MonsterType : ScriptableObject, IRulesProvider, IInformativeMonsterAttackAttackAbilityRule, IInformativeMonsterAttackAttackRollModifierRule
     {
         // Main stat block
         public string displayName;
@@ -36,8 +37,6 @@ namespace MonsterQuest
         // Visuals
         public Sprite bodySprite;
         public float flyHeight;
-
-        // Derived properties
 
         public int passivePerception
         {
@@ -92,6 +91,30 @@ namespace MonsterQuest
                 };
             }
         }
+
+        public int proficiencyBonus => CreatureRules.GetProficiencyBonus((int)challengeRating);
+
+        public SingleValue<Ability> GetAttackAbility(InformativeMonsterAttackAction attackAction)
+        {
+            // Only provide information for our own inherent (non-weapon) attacks.
+            if (!effects.Contains(attackAction.effect)) return null;
+
+            // Melee attacks use Strength, ranged attacks use Dexterity.
+            return new SingleValue<Ability>(this, attackAction.effect is RangedAttackType ? Ability.Dexterity : Ability.Strength);
+        }
+
+        public IntegerValue GetAttackRollModifier(InformativeMonsterAttackAction attackAction)
+        {
+            // Only provide information for our own inherent (non-weapon) attacks.
+            if (!effects.Contains(attackAction.effect)) return null;
+
+            // Return the proficiency bonus modifier.
+            return new IntegerValue(this, 0, proficiencyBonus);
+        }
+
+        // Derived properties
+
+        public string rulesProviderName => displayName;
 
         // Classes
 

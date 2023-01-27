@@ -35,4 +35,31 @@ namespace MonsterQuest
             return new IntegerValue(this, modifierValue: attackAction.attacker.abilityScores[attackAbility].modifier);
         }
     }
+
+    public class InformativeMonsterAttackAbilityModifier : IInformativeMonsterAttackAttackRollModifierRule, IInformativeMonsterAttackDamageRollModifierRule, IRulesProvider
+    {
+        public IntegerValue GetAttackRollModifier(InformativeMonsterAttackAction attackAction)
+        {
+            return GetAttackModifier(attackAction);
+        }
+
+        public IntegerValue GetDamageRollModifier(InformativeMonsterAttackAction attackAction)
+        {
+            return GetAttackModifier(attackAction);
+        }
+
+        public string rulesProviderName => "attack ability modifier";
+
+        private IntegerValue GetAttackModifier(InformativeMonsterAttackAction attackAction)
+        {
+            // Find which ability was chosen for the modifier.
+            DebugHelper.StartLog("Determining attack ability … ");
+            Ability attackAbility = attackAction.GetRuleValues((IInformativeMonsterAttackAttackAbilityRule rule) => rule.GetAttackAbility(attackAction)).Resolve();
+            DebugHelper.EndLog();
+
+            if (attackAbility == Ability.None) return null;
+
+            return new IntegerValue(this, modifierValue: attackAction.attacker.abilityScores[attackAbility].modifier);
+        }
+    }
 }

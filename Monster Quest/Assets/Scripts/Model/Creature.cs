@@ -58,7 +58,7 @@ namespace MonsterQuest
         public abstract Sprite bodySprite { get; }
         public abstract float flyHeight { get; }
 
-        public int proficiencyBonus => 2 + Math.Max(0, (proficiencyBonusBase - 1) / 4);
+        public int proficiencyBonus => CreatureRules.GetProficiencyBonus(proficiencyBonusBase);
         protected abstract int proficiencyBonusBase { get; }
 
         public bool isAlive => lifeStatus is not LifeStatus.Dead;

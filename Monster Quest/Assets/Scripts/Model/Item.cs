@@ -35,7 +35,7 @@ namespace MonsterQuest
 
         public T GetEffect<T>() where T : Effect
         {
-            return effects.Find(effect => effect is T) as T;
+            return GetEffects<T>().FirstOrDefault();
         }
 
         public IEnumerable<T> GetEffects<T>() where T : Effect

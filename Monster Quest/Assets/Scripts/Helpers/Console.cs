@@ -12,7 +12,7 @@ namespace MonsterQuest
 
         private TextMeshProUGUI _textMeshProUGui;
 
-        public static bool verbose => _instance.verboseOutput;
+        public static bool verbose => _instance is null ? false : _instance.verboseOutput;
 
         private void Awake()
         {

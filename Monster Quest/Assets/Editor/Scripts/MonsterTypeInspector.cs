@@ -12,6 +12,23 @@ namespace MonsterQuest.Editor
     public class MonsterTypeInspector : UnityEditor.Editor
     {
         [SerializeField] private VisualTreeAsset layout;
+
+        private readonly Dictionary<RuleCategory, string> _ruleCategoryVisualElementNames = new()
+        {
+            {
+                RuleCategory.SpecialTrait, "special-traits"
+            },
+            {
+                RuleCategory.Action, "actions"
+            },
+            {
+                RuleCategory.Reaction, "reactions"
+            },
+            {
+                RuleCategory.LegendaryAction, "legendary-actions"
+            }
+        };
+
         private IntegerField _telepathyRangeField;
         private Toggle _blindToggle;
 
@@ -77,6 +94,7 @@ namespace MonsterQuest.Editor
             UpdateSenseRanges(monsterType);
             UpdateLanguageAbilities(monsterType);
             UpdateExperiencePoints(monsterType);
+            UpdateProficiencyBonus(monsterType);
             UpdateRules(monsterType);
             UpdatePreview(monsterType);
         }
@@ -217,6 +235,12 @@ namespace MonsterQuest.Editor
             experiencePointsLabel.text = $" ({monsterType.experiencePoints} XP)";
         }
 
+        private void UpdateProficiencyBonus(MonsterType monsterType)
+        {
+            Label experiencePointsLabel = _root.Q<Label>("proficiency-bonus");
+            experiencePointsLabel.text = $"{monsterType.proficiencyBonus:+#;-#;+0}";
+        }
+
         private void UpdateFoldoutLabel(string propertyFieldName, string extraText)
         {
             PropertyField propertyField = _root.Q<PropertyField>(propertyFieldName);
@@ -229,26 +253,55 @@ namespace MonsterQuest.Editor
 
         private void UpdateRules(MonsterType monsterType)
         {
-            VisualElement actions = _root.Q("actions");
-            actions.Clear();
+            List<RuleDescription> ruleDescriptions = new();
 
-            IEnumerable<EffectType> effects = monsterType.effects.Concat(monsterType.items.SelectMany(item => item.effects));
-
-            IEnumerable<AttackType> attacks = effects.Where(effect => effect is AttackType).Cast<AttackType>();
-
-            foreach (AttackType attack in attacks)
+            foreach (ItemType item in monsterType.items)
             {
-                AddRule(actions, attack.displayName, attack.typeName, attack.description);
+                if (item is null) continue;
+
+                object context = null;
+
+                if (item.HasEffect<WeaponType>())
+                {
+                    context = new InformativeMonsterAttackAction(monsterType, null, item);
+                }
+
+                ruleDescriptions.AddRange(item.GetOwnRuleDescriptions(context));
+            }
+
+            foreach (EffectType effect in monsterType.effects)
+            {
+                if (effect is null) continue;
+
+                object context = null;
+
+                if (effect is AttackType attack)
+                {
+                    context = new InformativeMonsterAttackAction(monsterType, attack, null);
+                }
+
+                ruleDescriptions.AddRange(effect.GetOwnRuleDescriptions(context));
+            }
+
+            foreach (KeyValuePair<RuleCategory, string> ruleCategoryVisualElementNamesEntry in _ruleCategoryVisualElementNames)
+            {
+                VisualElement parent = _root.Q(ruleCategoryVisualElementNamesEntry.Value);
+                parent.Clear();
+
+                foreach (RuleDescription ruleDescription in ruleDescriptions.Where(ruleDescription => ruleDescription.category == ruleCategoryVisualElementNamesEntry.Key))
+                {
+                    AddRuleDescription(parent, ruleDescription);
+                }
             }
         }
 
-        private void AddRule(VisualElement parent, string ruleName, string type, string description)
+        private void AddRuleDescription(VisualElement parent, RuleDescription ruleDescription)
         {
-            type = type is null ? "" : $" {type}.";
+            string type = ruleDescription.type is null ? "" : $" {ruleDescription.type.ToStartCase()}:";
 
             Label label = new()
             {
-                text = $"<i><b>{ruleName.ToUpperFirst()}.</b>{type.ToStartCase()}</i> {description}"
+                text = $"<i><b>{ruleDescription.name.ToStartCase()}.</b>{type}</i> {ruleDescription.description}"
             };
 
             label.AddToClassList("rule");

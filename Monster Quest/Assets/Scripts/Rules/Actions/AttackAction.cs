@@ -183,11 +183,11 @@ namespace MonsterQuest
                 if (!damageRoll.isExtraDamage)
                 {
                     DebugHelper.StartLog("Determining damage modifiers … ");
-                    int damageModifier = gameState.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
+                    int damageRollModifier = gameState.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
                     DebugHelper.EndLog();
 
                     // The resulting amount cannot be negative.
-                    amount = Math.Max(0, amount + damageModifier);
+                    amount = Math.Max(0, amount + damageRollModifier);
                 }
 
                 // Create the damage.

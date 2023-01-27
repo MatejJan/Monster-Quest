@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MonsterQuest.Effects
 {
-    public abstract class AttackType : EffectType
+    public abstract class AttackType : EffectType, IRulesProvider, IRuleDescriptionsProvider
     {
         public TargetType targetType;
         public DamageRoll[] damageRolls;
@@ -20,9 +20,27 @@ namespace MonsterQuest.Effects
         public string descriptionObject;
 
         public virtual string typeName => "attack";
-        public string description => GetDescription();
 
-        public string GetDescription(int? attackerAttackRollModifier = null, int? attackerDamageRollModifier = null)
+        public ArrayValue<RuleDescription> GetRuleDescriptions(object context = null)
+        {
+            int? attackerAttackRollModifier = null;
+            int? attackerDamageRollModifier = null;
+
+            if (context is InformativeMonsterAttackAction attackAction)
+            {
+                attackerAttackRollModifier = attackAction.GetRuleValues((IInformativeMonsterAttackAttackRollModifierRule rule) => rule.GetAttackRollModifier(attackAction)).Resolve();
+                attackerDamageRollModifier = attackAction.GetRuleValues((IInformativeMonsterAttackDamageRollModifierRule rule) => rule.GetDamageRollModifier(attackAction)).Resolve();
+            }
+
+            return new ArrayValue<RuleDescription>(this, new[]
+            {
+                GetRuleDescription(attackerAttackRollModifier, attackerDamageRollModifier)
+            });
+        }
+
+        public string rulesProviderName => displayName;
+
+        public RuleDescription GetRuleDescription(int? attackerAttackRollModifier = null, int? attackerDamageRollModifier = null)
         {
             List<string> descriptionParts = new();
 
@@ -52,12 +70,14 @@ namespace MonsterQuest.Effects
 
             if (damageRollDescriptions.Length == 0) return null;
 
-            string hitDescription = $"{damageRollDescriptions[0]}.";
+            string hitDescription = damageRollDescriptions[0];
 
             if (damageRollDescriptions.Length > 1)
             {
-                hitDescription += $", plus {EnglishHelper.JoinWithAnd(damageRollDescriptions[1..])}.";
+                hitDescription += $", plus {EnglishHelper.JoinWithAnd(damageRollDescriptions[1..])}";
             }
+
+            hitDescription += ".";
 
             foreach (DamageRoll damageRoll in savingThrowDamageRolls)
             {
@@ -65,7 +85,9 @@ namespace MonsterQuest.Effects
             }
 
             // Return combined description.
-            return $"{string.Join(", ", descriptionParts).ToUpperFirst()}. Hit: {hitDescription}";
+            string description = $"{string.Join(", ", descriptionParts).ToUpperFirst()}. Hit: {hitDescription}";
+
+            return new RuleDescription(RuleCategory.Action, displayName, typeName, description);
         }
 
         protected virtual string GetDistanceDescription()

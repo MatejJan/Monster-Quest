@@ -54,4 +54,5 @@
 
 .rule {
     white-space: normal;
+    margin-top: 5px;
 }

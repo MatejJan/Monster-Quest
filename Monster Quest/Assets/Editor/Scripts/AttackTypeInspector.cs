@@ -37,7 +37,9 @@ namespace MonsterQuest.Editor
         {
             if (serializedObject.targetObject is not AttackType attack) return;
 
-            _descriptionLabel.text = $"<i><b>{attack.displayName.ToUpperFirst()}.</b> {attack.typeName.ToStartCase()}.</i> {attack.description}";
+            RuleDescription ruleDescription = attack.GetRuleDescription();
+
+            _descriptionLabel.text = $"<i><b>{ruleDescription.name.ToStartCase()}.</b> {ruleDescription.type.ToStartCase()}.</i> {ruleDescription.description}";
         }
     }
 }
