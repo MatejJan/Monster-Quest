@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: bat
   sizeCategory: 1
   typeCategory: 2
-  TypeTags: []
+  typeTags: []
   alignment: unaligned
   armorClass: 12
   hitPointsRoll: 1d4-1

@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: giant bat
   sizeCategory: 4
   typeCategory: 2
-  TypeTags: []
+  typeTags: []
   alignment: unaligned
   armorClass: 13
   hitPointsRoll: 4d10

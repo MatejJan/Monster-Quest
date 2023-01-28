@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: giant eagle
   sizeCategory: 4
   typeCategory: 2
-  TypeTags: []
+  typeTags: []
   alignment: neutral good
   armorClass: 13
   hitPointsRoll: 4d10+4

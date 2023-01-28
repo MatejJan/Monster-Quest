@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: giant crab
   sizeCategory: 3
   typeCategory: 2
-  TypeTags: []
+  typeTags: []
   alignment: unaligned
   armorClass: 15
   hitPointsRoll: 3d8

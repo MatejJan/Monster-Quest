@@ -56,3 +56,28 @@
     white-space: normal;
     margin-top: 5px;
 }
+
+#display-name-autocomplete {
+    background-color: var(--unity-colors-default-background);
+    position: absolute;
+    top: 25px;
+    border-top-left-radius: var(--unity-metrics-default-border_radius);
+    border-bottom-left-radius: var(--unity-metrics-default-border_radius);
+    border-top-right-radius: var(--unity-metrics-default-border_radius);
+    border-bottom-right-radius: var(--unity-metrics-default-border_radius);
+    border-left-color: var(--unity-colors-default-border);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-color: var(--unity-colors-default-border);
+    border-top-color: var(--unity-colors-default-border);
+    border-bottom-color: var(--unity-colors-default-border);
+    left: 3px;
+    right: 3px;
+    display: none;
+}
+
+#display-name-autocomplete .entry:hover {
+    background-color: var(--unity-colors-highlight-background-hover);
+}

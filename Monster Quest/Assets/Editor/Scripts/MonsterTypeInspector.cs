@@ -29,12 +29,18 @@ namespace MonsterQuest.Editor
             }
         };
 
+        private bool _displayNameAutocompleteHovered;
+
         private IntegerField _telepathyRangeField;
+
+        private TextField _displayNameField;
+
         private Toggle _blindToggle;
 
         private Toggle _languageAbilitiesToggle;
 
         private Toggle _senseRangesToggle;
+        private VisualElement _displayNameAutocomplete;
 
         private VisualElement _root;
 
@@ -44,14 +50,64 @@ namespace MonsterQuest.Editor
             layout.CloneTree(_root);
 
             _root.TrackSerializedObjectValue(serializedObject, OnSerializedObjectUpdated);
-            _root.RegisterCallback<GeometryChangedEvent>(InitialRefresh);
+            _root.RegisterCallback<GeometryChangedEvent>(OnRootGeometryChanged);
+
+            _displayNameField = _root.Q<TextField>("display-name");
+            _displayNameField.RegisterValueChangedCallback(OnDisplayNameChanged);
+            _displayNameField.RegisterCallback<FocusEvent>(OnDisplayNameFocus);
+            _displayNameField.RegisterCallback<BlurEvent>(OnDisplayNameBlur);
+
+            _displayNameAutocomplete = _root.Q<VisualElement>("display-name-autocomplete");
+            _displayNameAutocomplete.RegisterCallback<MouseEnterEvent>(OnDisplayNameAutocompleteMouseEnter);
+            _displayNameAutocomplete.RegisterCallback<MouseLeaveEvent>(OnDisplayNameAutocompleteMouseLeave);
+
+            Button importButton = _root.Q<Button>("import-button");
+            importButton.RegisterCallback<ClickEvent>(OnImportButtonClick);
+
+            MonsterTypeImporter.Initialize();
 
             return _root;
         }
 
-        private void InitialRefresh(GeometryChangedEvent _)
+        private void OnDisplayNameChanged(ChangeEvent<string> _)
         {
-            _root.UnregisterCallback<GeometryChangedEvent>(InitialRefresh);
+            UpdateDisplayNameAutocomplete();
+        }
+
+        private void OnDisplayNameFocus(FocusEvent _)
+        {
+            UpdateDisplayNameAutocomplete();
+            ShowDisplayNameAutocomplete();
+        }
+
+        private void OnDisplayNameBlur(BlurEvent _)
+        {
+            if (!_displayNameAutocompleteHovered)
+            {
+                HideDisplayNameAutocomplete();
+            }
+        }
+
+        private void OnDisplayNameAutocompleteMouseEnter(MouseEnterEvent _)
+        {
+            _displayNameAutocompleteHovered = true;
+        }
+
+        private void OnDisplayNameAutocompleteMouseLeave(MouseLeaveEvent _)
+        {
+            _displayNameAutocompleteHovered = false;
+        }
+
+        private void OnRootGeometryChanged(GeometryChangedEvent _)
+        {
+            _root.UnregisterCallback<GeometryChangedEvent>(OnRootGeometryChanged);
+            InitialRefresh();
+        }
+
+        private void OnImportButtonClick(ClickEvent _) { }
+
+        private void InitialRefresh()
+        {
             OnSerializedObjectUpdated(null);
 
             _blindToggle = _root.Q<Toggle>("blind");
@@ -77,6 +133,41 @@ namespace MonsterQuest.Editor
             if (_languageAbilitiesToggle is null) return;
 
             _telepathyRangeField.style.display = _languageAbilitiesToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void UpdateDisplayNameAutocomplete()
+        {
+            if (serializedObject.targetObject is not MonsterType monsterType) return;
+
+            _displayNameAutocomplete.Clear();
+
+            foreach (string monsterName in MonsterTypeImporter.GetMatchingMonsterNames(monsterType.displayName))
+            {
+                Label label = new()
+                {
+                    text = monsterName
+                };
+
+                label.AddToClassList("entry");
+
+                label.RegisterCallback<ClickEvent>(clickEvent =>
+                {
+                    monsterType.displayName = monsterName.ToLower();
+                    HideDisplayNameAutocomplete();
+                });
+
+                _displayNameAutocomplete.Add(label);
+            }
+        }
+
+        private void ShowDisplayNameAutocomplete()
+        {
+            _displayNameAutocomplete.style.display = DisplayStyle.Flex;
+        }
+
+        private void HideDisplayNameAutocomplete()
+        {
+            _displayNameAutocomplete.style.display = DisplayStyle.None;
         }
 
         private void OnSerializedObjectUpdated(SerializedObject _)
