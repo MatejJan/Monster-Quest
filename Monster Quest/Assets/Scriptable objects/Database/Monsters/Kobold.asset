@@ -15,18 +15,17 @@ MonoBehaviour:
   displayName: kobold
   sizeCategory: 2
   typeCategory: 10
-  typeTags:
-  - kobold
+  subtype: kobold
   alignment: lawful evil
   armorClass: 12
   hitPointsRoll: 2d6-2
   speed:
-    walk: 30
-    burrow: 0
-    climb: 0
-    fly: 0
-    swim: 0
-    hover: 0
+    <walk>k__BackingField: 30
+    <burrow>k__BackingField: 0
+    <climb>k__BackingField: 0
+    <fly>k__BackingField: 0
+    <swim>k__BackingField: 0
+    <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
       <score>k__BackingField: 7

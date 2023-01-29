@@ -16,6 +16,7 @@ namespace MonsterQuest
         Prone,
         Restrained,
         Stunned,
-        Unconscious
+        Unconscious,
+        Exhaustion
     }
 }

@@ -8,6 +8,7 @@ namespace MonsterQuest
     {
         public string displayName;
         public SizeCategory sizeCategory;
+        public Speed speed;
 
         public override Effect Create(object parent)
         {

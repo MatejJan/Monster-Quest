@@ -1,75 +1,79 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/USS/MonsterType.uss?fileID=7433441132597879392&amp;guid=e8495f5dfc979473387bee201e60f241&amp;type=3#MonsterType" />
+    <Style src="project://database/Assets/Editor/USS/MonsterType.uss?fileID=7433441132597879392&amp;guid=e8495f5dfc979473387bee201e60f241&amp;type=3#MonsterType"/>
     <ui:VisualElement name="name" style="margin-bottom: 5px; flex-direction: row;">
-        <ui:TextField name="display-name" binding-path="displayName" style="font-size: 16px; -unity-font-style: bold; flex-grow: 1;" />
-        <ui:Button text="Import" display-tooltip-when-elided="true" name="import-button" />
+        <ui:TextField name="display-name" binding-path="displayName"
+                      style="font-size: 16px; -unity-font-style: bold; flex-grow: 1;"/>
+        <ui:Button text="Import" display-tooltip-when-elided="true" name="import-button"/>
     </ui:VisualElement>
-    <ui:VisualElement name="description" style="-unity-font-style: italic; margin-bottom: 5px;">
+    <ui:VisualElement name="description">
         <ui:VisualElement name="description-row1" style="flex-direction: row;">
-            <uie:EnumField binding-path="sizeCategory" name="size" tooltip="Size" />
-            <uie:EnumField binding-path="typeCategory" name="type" tooltip="Type" />
-            <ui:Label text="," display-tooltip-when-elided="true" />
-            <ui:TextField name="alignment" binding-path="alignment" style="min-width: auto; flex-grow: 1;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="description-row2">
-            <uie:PropertyField binding-path="typeTags" name="type-tags" />
+            <uie:EnumField binding-path="sizeCategory" name="size"/>
+            <uie:EnumField binding-path="typeCategory" name="type"/>
+            <ui:Label text="(" display-tooltip-when-elided="true"/>
+            <ui:TextField binding-path="subtype" name="subtype"/>
+            <ui:Label text=")," display-tooltip-when-elided="true"/>
+            <ui:TextField name="alignment" binding-path="alignment" style="min-width: auto; flex-grow: 1;"/>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="statistics1">
-        <uie:IntegerField label="Armor Class" name="armor-class" binding-path="armorClass" class="value-field" />
-        <ui:TextField label="Hit Points" name="hit-points-roll" binding-path="hitPointsRoll" class="value-field" />
-        <uie:PropertyField binding-path="speed" name="speed" label="Speed" />
+        <uie:IntegerField label="Armor Class" name="armor-class" binding-path="armorClass" class="value-field"/>
+        <ui:TextField label="Hit Points" name="hit-points-roll" binding-path="hitPointsRoll" class="value-field"/>
+        <uie:PropertyField binding-path="speed" name="speed" label="Speed"/>
     </ui:VisualElement>
-    <ui:VisualElement name="ability-scores-area" style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
-        <uie:PropertyField name="ability-scores" binding-path="abilityScores" />
+    <ui:VisualElement name="ability-scores-area"
+                      style="margin-top: 5px; margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
+        <uie:PropertyField name="ability-scores" binding-path="abilityScores"/>
     </ui:VisualElement>
     <ui:VisualElement name="statistics2">
-        <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws" />
-        <uie:PropertyField binding-path="skillBonuses" name="skill-bonuses" label="Skills" />
-        <uie:PropertyField name="damage-vulnerabilities" binding-path="damageVulnerabilities" label="Damage Vulnerabilities" />
-        <uie:PropertyField name="damage-resistances" binding-path="damageResistances" label="Damage Resistances" />
-        <uie:PropertyField name="damage-immunities" binding-path="damageImmunities" label="Damage Immunities" />
-        <uie:PropertyField name="condition-immunities" binding-path="conditionImmunities" label="Condition Immunities" />
-        <uie:PropertyField binding-path="senseRanges" name="sense-ranges" label="Senses" />
-        <ui:Toggle binding-path="blind" name="blind" label="Blind" />
-        <uie:PropertyField name="language-abilities" binding-path="languageAbilities" label="Languages" />
-        <uie:IntegerField binding-path="telepathyRange" name="telepathy-range" label="Telepathy" />
+        <uie:PropertyField binding-path="savingThrowBonuses" name="saving-throw-bonuses" label="Saving Throws"/>
+        <uie:PropertyField binding-path="skillBonuses" name="skill-bonuses" label="Skills"/>
+        <uie:PropertyField name="damage-vulnerabilities" binding-path="damageVulnerabilities"
+                           label="Damage Vulnerabilities"/>
+        <uie:PropertyField name="damage-resistances" binding-path="damageResistances" label="Damage Resistances"/>
+        <uie:PropertyField name="damage-immunities" binding-path="damageImmunities" label="Damage Immunities"/>
+        <uie:PropertyField name="condition-immunities" binding-path="conditionImmunities" label="Condition Immunities"/>
+        <uie:PropertyField binding-path="senseRanges" name="sense-ranges" label="Senses"/>
+        <ui:Toggle binding-path="blind" name="blind" label="Blind"/>
+        <uie:PropertyField name="language-abilities" binding-path="languageAbilities" label="Languages"/>
+        <uie:IntegerField binding-path="telepathyRange" name="telepathy-range" label="Telepathy"/>
         <ui:VisualElement name="challenge-rating-area" style="flex-direction: row; align-items: center;">
-            <uie:FloatField name="challenge-rating" label="Challenge" binding-path="challengeRating" class="value-field" style="flex-grow: 1; flex-shrink: 1;" />
-            <ui:Label display-tooltip-when-elided="true" name="experience-points" />
+            <uie:FloatField name="challenge-rating" label="Challenge" binding-path="challengeRating" class="value-field"
+                            style="flex-grow: 1; flex-shrink: 1;"/>
+            <ui:Label display-tooltip-when-elided="true" name="experience-points"/>
         </ui:VisualElement>
         <ui:VisualElement name="proficiency-bonus-area" class="unity-base-field">
-            <ui:Label text="Proficiency Bonus" class="unity-base-field__label" style="-unity-font-style: bold;" />
-            <ui:Label name="proficiency-bonus" />
+            <ui:Label text="Proficiency Bonus" class="unity-base-field__label" style="-unity-font-style: bold;"/>
+            <ui:Label name="proficiency-bonus"/>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="special-traits-area" class="stat-bloc-section" style="margin-top: 20px; display: none;">
-        <ui:VisualElement name="special-traits" />
+        <ui:VisualElement name="special-traits"/>
     </ui:VisualElement>
     <ui:VisualElement name="actions-area" class="stat-bloc-section">
-        <ui:Label text="Actions" class="title" />
-        <ui:VisualElement name="actions" />
+        <ui:Label text="Actions" class="title"/>
+        <ui:VisualElement name="actions"/>
     </ui:VisualElement>
     <ui:VisualElement name="reactions-area" class="stat-bloc-section" style="display: none;">
-        <ui:Label text="Reactions" class="title" />
-        <ui:VisualElement name="reactions" />
+        <ui:Label text="Reactions" class="title"/>
+        <ui:VisualElement name="reactions"/>
     </ui:VisualElement>
     <ui:VisualElement name="legendary-actions-area" class="stat-bloc-section" style="display: none;">
-        <ui:Label text="Legendary Actions" class="title" />
-        <ui:VisualElement name="legendary-actions" />
+        <ui:Label text="Legendary Actions" class="title"/>
+        <ui:VisualElement name="legendary-actions"/>
     </ui:VisualElement>
     <ui:VisualElement name="extra-sections" style="margin-top: 20px;">
         <ui:VisualElement name="rule-providers" class="extra-section">
-            <ui:Label text="Rule Providers" />
-            <uie:PropertyField name="effects" binding-path="effects" />
-            <uie:PropertyField name="items" binding-path="items" />
+            <ui:Label text="Rule Providers"/>
+            <uie:PropertyField name="effects" binding-path="effects"/>
+            <uie:PropertyField name="items" binding-path="items"/>
         </ui:VisualElement>
         <ui:VisualElement name="visuals" class="extra-section">
-            <ui:Label text="Visuals" />
-            <uie:ObjectField name="body-sprite" binding-path="bodySprite" label="Body Sprite" type="UnityEngine.Sprite, UnityEngine.CoreModule" />
-            <uie:FloatField name="fly-height" binding-path="flyHeight" label="Fly Height" />
-            <ui:Image name="preview" style="max-height: 200px; margin-top: 20px;" />
+            <ui:Label text="Visuals"/>
+            <uie:ObjectField name="body-sprite" binding-path="bodySprite" label="Body Sprite"
+                             type="UnityEngine.Sprite, UnityEngine.CoreModule"/>
+            <uie:FloatField name="fly-height" binding-path="flyHeight" label="Fly Height"/>
+            <ui:Image name="preview" style="max-height: 200px; margin-top: 20px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:ScrollView name="display-name-autocomplete" style="max-height: 200px;" />
+    <ui:ScrollView name="display-name-autocomplete" style="max-height: 200px;"/>
 </ui:UXML>

@@ -15,8 +15,7 @@ MonoBehaviour:
   displayName: orc
   sizeCategory: 3
   typeCategory: 10
-  typeTags:
-  - orc
+  subtype: orc
   alignment: chaotic evil
   armorClass: 12
   hitPointsRoll: 2d8+6

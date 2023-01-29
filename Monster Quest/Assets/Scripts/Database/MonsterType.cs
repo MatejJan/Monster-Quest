@@ -12,7 +12,7 @@ namespace MonsterQuest
         public string displayName;
         public SizeCategory sizeCategory;
         public MonsterTypeCategory typeCategory;
-        public string[] typeTags;
+        public string subtype;
         public string alignment;
         public int armorClass;
         public string hitPointsRoll;
@@ -117,17 +117,6 @@ namespace MonsterQuest
         public string rulesProviderName => displayName;
 
         // Classes
-
-        [Serializable]
-        public class Speed
-        {
-            public float walk;
-            public float burrow;
-            public float climb;
-            public float fly;
-            public float swim;
-            public bool hover;
-        }
 
         [Serializable]
         public class SavingThrowBonus

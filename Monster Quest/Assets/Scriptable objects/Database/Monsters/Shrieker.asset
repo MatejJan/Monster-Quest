@@ -10,50 +10,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Swarm of Poisonous Snakes
+  m_Name: Shrieker
   m_EditorClassIdentifier: 
-  displayName: swarm of poisonous snakes
+  displayName: shrieker
   sizeCategory: 3
-  typeCategory: 2
+  typeCategory: 13
   subtype: 
   alignment: unaligned
-  armorClass: 14
-  hitPointsRoll: 8d8
+  armorClass: 5
+  hitPointsRoll: 3d8
   speed:
-    <walk>k__BackingField: 30
+    <walk>k__BackingField: 0
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
     <fly>k__BackingField: 0
-    <swim>k__BackingField: 30
+    <swim>k__BackingField: 0
     <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 8
+      <score>k__BackingField: 1
     <dexterity>k__BackingField:
-      <score>k__BackingField: 18
+      <score>k__BackingField: 1
     <constitution>k__BackingField:
-      <score>k__BackingField: 11
+      <score>k__BackingField: 10
     <intelligence>k__BackingField:
       <score>k__BackingField: 1
     <wisdom>k__BackingField:
-      <score>k__BackingField: 10
-    <charisma>k__BackingField:
       <score>k__BackingField: 3
+    <charisma>k__BackingField:
+      <score>k__BackingField: 1
   savingThrowBonuses: []
   skillBonuses: []
   damageVulnerabilities: 
-  damageResistances: 020000008000000000080000
+  damageResistances: 
   damageImmunities: 
-  conditionImmunities: 02000000040000000500000008000000090000000b0000000c0000000d000000
+  conditionImmunities: 010000000100000004000000
   senseRanges:
   - sense: 1
-    range: 10
-  blind: 0
+    range: 30
+  blind: 1
   languageAbilities: []
   telepathyRange: 0
-  challengeRating: 2
-  effects:
-  - {fileID: 11400000, guid: 1241b8a73e06849f2b01fa41209e2cfb, type: 2}
+  challengeRating: 0
+  effects: []
   items: []
-  bodySprite: {fileID: 21300000, guid: 6e6d8b6cdad08421dbcc5788ae20f90c, type: 3}
+  bodySprite: {fileID: 0}
   flyHeight: 0

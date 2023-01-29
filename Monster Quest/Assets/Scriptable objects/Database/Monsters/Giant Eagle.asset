@@ -15,17 +15,17 @@ MonoBehaviour:
   displayName: giant eagle
   sizeCategory: 4
   typeCategory: 2
-  typeTags: []
+  subtype: 
   alignment: neutral good
   armorClass: 13
   hitPointsRoll: 4d10+4
   speed:
-    walk: 10
-    burrow: 0
-    climb: 0
-    fly: 80
-    swim: 0
-    hover: 0
+    <walk>k__BackingField: 10
+    <burrow>k__BackingField: 0
+    <climb>k__BackingField: 0
+    <fly>k__BackingField: 80
+    <swim>k__BackingField: 0
+    <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
       <score>k__BackingField: 16

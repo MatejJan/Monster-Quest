@@ -104,7 +104,12 @@ namespace MonsterQuest.Editor
             InitialRefresh();
         }
 
-        private void OnImportButtonClick(ClickEvent _) { }
+        private void OnImportButtonClick(ClickEvent _)
+        {
+            if (serializedObject.targetObject is not MonsterType monsterType) return;
+
+            MonsterTypeImporter.ImportData(monsterType);
+        }
 
         private void InitialRefresh()
         {
@@ -138,6 +143,7 @@ namespace MonsterQuest.Editor
         private void UpdateDisplayNameAutocomplete()
         {
             if (serializedObject.targetObject is not MonsterType monsterType) return;
+            if (monsterType.displayName is null) return;
 
             _displayNameAutocomplete.Clear();
 
@@ -174,7 +180,6 @@ namespace MonsterQuest.Editor
         {
             if (serializedObject.targetObject is not MonsterType monsterType) return;
 
-            UpdateTags(monsterType);
             UpdateSpeed(monsterType);
             UpdateSavingThrowBonuses(monsterType);
             UpdateSkillBonuses(monsterType);
@@ -188,23 +193,6 @@ namespace MonsterQuest.Editor
             UpdateProficiencyBonus(monsterType);
             UpdateRules(monsterType);
             UpdatePreview(monsterType);
-        }
-
-        private void UpdateTags(MonsterType monsterType)
-        {
-            string description = "";
-
-            if (monsterType.typeTags?.Length > 0)
-            {
-                description = $"({string.Join(", ", monsterType.typeTags)})";
-            }
-
-            PropertyField propertyField = _root.Q<PropertyField>("type-tags");
-            Label label = propertyField.Q<Label>(className: "unity-foldout__text");
-
-            if (label is null) return;
-
-            label.text = description;
         }
 
         private void UpdateSpeed(MonsterType monsterType)
@@ -241,42 +229,67 @@ namespace MonsterQuest.Editor
 
         private void UpdateSavingThrowBonuses(MonsterType monsterType)
         {
+            if (monsterType.savingThrowBonuses is null) return;
+
             IEnumerable<string> descriptions = monsterType.savingThrowBonuses.Select(bonus => $"{bonus.ability.ToString()[..3]} {bonus.amount:+#;-#;+0}");
             UpdateFoldoutLabel("saving-throw-bonuses", string.Join(", ", descriptions));
         }
 
         private void UpdateSkillBonuses(MonsterType monsterType)
         {
+            if (monsterType.skillBonuses is null) return;
+
             IEnumerable<string> descriptions = monsterType.skillBonuses.Select(bonus => $"{bonus.skill} {bonus.amount:+#;-#;+0}");
             UpdateFoldoutLabel("skill-bonuses", string.Join(", ", descriptions));
         }
 
         private void UpdateDamageVulnerabilities(MonsterType monsterType)
         {
-            IEnumerable<string> descriptions = monsterType.damageVulnerabilities.Select(damageType => damageType.ToString().ToLower());
-            UpdateFoldoutLabel("damage-vulnerabilities", string.Join(", ", descriptions));
+            if (monsterType.damageVulnerabilities is null) return;
+
+            UpdateFoldoutLabel("damage-vulnerabilities", GetDamageTypeDescription(monsterType.damageVulnerabilities));
         }
 
         private void UpdateDamageResistances(MonsterType monsterType)
         {
-            IEnumerable<string> descriptions = monsterType.damageResistances.Select(damageType => damageType.ToString().ToLower());
-            UpdateFoldoutLabel("damage-resistances", string.Join(", ", descriptions));
+            if (monsterType.damageResistances is null) return;
+
+            UpdateFoldoutLabel("damage-resistances", GetDamageTypeDescription(monsterType.damageResistances));
         }
 
         private void UpdateDamageImmunities(MonsterType monsterType)
         {
-            IEnumerable<string> descriptions = monsterType.damageImmunities.Select(damageType => damageType.ToString().ToLower());
-            UpdateFoldoutLabel("damage-immunities", string.Join(", ", descriptions));
+            if (monsterType.damageImmunities is null) return;
+
+            UpdateFoldoutLabel("damage-immunities", GetDamageTypeDescription(monsterType.damageImmunities));
+        }
+
+        private string GetDamageTypeDescription(DamageType[] damageTypes)
+        {
+            DamageType[] normalDamageTypes = damageTypes.Where(damageType => (damageType & DamageType.Nonmagical) != DamageType.Nonmagical && (damageType & DamageType.Magical) != DamageType.Magical).ToArray();
+            DamageType[] nonMagicalDamageTypes = damageTypes.Where(damageType => (damageType & DamageType.Nonmagical) == DamageType.Nonmagical).Select(damageType => damageType & ~DamageType.Nonmagical).ToArray();
+            DamageType[] magicalDamageTypes = damageTypes.Where(damageType => (damageType & DamageType.Magical) == DamageType.Magical).Select(damageType => damageType & ~DamageType.Magical).ToArray();
+
+            List<string> descriptionParts = new();
+            if (normalDamageTypes.Length > 0) descriptionParts.Add(string.Join(", ", normalDamageTypes).ToLower());
+            if (nonMagicalDamageTypes.Length > 0) descriptionParts.Add($"{string.Join(", ", nonMagicalDamageTypes).ToLower()} from nonmagical attacks");
+            if (magicalDamageTypes.Length > 0) descriptionParts.Add($"{string.Join(", ", magicalDamageTypes).ToLower()} from magical attacks");
+
+            return string.Join(", ", descriptionParts);
         }
 
         private void UpdateConditionImmunities(MonsterType monsterType)
         {
+            if (monsterType.conditionImmunities is null) return;
+
             IEnumerable<string> descriptions = monsterType.conditionImmunities.Select(damageType => damageType.ToString().ToLower());
             UpdateFoldoutLabel("condition-immunities", string.Join(", ", descriptions));
         }
 
         private void UpdateSenseRanges(MonsterType monsterType)
         {
+            if (monsterType.senseRanges is null) return;
+
             List<string> descriptions = monsterType.senseRanges.Select(senseRange => $"{senseRange.sense.ToString().ToLower()} {senseRange.range} ft.").ToList();
 
             if (monsterType.blind)
@@ -295,6 +308,8 @@ namespace MonsterQuest.Editor
 
         private void UpdateLanguageAbilities(MonsterType monsterType)
         {
+            if (monsterType.languageAbilities is null) return;
+
             List<string> descriptions = monsterType.languageAbilities.Where(ability => ability.canSpeak).Select(ability => ability.language.ToString()).ToList();
             Language[] understoodLanguages = monsterType.languageAbilities.Where(ability => !ability.canSpeak).Select(ability => ability.language).ToArray();
 
@@ -344,6 +359,8 @@ namespace MonsterQuest.Editor
 
         private void UpdateRules(MonsterType monsterType)
         {
+            if (monsterType.items is null) return;
+
             List<RuleDescription> ruleDescriptions = new();
 
             foreach (ItemType item in monsterType.items)

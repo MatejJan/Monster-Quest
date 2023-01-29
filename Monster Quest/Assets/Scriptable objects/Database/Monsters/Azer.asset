@@ -15,17 +15,17 @@ MonoBehaviour:
   displayName: azer
   sizeCategory: 3
   typeCategory: 6
-  typeTags: []
+  subtype: 
   alignment: lawful neutral
   armorClass: 15
   hitPointsRoll: 6d8+12
   speed:
-    walk: 30
-    burrow: 0
-    climb: 0
-    fly: 0
-    swim: 0
-    hover: 0
+    <walk>k__BackingField: 30
+    <burrow>k__BackingField: 0
+    <climb>k__BackingField: 0
+    <fly>k__BackingField: 0
+    <swim>k__BackingField: 0
+    <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
       <score>k__BackingField: 17
