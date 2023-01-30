@@ -17,7 +17,7 @@ MonoBehaviour:
   typeCategory: 6
   subtype: 
   alignment: lawful neutral
-  armorClass: 15
+  armorClass: 17
   hitPointsRoll: 6d8+12
   speed:
     <walk>k__BackingField: 30
