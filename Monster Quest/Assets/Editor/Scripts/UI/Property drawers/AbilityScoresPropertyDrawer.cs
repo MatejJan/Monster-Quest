@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomPropertyDrawer(typeof(AbilityScores))]
-    public class AbilityScoresInspector : PropertyDrawer
+    public class AbilityScoresPropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {

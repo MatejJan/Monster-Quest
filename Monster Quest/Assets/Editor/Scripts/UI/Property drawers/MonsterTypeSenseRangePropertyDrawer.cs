@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomPropertyDrawer(typeof(MonsterType.SenseRange))]
-    public class MonsterTypeSenseRangeInspector : PropertyDrawer
+    public class MonsterTypeSenseRangePropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomPropertyDrawer(typeof(MonsterType.LanguageAbility))]
-    public class MonsterTypeLanguageAbilityInspector : PropertyDrawer
+    public class MonsterTypeLanguageAbilityPropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomEditor(typeof(ItemType))]
-    public class ItemTypeInspector : UnityEditor.Editor
+    public class ItemTypeEditor : UnityEditor.Editor
     {
         private Label _descriptionLabel;
         private VisualElement _descriptionsArea;
@@ -34,7 +34,7 @@ namespace MonsterQuest.Editor
 
             foreach (RuleDescription ruleDescription in item.GetOwnRuleDescriptions())
             {
-                Label descriptionLabel = new Label
+                Label descriptionLabel = new()
                 {
                     text = $"<i><b>{ruleDescription.name.ToStartCase()}.</b> {ruleDescription.type.ToStartCase()}.</i> {ruleDescription.description}",
                     style =

@@ -4,18 +4,18 @@ using UnityEngine.UIElements;
 
 namespace MonsterQuest.Editor
 {
-    [CustomPropertyDrawer(typeof(MonsterType.SkillBonus))]
-    public class MonsterTypeSkillBonusInspector : PropertyDrawer
+    [CustomPropertyDrawer(typeof(MonsterType.SavingThrowBonus))]
+    public class MonsterTypeSavingThrowBonusPropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             VisualElement root = new();
             root.AddToClassList("property-list");
 
-            EnumField skillField = new();
-            skillField.bindingPath = "skill";
-            skillField.AddToClassList("property-name");
-            root.Add(skillField);
+            EnumField abilityField = new();
+            abilityField.bindingPath = "ability";
+            abilityField.AddToClassList("property-name");
+            root.Add(abilityField);
 
             IntegerField amountField = new();
             amountField.bindingPath = "amount";

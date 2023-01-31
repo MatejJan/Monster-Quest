@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomEditor(typeof(AttackType), true)]
-    public class AttackTypeInspector : UnityEditor.Editor
+    public class AttackTypeEditor : UnityEditor.Editor
     {
         private Label _descriptionLabel;
 
