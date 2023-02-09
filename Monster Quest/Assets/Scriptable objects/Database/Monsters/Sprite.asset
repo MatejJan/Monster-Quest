@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
+  m_Name: Sprite
+  m_EditorClassIdentifier: 
+  displayName: sprite
+  sizeCategory: 1
+  typeCategory: 7
+  subtype: 
+  alignment: neutral good
+  armorClass: 15
+  hitPointsRoll: 1d4
+  speed:
+    <walk>k__BackingField: 10
+    <burrow>k__BackingField: 0
+    <climb>k__BackingField: 0
+    <fly>k__BackingField: 40
+    <swim>k__BackingField: 0
+    <hover>k__BackingField: 0
+  abilityScores:
+    <strength>k__BackingField:
+      <score>k__BackingField: 3
+    <dexterity>k__BackingField:
+      <score>k__BackingField: 18
+    <constitution>k__BackingField:
+      <score>k__BackingField: 10
+    <intelligence>k__BackingField:
+      <score>k__BackingField: 14
+    <wisdom>k__BackingField:
+      <score>k__BackingField: 13
+    <charisma>k__BackingField:
+      <score>k__BackingField: 11
+  savingThrowBonuses: []
+  skillBonuses:
+  - skill: 13
+    amount: 3
+  - skill: 4
+    amount: 8
+  damageVulnerabilities: 
+  damageResistances: 
+  damageImmunities: 
+  conditionImmunities: 
+  senseRanges: []
+  blind: 0
+  languageAbilities:
+  - language: 2
+    canSpeak: 1
+  - language: 4
+    canSpeak: 1
+  - language: 16
+    canSpeak: 1
+  telepathyRange: 0
+  challengeRating: 0.25
+  effects: []
+  items: []
+  bodySprite: {fileID: 0}
+  flyHeight: 0

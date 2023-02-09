@@ -118,7 +118,12 @@ namespace MonsterQuest
 
                 monsterType.subtype = (string)monsterData["subtype"];
                 monsterType.alignment = (string)monsterData["alignment"];
-                monsterType.armorClass = (int)monsterData["armor_class"];
+
+                if (monsterData["armor_class"]?[0] is not null)
+                {
+                    monsterType.armorClass = (int)monsterData["armor_class"][0]["value"];
+                }
+
                 monsterType.hitPointsRoll = (string)monsterData["hit_points_roll"];
 
                 if (monsterData["speed"] is not null)
