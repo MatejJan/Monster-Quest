@@ -6,7 +6,7 @@ namespace MonsterQuest.Effects
 {
     public abstract class AttackType : EffectType, IRulesProvider, IRuleDescriptionsProvider
     {
-        public TargetType targetType;
+        public TargetType targetType = TargetType.All;
         public DamageRoll[] damageRolls;
 
         public Ability attackAbility;
@@ -62,30 +62,43 @@ namespace MonsterQuest.Effects
             // Generate target description.
             descriptionParts.Add(GetTargetDescription());
 
-            // Generate hit description.
-            IEnumerable<DamageRoll> simpleDamageRolls = damageRolls.Where(damageRoll => damageRoll.savingThrowAbility == Ability.None);
-            IEnumerable<DamageRoll> savingThrowDamageRolls = damageRolls.Where(damageRoll => damageRoll.savingThrowAbility != Ability.None);
+            // Combine description.
+            string description = $"{string.Join(", ", descriptionParts).ToUpperFirst()}.";
 
-            string[] damageRollDescriptions = simpleDamageRolls.Select(damageRoll => GetDamageRollDescription(damageRoll, attackerDamageRollModifier)).ToArray();
-
-            if (damageRollDescriptions.Length == 0) return null;
-
-            string hitDescription = damageRollDescriptions[0];
-
-            if (damageRollDescriptions.Length > 1)
+            // Add hit description if possible.
+            if (damageRolls is not null)
             {
-                hitDescription += $", plus {EnglishHelper.JoinWithAnd(damageRollDescriptions[1..])}";
+                List<string> hitDescriptionParts = new();
+
+                IEnumerable<DamageRoll> simpleDamageRolls = damageRolls.Where(damageRoll => damageRoll.savingThrowAbility == Ability.None);
+                string[] damageRollDescriptions = simpleDamageRolls.Select(damageRoll => GetDamageRollDescription(damageRoll, attackerDamageRollModifier)).ToArray();
+
+                if (damageRollDescriptions.Length > 0)
+                {
+                    string hitDescription = damageRollDescriptions[0];
+
+                    if (damageRollDescriptions.Length > 1)
+                    {
+                        hitDescription += $", plus {EnglishHelper.JoinWithAnd(damageRollDescriptions[1..])}";
+                    }
+
+                    hitDescription += ".";
+
+                    hitDescriptionParts.Add(hitDescription);
+                }
+
+                IEnumerable<DamageRoll> savingThrowDamageRolls = damageRolls.Where(damageRoll => damageRoll.savingThrowAbility != Ability.None);
+
+                foreach (DamageRoll damageRoll in savingThrowDamageRolls)
+                {
+                    hitDescriptionParts.Add($"The target must make a DC {damageRoll.savingThrowDC} {damageRoll.savingThrowAbility} " + $"saving throw, taking {GetDamageRollDescription(damageRoll)} on a failed save, " + "or half as much damage on a successful one.");
+                }
+
+                if (hitDescriptionParts.Count > 0)
+                {
+                    description += $" Hit: {string.Join(", ", hitDescriptionParts)}";
+                }
             }
-
-            hitDescription += ".";
-
-            foreach (DamageRoll damageRoll in savingThrowDamageRolls)
-            {
-                hitDescription += $" The target must make a DC {damageRoll.savingThrowDC} {damageRoll.savingThrowAbility} " + $"saving throw, taking {GetDamageRollDescription(damageRoll)} on a failed save, " + "or half as much damage on a successful one.";
-            }
-
-            // Return combined description.
-            string description = $"{string.Join(", ", descriptionParts).ToUpperFirst()}. Hit: {hitDescription}";
 
             return new RuleDescription(RuleCategory.Action, displayName, typeName, description);
         }

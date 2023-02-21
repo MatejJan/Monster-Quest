@@ -28,7 +28,7 @@ namespace MonsterQuest
         private GameState _state;
 
         private static string saveFilePath => Path.Combine(Application.persistentDataPath, _saveFileName);
-        private static bool saveFileExists => File.Exists(saveFilePath);
+        private static bool saveFileExists => false; // TODO: Implement a better save system File.Exists(saveFilePath);
 
         private void Awake()
         {
@@ -71,10 +71,11 @@ namespace MonsterQuest
 
             Character[] characters =
             {
-                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[0]),
-                new("Theron", humanRaceType, fighterClassType, characterBodySprites[1]),
-                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[2]),
-                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[3])
+                new("Enora", humanRaceType, fighterClassType, characterBodySprites[0]),
+                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[1]),
+                new("Theron", humanRaceType, fighterClassType, characterBodySprites[2]),
+                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[3]),
+                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[4])
             };
 
             Party party = new(characters);
@@ -94,6 +95,7 @@ namespace MonsterQuest
             // Give characters equipment.
             ItemType[] weaponItemTypes =
             {
+                Database.GetItemType("sling"),
                 Database.GetItemType("greatsword"),
                 Database.GetItemType("javelin"),
                 Database.GetItemType("greatsword"),
@@ -104,7 +106,7 @@ namespace MonsterQuest
 
             ItemType potionOfHealing = Database.GetItemType("potion of healing");
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < characters.Length; i++)
             {
                 characters[i].GiveItem(_state, weaponItemTypes[i].Create());
                 characters[i].GiveItem(_state, chainShirt.Create());
@@ -257,7 +259,7 @@ namespace MonsterQuest
                 if (!monsterTypes.Any()) break;
 
                 // Choose a random monster type.
-                MonsterType monsterType = EnumerableHelper.Random(monsterTypes);
+                MonsterType monsterType = monsterTypes.Random();
 
                 // Create a random amount of monsters of this type (max 3, without exceeding the challenge rating or 5 total monsters).
                 int maxCount = Mathf.FloorToInt(remainingChallengeRating / Math.Max(0.5f, monsterType.challengeRating));

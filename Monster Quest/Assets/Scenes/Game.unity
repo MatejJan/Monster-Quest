@@ -671,11 +671,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadGameState: {fileID: 0}
   characterBodySprites:
+  - {fileID: 21300000, guid: b9aba4e871f65481fbdd69ab9424b309, type: 3}
   - {fileID: 21300000, guid: 956386156c63c4eee816fc62eaa55e2c, type: 3}
   - {fileID: 21300000, guid: e12d725ecf6954adf9e66d736a1d0c22, type: 3}
   - {fileID: 21300000, guid: 05200a5325ada4d1dbd78ee326031452, type: 3}
   - {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
-  charactersStartingLevel: 10
+  charactersStartingLevel: 20
 --- !u!4 &1066135998
 Transform:
   m_ObjectHideFlags: 0

@@ -10,15 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6610c137e2cbb4f94a201bc3fad849e4, type: 3}
-  m_Name: Chain Shirt
+  m_Name: Spear
   m_EditorClassIdentifier: 
-  displayName: chain shirt
+  displayName: spear
   cost:
     copper: 0
     silver: 0
     electrum: 0
-    gold: 50
+    gold: 1
     platinum: 0
-  weight: 20
+  weight: 3
   effects:
-  - {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
+  - {fileID: 11400000, guid: c3a895dd050b946a7b94d9efc3ce03cc, type: 2}
+  - {fileID: 11400000, guid: 4581ab705cbb04fce9b4d33c538c0230, type: 2}
+  - {fileID: 11400000, guid: 358f0fbbf37bf4a659277accfd82a5cd, type: 2}
+  - {fileID: 11400000, guid: 06bcdba6b43414c7c9e5ff2769516fde, type: 2}

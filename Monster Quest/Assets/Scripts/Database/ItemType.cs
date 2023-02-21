@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,6 +39,8 @@ namespace MonsterQuest
 
         public RuleDescription[] GetOwnRuleDescriptions(object context = null)
         {
+            if (effects is null) return Array.Empty<RuleDescription>();
+
             List<ArrayValue<RuleDescription>> values = new();
 
             foreach (EffectType effect in effects)

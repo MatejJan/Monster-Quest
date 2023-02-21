@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3512b3dfc5bcd490aa06f030db69fa30, type: 3}
-  m_Name: Giant Crab Claw Melee Weapon Attack
+  m_Name: Death Dog Bite Melee Weapon Attack
   m_EditorClassIdentifier: 
-  targetType: 0
+  targetType: -1
   damageRolls:
   - <roll>k__BackingField: 1d6
-    <type>k__BackingField: 2
+    <type>k__BackingField: 128
     <isExtraDamage>k__BackingField: 0
     <savingThrowAbility>k__BackingField: 0
     <savingThrowDC>k__BackingField: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
   customAttackModifiers: 0
   attackRollModifier: 0
   damageRollModifier: 0
-  displayName: claw
-  descriptionVerb: 
+  displayName: bite
+  descriptionVerb: bites
   descriptionObject: 
   reach: 5

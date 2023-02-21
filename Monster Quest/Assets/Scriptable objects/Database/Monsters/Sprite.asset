@@ -62,5 +62,5 @@ MonoBehaviour:
   challengeRating: 0.25
   effects: []
   items: []
-  bodySprite: {fileID: 0}
+  bodySprite: {fileID: 21300000, guid: e1b8bc76fab6a485a9d7a0c3c45d1c51, type: 3}
   flyHeight: 0

@@ -101,6 +101,8 @@ namespace MonsterQuest
                 string monsterJson = httpClient.GetStringAsync($"https://www.dnd5eapi.co/api/monsters/{monsterIndexEntry.index}").Result;
                 JObject monsterData = JObject.Parse(monsterJson);
 
+                monsterType.displayName = ((string)monsterData["name"])?.ToLowerInvariant();
+
                 monsterType.sizeCategory = Enum.Parse<SizeCategory>((string)monsterData["size"], true);
 
                 string monsterTypeText = (string)monsterData["type"];

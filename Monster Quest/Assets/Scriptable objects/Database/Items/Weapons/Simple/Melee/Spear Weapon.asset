@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f93f025c86b444b81ebc54c00aa047, type: 3}
-  m_Name: Chain Shirt Armor
+  m_Script: {fileID: 11500000, guid: 2aadff792d7b34dbfb502b6deb510090, type: 3}
+  m_Name: Spear Weapon
   m_EditorClassIdentifier: 
-  armorClass: 13
-  minimumStrength: 0
-  category: 2
+  categories: 010000000200000012000000

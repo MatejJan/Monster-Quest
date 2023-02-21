@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Ghost
+  m_Name: Gladiator
   m_EditorClassIdentifier: 
-  displayName: ghost
+  displayName: gladiator
   sizeCategory: 3
-  typeCategory: 14
-  subtype: 
+  typeCategory: 10
+  subtype: any race
   alignment: any alignment
-  armorClass: 11
-  hitPointsRoll: 10d8
+  armorClass: 14
+  hitPointsRoll: 15d8+45
   speed:
-    <walk>k__BackingField: 0
+    <walk>k__BackingField: 30
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
     <fly>k__BackingField: 40
@@ -28,19 +28,29 @@ MonoBehaviour:
     <hover>k__BackingField: 1
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 7
+      <score>k__BackingField: 18
     <dexterity>k__BackingField:
-      <score>k__BackingField: 13
+      <score>k__BackingField: 15
     <constitution>k__BackingField:
-      <score>k__BackingField: 10
+      <score>k__BackingField: 16
     <intelligence>k__BackingField:
       <score>k__BackingField: 10
     <wisdom>k__BackingField:
       <score>k__BackingField: 12
     <charisma>k__BackingField:
-      <score>k__BackingField: 17
-  savingThrowBonuses: []
-  skillBonuses: []
+      <score>k__BackingField: 15
+  savingThrowBonuses:
+  - ability: 1
+    amount: 7
+  - ability: 2
+    amount: 5
+  - ability: 3
+    amount: 6
+  skillBonuses:
+  - skill: 1
+    amount: 10
+  - skill: 16
+    amount: 5
   damageVulnerabilities: 
   damageResistances: 
   damageImmunities: 
@@ -49,8 +59,11 @@ MonoBehaviour:
   blind: 0
   languageAbilities: []
   telepathyRange: 0
-  challengeRating: 0
+  challengeRating: 5
   effects: []
-  items: []
-  bodySprite: {fileID: 0}
+  items:
+  - {fileID: 11400000, guid: 603aeb1871090441b96da9d9bfd6acd0, type: 2}
+  - {fileID: 11400000, guid: 9de5095912ff348ff85755e2d279c482, type: 2}
+  - {fileID: 11400000, guid: d5bdd4c146fff4c33bdea124761c3209, type: 2}
+  bodySprite: {fileID: 21300000, guid: 07659976b43fc4d0980dfc37c9a655bc, type: 3}
   flyHeight: 0

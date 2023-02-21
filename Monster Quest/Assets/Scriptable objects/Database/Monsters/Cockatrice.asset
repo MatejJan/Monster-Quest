@@ -10,61 +10,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Aboleth
+  m_Name: Cockatrice
   m_EditorClassIdentifier: 
-  displayName: aboleth
-  sizeCategory: 4
-  typeCategory: 1
+  displayName: cockatrice
+  sizeCategory: 2
+  typeCategory: 11
   subtype: 
-  alignment: lawful evil
-  armorClass: 17
-  hitPointsRoll: 18d10+36
+  alignment: unaligned
+  armorClass: 11
+  hitPointsRoll: 6d6+6
   speed:
-    <walk>k__BackingField: 10
+    <walk>k__BackingField: 20
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
-    <fly>k__BackingField: 0
-    <swim>k__BackingField: 40
+    <fly>k__BackingField: 40
+    <swim>k__BackingField: 30
     <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 21
+      <score>k__BackingField: 6
     <dexterity>k__BackingField:
-      <score>k__BackingField: 9
+      <score>k__BackingField: 12
     <constitution>k__BackingField:
-      <score>k__BackingField: 15
+      <score>k__BackingField: 12
     <intelligence>k__BackingField:
-      <score>k__BackingField: 18
+      <score>k__BackingField: 2
     <wisdom>k__BackingField:
-      <score>k__BackingField: 15
+      <score>k__BackingField: 13
     <charisma>k__BackingField:
-      <score>k__BackingField: 18
-  savingThrowBonuses:
-  - ability: 3
-    amount: 6
-  - ability: 4
-    amount: 8
-  - ability: 5
-    amount: 6
-  skillBonuses:
-  - skill: 6
-    amount: 12
-  - skill: 13
-    amount: 10
+      <score>k__BackingField: 5
+  savingThrowBonuses: []
+  skillBonuses: []
   damageVulnerabilities: 
   damageResistances: 
   damageImmunities: 
   conditionImmunities: 
   senseRanges:
   - sense: 2
-    range: 120
+    range: 60
   blind: 0
-  languageAbilities:
-  - language: 13
-    canSpeak: 1
-  telepathyRange: 120
-  challengeRating: 10
-  effects: []
+  languageAbilities: []
+  telepathyRange: 0
+  challengeRating: 0.5
+  effects:
+  - {fileID: 11400000, guid: ee499e6605e7a4c19b0cc35baf18096b, type: 2}
   items: []
-  bodySprite: {fileID: 0}
+  bodySprite: {fileID: 21300000, guid: 0fcbe51680eab41fb8cc654d09fe0eb7, type: 3}
   flyHeight: 0

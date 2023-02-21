@@ -10,53 +10,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Chuul
+  m_Name: Giant Toad
   m_EditorClassIdentifier: 
-  displayName: chuul
+  displayName: giant toad
   sizeCategory: 4
-  typeCategory: 1
+  typeCategory: 2
   subtype: 
-  alignment: chaotic evil
-  armorClass: 16
-  hitPointsRoll: 11d10+33
+  alignment: unaligned
+  armorClass: 11
+  hitPointsRoll: 6d10+6
   speed:
-    <walk>k__BackingField: 30
+    <walk>k__BackingField: 20
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
     <fly>k__BackingField: 0
-    <swim>k__BackingField: 30
+    <swim>k__BackingField: 40
     <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 19
+      <score>k__BackingField: 15
     <dexterity>k__BackingField:
-      <score>k__BackingField: 10
+      <score>k__BackingField: 13
     <constitution>k__BackingField:
-      <score>k__BackingField: 16
+      <score>k__BackingField: 13
     <intelligence>k__BackingField:
-      <score>k__BackingField: 5
+      <score>k__BackingField: 2
     <wisdom>k__BackingField:
-      <score>k__BackingField: 11
+      <score>k__BackingField: 10
     <charisma>k__BackingField:
-      <score>k__BackingField: 5
+      <score>k__BackingField: 3
   savingThrowBonuses: []
-  skillBonuses:
-  - skill: 13
-    amount: 4
+  skillBonuses: []
   damageVulnerabilities: 
   damageResistances: 
-  damageImmunities: 00010000
-  conditionImmunities: 0a000000
+  damageImmunities: 
+  conditionImmunities: 
   senseRanges:
   - sense: 2
-    range: 60
-  blind: 0
-  languageAbilities:
-  - language: 13
-    canSpeak: 0
+    range: 30
+  blind: 1
+  languageAbilities: []
   telepathyRange: 0
-  challengeRating: 0
+  challengeRating: 1
   effects: []
   items: []
-  bodySprite: {fileID: 0}
+  bodySprite: {fileID: 21300000, guid: f650a189b3b7e4d1fb3a67a405976733, type: 3}
   flyHeight: 0
