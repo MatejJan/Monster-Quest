@@ -63,7 +63,7 @@ MonoBehaviour:
   - language: 13
     canSpeak: 1
   telepathyRange: 120
-  challengeRating: 0
+  challengeRating: 10
   effects: []
   items: []
   bodySprite: {fileID: 0}

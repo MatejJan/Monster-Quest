@@ -8,8 +8,8 @@ namespace MonsterQuest.Editor
     [CustomPropertyDrawer(typeof(AbilityScore))]
     public class AbilityScorePropertyDrawer : PropertyDrawer
     {
+        private AbilityScore _abilityScore;
         private Label _modifier;
-        private SerializedProperty _property;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
@@ -24,17 +24,18 @@ namespace MonsterQuest.Editor
             _modifier = new Label();
             root.Add(_modifier);
 
-            _property = property;
-            _modifier.TrackSerializedObjectValue(property.serializedObject, UpdateModifier);
+            // Note: We have to track the score property itself because tracking classes in general is not supported.
+            // We do have to save the ability to be able to get to the modifier though.
+            _abilityScore = property.GetUnderlyingValue() as AbilityScore;
+            _modifier.TrackPropertyValue(property.FindPropertyRelative(score.bindingPath), UpdateModifier);
             UpdateModifier(null);
 
             return root;
         }
 
-        private void UpdateModifier(SerializedObject _)
+        private void UpdateModifier(SerializedProperty _)
         {
-            AbilityScore abilityScore = _property.GetUnderlyingValue() as AbilityScore;
-            _modifier.text = $"({abilityScore.modifier:+#;-#;+0})";
+            _modifier.text = $"({_abilityScore.modifier:+#;-#;+0})";
         }
     }
 }

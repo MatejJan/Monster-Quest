@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 namespace MonsterQuest.Editor
 {
     [CustomEditor(typeof(MonsterType))]
-    public class MonsterTypeInspector : UnityEditor.Editor
+    public class MonsterTypeEditor : UnityEditor.Editor
     {
         [SerializeField] private VisualTreeAsset layout;
 
