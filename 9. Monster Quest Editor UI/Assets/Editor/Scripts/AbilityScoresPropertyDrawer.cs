@@ -25,7 +25,7 @@ namespace MonsterQuest
                 abilityArea.style.flexDirection = FlexDirection.Row;
                 root.Add(abilityArea);
 
-                IntegerField abilityField = new();
+                PropertyField abilityField = new();
                 abilityField.style.flexGrow = 1;
                 abilityField.label = ability.ToString();
                 abilityField.bindingPath = $"<{ability.ToString().ToLowerInvariant()}>k__BackingField.<score>k__BackingField";
