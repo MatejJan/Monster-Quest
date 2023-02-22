@@ -275,7 +275,7 @@ namespace MonsterQuest.Editor
             if (nonMagicalDamageTypes.Length > 0) descriptionParts.Add($"{string.Join(", ", nonMagicalDamageTypes).ToLower()} from nonmagical attacks");
             if (magicalDamageTypes.Length > 0) descriptionParts.Add($"{string.Join(", ", magicalDamageTypes).ToLower()} from magical attacks");
 
-            return string.Join(", ", descriptionParts);
+            return string.Join("; ", descriptionParts);
         }
 
         private void UpdateConditionImmunities(MonsterType monsterType)

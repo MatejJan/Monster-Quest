@@ -44,7 +44,10 @@ namespace MonsterQuest
 
                 GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
                 characterGameObject.name = creature.displayName;
-                characterGameObject.transform.position = new Vector3(currentX - spaceRadius, y, 0) - facingDirection * spaceRadius;
+
+                Vector3 position = new Vector3(currentX - spaceRadius, y, 0) - facingDirection * spaceRadius;
+                position.z = position.y * 0.01f;
+                characterGameObject.transform.position = position;
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(creature);

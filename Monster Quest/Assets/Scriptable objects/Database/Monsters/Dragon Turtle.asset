@@ -10,57 +10,57 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Sprite
+  m_Name: Dragon Turtle
   m_EditorClassIdentifier: 
-  displayName: sprite
-  sizeCategory: 1
-  typeCategory: 7
+  displayName: dragon turtle
+  sizeCategory: 6
+  typeCategory: 5
   subtype: 
-  alignment: neutral good
-  armorClass: 15
-  hitPointsRoll: 1d4
+  alignment: neutral
+  armorClass: 20
+  hitPointsRoll: 22d20+110
   speed:
-    <walk>k__BackingField: 10
+    <walk>k__BackingField: 20
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
-    <fly>k__BackingField: 40
-    <swim>k__BackingField: 0
+    <fly>k__BackingField: 0
+    <swim>k__BackingField: 40
     <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 3
+      <score>k__BackingField: 25
     <dexterity>k__BackingField:
-      <score>k__BackingField: 18
-    <constitution>k__BackingField:
       <score>k__BackingField: 10
+    <constitution>k__BackingField:
+      <score>k__BackingField: 20
     <intelligence>k__BackingField:
-      <score>k__BackingField: 14
+      <score>k__BackingField: 10
     <wisdom>k__BackingField:
-      <score>k__BackingField: 13
+      <score>k__BackingField: 12
     <charisma>k__BackingField:
-      <score>k__BackingField: 11
-  savingThrowBonuses: []
-  skillBonuses:
-  - skill: 13
-    amount: 3
-  - skill: 4
-    amount: 8
+      <score>k__BackingField: 12
+  savingThrowBonuses:
+  - ability: 2
+    amount: 6
+  - ability: 3
+    amount: 11
+  - ability: 5
+    amount: 7
+  skillBonuses: []
   damageVulnerabilities: 
-  damageResistances: 
+  damageResistances: 08000000
   damageImmunities: 
   conditionImmunities: 
-  senseRanges: []
+  senseRanges:
+  - sense: 2
+    range: 120
   blind: 0
   languageAbilities:
-  - language: 2
-    canSpeak: 1
-  - language: 4
-    canSpeak: 1
-  - language: 16
+  - language: 12
     canSpeak: 1
   telepathyRange: 0
-  challengeRating: 0.25
+  challengeRating: 17
   effects: []
   items: []
-  bodySprite: {fileID: 21300000, guid: a78425aff7e854b228011486758654cb, type: 3}
-  flyHeight: 0.5
+  bodySprite: {fileID: 21300000, guid: 95bce42ad7a8c4db5b17c8ff919a8aaa, type: 3}
+  flyHeight: 0.1

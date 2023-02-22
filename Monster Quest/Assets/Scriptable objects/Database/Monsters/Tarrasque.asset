@@ -10,57 +10,55 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d32dc2e64c64333936521b5532183e, type: 3}
-  m_Name: Sprite
+  m_Name: Tarrasque
   m_EditorClassIdentifier: 
-  displayName: sprite
-  sizeCategory: 1
-  typeCategory: 7
-  subtype: 
-  alignment: neutral good
-  armorClass: 15
-  hitPointsRoll: 1d4
+  displayName: tarrasque
+  sizeCategory: 6
+  typeCategory: 11
+  subtype: titan
+  alignment: unaligned
+  armorClass: 25
+  hitPointsRoll: 33d20+330
   speed:
-    <walk>k__BackingField: 10
+    <walk>k__BackingField: 40
     <burrow>k__BackingField: 0
     <climb>k__BackingField: 0
-    <fly>k__BackingField: 40
+    <fly>k__BackingField: 0
     <swim>k__BackingField: 0
     <hover>k__BackingField: 0
   abilityScores:
     <strength>k__BackingField:
-      <score>k__BackingField: 3
+      <score>k__BackingField: 30
     <dexterity>k__BackingField:
-      <score>k__BackingField: 18
+      <score>k__BackingField: 11
     <constitution>k__BackingField:
-      <score>k__BackingField: 10
+      <score>k__BackingField: 30
     <intelligence>k__BackingField:
-      <score>k__BackingField: 14
+      <score>k__BackingField: 3
     <wisdom>k__BackingField:
-      <score>k__BackingField: 13
+      <score>k__BackingField: 11
     <charisma>k__BackingField:
       <score>k__BackingField: 11
-  savingThrowBonuses: []
-  skillBonuses:
-  - skill: 13
-    amount: 3
-  - skill: 4
-    amount: 8
+  savingThrowBonuses:
+  - ability: 4
+    amount: 5
+  - ability: 5
+    amount: 9
+  - ability: 6
+    amount: 9
+  skillBonuses: []
   damageVulnerabilities: 
   damageResistances: 
-  damageImmunities: 
-  conditionImmunities: 
-  senseRanges: []
+  damageImmunities: 0800000000010000024000008040000000480000
+  conditionImmunities: 0200000004000000080000000a000000
+  senseRanges:
+  - sense: 1
+    range: 120
   blind: 0
-  languageAbilities:
-  - language: 2
-    canSpeak: 1
-  - language: 4
-    canSpeak: 1
-  - language: 16
-    canSpeak: 1
+  languageAbilities: []
   telepathyRange: 0
-  challengeRating: 0.25
+  challengeRating: 30
   effects: []
   items: []
-  bodySprite: {fileID: 21300000, guid: a78425aff7e854b228011486758654cb, type: 3}
-  flyHeight: 0.5
+  bodySprite: {fileID: 21300000, guid: 6d86e01d9bd00447083e82eaeea5b8f4, type: 3}
+  flyHeight: 0
