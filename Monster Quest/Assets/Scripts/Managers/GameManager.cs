@@ -71,7 +71,7 @@ namespace MonsterQuest
 
             Character[] characters =
             {
-                new("Enora", humanRaceType, fighterClassType, characterBodySprites[0]),
+                new("Elana", humanRaceType, fighterClassType, characterBodySprites[0]),
                 new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[1]),
                 new("Theron", humanRaceType, fighterClassType, characterBodySprites[2]),
                 new("Dayana", humanRaceType, fighterClassType, characterBodySprites[3]),
