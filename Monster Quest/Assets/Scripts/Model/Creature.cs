@@ -142,7 +142,7 @@ namespace MonsterQuest
 
             // Attack a target.
             Creature target;
-            IEnumerable<Creature> hostileCreatures = gameState.combat.creaturesInOrderOfInitiative.Where(creature => creature.isAlive && gameState.combat.AreHostile(this, creature));
+            IEnumerable<Creature> hostileCreatures = gameState.combat.creatures.Where(creature => creature.isAlive && gameState.combat.AreHostile(this, creature));
 
             if (abilityScores.intelligence >= 8)
             {

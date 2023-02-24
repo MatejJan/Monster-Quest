@@ -1,24 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MonsterQuest.Effects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace MonsterQuest
 {
     public class GameManager : MonoBehaviour
     {
-        private const string _saveFileName = "save.json";
-        private const string _gameStatesAssetFolderName = "Game States";
-        private const string _gameStatesAssetFolderPath = "Assets/Game States";
-        private const string _lastGameStateAssetPath = "Assets/Game States/Last.asset";
-
         [SerializeField] private GameStateAsset loadGameState;
         [SerializeField] private Sprite[] characterBodySprites;
         [SerializeField] private int charactersStartingLevel;
@@ -26,9 +19,6 @@ namespace MonsterQuest
         private CombatManager _combatManager;
         private CombatPresenter _combatPresenter;
         private GameState _state;
-
-        private static string saveFilePath => Path.Combine(Application.persistentDataPath, _saveFileName);
-        private static bool saveFileExists => false; // TODO: Implement a better save system File.Exists(saveFilePath);
 
         private void Awake()
         {
@@ -43,16 +33,16 @@ namespace MonsterQuest
             yield return Database.Initialize();
 
             // Save game in between rounds.
-            _combatManager.onRoundEnd += SaveGame;
+            _combatManager.onTurnEnd += () => SaveGameHelper.Save(_state);
 
             // Load an existing or start a new game.
             if (loadGameState)
             {
                 _state = loadGameState.gameState;
             }
-            else if (saveFileExists)
+            else if (SaveGameHelper.saveFileExists)
             {
-                LoadGame();
+                _state = SaveGameHelper.Load();
             }
             else
             {
@@ -121,38 +111,6 @@ namespace MonsterQuest
             Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
         }
 
-        private void LoadGame()
-        {
-            string json = File.ReadAllText(saveFilePath);
-            _state = JsonUtility.FromJson<GameState>(json);
-        }
-
-        private void SaveGame()
-        {
-            string json = JsonUtility.ToJson(_state);
-            File.WriteAllText(saveFilePath, json);
-
-#if UNITY_EDITOR
-            if (!AssetDatabase.IsValidFolder(_gameStatesAssetFolderPath))
-            {
-                AssetDatabase.CreateFolder("Assets", _gameStatesAssetFolderName);
-            }
-
-            AssetDatabase.DeleteAsset(_lastGameStateAssetPath);
-
-            GameStateAsset gameStateAsset = ScriptableObject.CreateInstance<GameStateAsset>();
-            gameStateAsset.gameState = _state;
-            AssetDatabase.CreateAsset(gameStateAsset, _lastGameStateAssetPath);
-
-            AssetDatabase.SaveAssets();
-#endif
-        }
-
-        private void DeleteSavedGame()
-        {
-            File.Delete(saveFilePath);
-        }
-
         private IEnumerator Simulate()
         {
             // Present the characters.
@@ -204,6 +162,9 @@ namespace MonsterQuest
 
                         Console.WriteLine($"Watch out, {monstersDescription} with {totalHitPoints} total HP appears!");
                     }
+
+                    // Save the start of the combat.
+                    SaveGameHelper.Save(_state);
                 }
 
                 // Present the monsters.
@@ -217,7 +178,7 @@ namespace MonsterQuest
                 // If everyone died, stop simulation.
                 if (_state.party.aliveCount == 0)
                 {
-                    DeleteSavedGame();
+                    SaveGameHelper.Delete();
 
                     break;
                 }
@@ -234,8 +195,8 @@ namespace MonsterQuest
                     character.GiveItem(_state, Database.GetItemType("potion of healing").Create());
                 }
 
-                // save the game before a new fight.
-                SaveGame();
+                // Save the game before a new fight.
+                SaveGameHelper.Save(_state);
             }
 
             Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");

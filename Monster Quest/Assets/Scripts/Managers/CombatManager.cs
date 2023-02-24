@@ -8,7 +8,7 @@ namespace MonsterQuest
     public class CombatManager : MonoBehaviour
     {
         // Event for end of a combat round.
-        public event Action onRoundEnd;
+        public event Action onTurnEnd;
 
         public IEnumerator Simulate(GameState gameState)
         {
@@ -24,21 +24,20 @@ namespace MonsterQuest
             // Keep simulating while we have groups that are hostile to each other.
             while (hostileGroupsArePresent)
             {
-                // Simulate a round of combat.
-                foreach (Creature creature in gameState.combat.creaturesInOrderOfInitiative)
-                {
-                    if (creature.lifeStatus == LifeStatus.Dead) continue;
+                // Simulate a combat turn.
+                Creature creature = gameState.combat.StartNextCreatureTurn();
 
-                    IAction action = creature.TakeTurn(gameState);
+                if (creature.lifeStatus == LifeStatus.Dead) continue;
 
-                    yield return action?.Execute();
+                IAction action = creature.TakeTurn(gameState);
 
-                    UpdateIfHostileGroupsArePresent();
+                yield return action?.Execute();
 
-                    if (!hostileGroupsArePresent) break;
-                }
+                UpdateIfHostileGroupsArePresent();
 
-                onRoundEnd?.Invoke();
+                if (!hostileGroupsArePresent) break;
+
+                onTurnEnd?.Invoke();
             }
 
             if (gameState.party.aliveCount > 0)

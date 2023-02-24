@@ -17,7 +17,7 @@ MonoBehaviour:
   typeCategory: 2
   subtype: 
   alignment: neutral good
-  armorClass: 13
+  armorClass: 130
   hitPointsRoll: 4d10+4
   speed:
     <walk>k__BackingField: 10

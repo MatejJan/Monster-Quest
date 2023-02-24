@@ -10,6 +10,8 @@ namespace MonsterQuest
     {
         [SerializeReference] private List<Monster> _monsters;
         [SerializeReference] private List<Creature> _creaturesInOrderOfInitiative;
+        [SerializeField] private int _roundNumber;
+        [SerializeField] private int _currentTurnCreatureIndex;
         [SerializeReference] private List<object> _globalRules;
 
         public Combat(GameState gameState, IEnumerable<Monster> monsters)
@@ -25,19 +27,38 @@ namespace MonsterQuest
                 new CoverBonus(),
                 new DamageAmountTypeDamageAmountAmountAlteration()
             };
+
+            // Start the first round.
+            _roundNumber = 1;
+            _currentTurnCreatureIndex = -1;
         }
 
         // State properties
 
         [field: SerializeReference] public GameState gameState { get; private set; }
-        public IEnumerable<Monster> monsters => _monsters;
-        public IEnumerable<Creature> creaturesInOrderOfInitiative => _creaturesInOrderOfInitiative;
 
         // Derived properties
 
+        public IEnumerable<Monster> monsters => _monsters;
+        public IEnumerable<Creature> creatures => _monsters.Concat<Creature>(gameState.party.characters);
         public IEnumerable<object> rules => _globalRules.Concat(monsters.SelectMany(monster => monster.rules));
 
         // Methods
+
+        public Creature StartNextCreatureTurn()
+        {
+            // Start the turn of the next creature in the order.
+            _currentTurnCreatureIndex++;
+
+            if (_currentTurnCreatureIndex == _creaturesInOrderOfInitiative.Count)
+            {
+                // Start new round.
+                _roundNumber++;
+                _currentTurnCreatureIndex = 0;
+            }
+
+            return _creaturesInOrderOfInitiative[_currentTurnCreatureIndex];
+        }
 
         public int GetDistance(Creature a, Creature b)
         {
@@ -109,11 +130,6 @@ namespace MonsterQuest
                         _creaturesInOrderOfInitiative.Add(character);
                     }
                 }
-            }
-
-            if (_creaturesInOrderOfInitiative.Count != gameState.party.aliveCount + _monsters.Count)
-            {
-                Console.WriteLine("dffff");
             }
         }
     }

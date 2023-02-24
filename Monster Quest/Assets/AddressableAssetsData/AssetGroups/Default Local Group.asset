@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - database
+  - m_GUID: a35ed174b36f747eea4e33bafa28afc8
+    m_Address: Assets/Sprites/Characters
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - database
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d6874f72e6a9e4a5abcc2ce01a63ac09, type: 2}
   m_SchemaSet:
