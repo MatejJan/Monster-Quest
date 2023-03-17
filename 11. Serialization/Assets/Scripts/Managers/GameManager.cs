@@ -26,8 +26,15 @@ namespace MonsterQuest
         private IEnumerator Start()
         {
             yield return Database.Initialize();
-            
-            NewGame();
+
+            if (SaveGameHelper.saveFileExists)
+            {
+                _state = SaveGameHelper.Load();
+            }
+            else
+            {
+                NewGame();
+            }
             
             yield return Simulate();
         }
@@ -50,23 +57,25 @@ namespace MonsterQuest
             Party party = new(characters);
             
             // Create a new game state.
-            _state = new GameState(party);
+            _state = new GameState(party, monsterTypes);
+            
+            Console.WriteLine($"Fighters {_state.party} descend into the dungeon.");
         }
 
         private IEnumerator Simulate()
         {
-            Console.Clear();
-            Console.WriteLine($"Fighters {_state.party} descend into the dungeon.");
-            
             yield return _combatPresenter.InitializeParty(_state);
             
-            // Fight all the monsters.
-            foreach (MonsterType monsterType in monsterTypes)
+            while (true)
             {
-                // Create a new monster.
-                Monster monster = new(monsterType);
+                // Start a new combat if we're between rounds.
+                if (_state.combat == null || !_state.combat.monster.isAlive)
+                {
+                    // Make sure we have some monsters left to fight.
+                    bool canEnterCombat = _state.EnterCombatWithNextMonster();
+                    if (!canEnterCombat) break;
+                }
                 
-                _state.EnterCombatWithMonster(monster);
                 yield return _combatPresenter.InitializeMonster(_state);
                 yield return _combatManager.Simulate(_state);
 
@@ -81,6 +90,8 @@ namespace MonsterQuest
             {
                 Console.WriteLine($"After {monsterTypes.Length} grueling battles, {_state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
             }
+            
+            SaveGameHelper.Delete();
         }
     }
 }

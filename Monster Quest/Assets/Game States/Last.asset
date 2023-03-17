@@ -14,63 +14,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState:
     <party>k__BackingField:
-      rid: 6396631366641648224
+      rid: 6396631394989637959
     <combat>k__BackingField:
-      rid: 6396631366641648225
+      rid: 6396631394989637960
     <combatsFoughtCount>k__BackingField: 2
   references:
     version: 2
     RefIds:
-    - rid: 6396631366641648224
+    - rid: 6396631394989637959
       type: {class: Party, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         _characters:
-        - rid: 6396631366641648226
-        - rid: 6396631366641648227
-        - rid: 6396631366641648228
-        - rid: 6396631366641648229
-        - rid: 6396631366641648230
-    - rid: 6396631366641648225
+        - rid: 6396631394989637961
+        - rid: 6396631394989637962
+        - rid: 6396631394989637963
+        - rid: 6396631394989637964
+        - rid: 6396631394989637965
+    - rid: 6396631394989637960
       type: {class: Combat, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         _monsters:
-        - rid: 6396631366641648231
-        - rid: 6396631366641648232
-        - rid: 6396631366641648233
-        - rid: 6396631366641648234
-        - rid: 6396631366641648235
+        - rid: 6396631394989637966
+        - rid: 6396631394989637967
+        - rid: 6396631394989637968
+        - rid: 6396631394989637969
+        - rid: 6396631394989637970
         _creaturesInOrderOfInitiative:
-        - rid: 6396631366641648234
-        - rid: 6396631366641648235
-        - rid: 6396631366641648228
-        - rid: 6396631366641648226
-        - rid: 6396631366641648231
-        - rid: 6396631366641648232
-        - rid: 6396631366641648229
-        - rid: 6396631366641648233
-        - rid: 6396631366641648230
-        - rid: 6396631366641648227
-        _roundNumber: 3
-        _currentTurnCreatureIndex: 1
+        - rid: 6396631394989637969
+        - rid: 6396631394989637970
+        - rid: 6396631394989637963
+        - rid: 6396631394989637961
+        - rid: 6396631394989637966
+        - rid: 6396631394989637967
+        - rid: 6396631394989637964
+        - rid: 6396631394989637968
+        - rid: 6396631394989637965
+        - rid: 6396631394989637962
+        _roundNumber: 8
+        _currentTurnCreatureIndex: 0
         _globalRules:
-        - rid: 6396631366641648236
-        - rid: 6396631366641648237
-        - rid: 6396631366641648238
+        - rid: 6396631394989637971
+        - rid: 6396631394989637972
+        - rid: 6396631394989637973
         <gameState>k__BackingField:
-          rid: 6396631366641648239
-    - rid: 6396631366641648226
+          rid: 6396631394989637974
+    - rid: 6396631394989637961
       type: {class: Character, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648240
-        - rid: 6396631366641648241
+        - rid: 6396631394989637975
+        - rid: 6396631394989637976
         itemsList:
-        - rid: 6396631366641648242
-        - rid: 6396631366641648243
-        - rid: 6396631366641648244
-        - rid: 6396631366641648245
-        - rid: 6396631366641648246
-        - rid: 6396631366641648247
+        - rid: 6396631394989637977
+        - rid: 6396631394989637978
+        - rid: 6396631394989637979
+        - rid: 6396631394989637980
+        - rid: 6396631394989637981
+        - rid: 6396631394989637982
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 165
         <displayName>k__BackingField: Elana
@@ -91,22 +91,22 @@ MonoBehaviour:
           <charisma>k__BackingField:
             <score>k__BackingField: 16
         <characterClass>k__BackingField:
-          rid: 6396631366641648241
+          rid: 6396631394989637976
         <race>k__BackingField:
-          rid: 6396631366641648240
-    - rid: 6396631366641648227
+          rid: 6396631394989637975
+    - rid: 6396631394989637962
       type: {class: Character, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648248
-        - rid: 6396631366641648249
+        - rid: 6396631394989637983
+        - rid: 6396631394989637984
         itemsList:
-        - rid: 6396631366641648250
-        - rid: 6396631366641648251
-        - rid: 6396631366641648252
-        - rid: 6396631366641648253
-        - rid: 6396631366641648254
-        - rid: 6396631366641648255
+        - rid: 6396631394989637985
+        - rid: 6396631394989637986
+        - rid: 6396631394989637987
+        - rid: 6396631394989637988
+        - rid: 6396631394989637989
+        - rid: 6396631394989637990
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 169
         <displayName>k__BackingField: Jazlyn
@@ -127,22 +127,20 @@ MonoBehaviour:
           <charisma>k__BackingField:
             <score>k__BackingField: 17
         <characterClass>k__BackingField:
-          rid: 6396631366641648249
+          rid: 6396631394989637984
         <race>k__BackingField:
-          rid: 6396631366641648248
-    - rid: 6396631366641648228
+          rid: 6396631394989637983
+    - rid: 6396631394989637963
       type: {class: Character, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648256
-        - rid: 6396631366641648257
+        - rid: 6396631394989637991
+        - rid: 6396631394989637992
         itemsList:
-        - rid: 6396631366641648258
-        - rid: 6396631366641648259
-        - rid: 6396631366641648260
-        - rid: 6396631366641648261
-        - rid: 6396631366641648262
-        - rid: 6396631366641648263
+        - rid: 6396631394989637993
+        - rid: 6396631394989637994
+        - rid: 6396631394989637995
+        - rid: 6396631394989637996
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 215
         <displayName>k__BackingField: Theron
@@ -163,22 +161,22 @@ MonoBehaviour:
           <charisma>k__BackingField:
             <score>k__BackingField: 12
         <characterClass>k__BackingField:
-          rid: 6396631366641648257
+          rid: 6396631394989637992
         <race>k__BackingField:
-          rid: 6396631366641648256
-    - rid: 6396631366641648229
+          rid: 6396631394989637991
+    - rid: 6396631394989637964
       type: {class: Character, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648264
-        - rid: 6396631366641648265
+        - rid: 6396631394989637997
+        - rid: 6396631394989637998
         itemsList:
-        - rid: 6396631366641648266
-        - rid: 6396631366641648267
-        - rid: 6396631366641648268
-        - rid: 6396631366641648269
-        - rid: 6396631366641648270
-        - rid: 6396631366641648271
+        - rid: 6396631394989637999
+        - rid: 6396631394989638000
+        - rid: 6396631394989638001
+        - rid: 6396631394989638002
+        - rid: 6396631394989638003
+        - rid: 6396631394989638004
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 208
         <displayName>k__BackingField: Dayana
@@ -199,26 +197,22 @@ MonoBehaviour:
           <charisma>k__BackingField:
             <score>k__BackingField: 8
         <characterClass>k__BackingField:
-          rid: 6396631366641648265
+          rid: 6396631394989637998
         <race>k__BackingField:
-          rid: 6396631366641648264
-    - rid: 6396631366641648230
+          rid: 6396631394989637997
+    - rid: 6396631394989637965
       type: {class: Character, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648272
-        - rid: 6396631366641648273
+        - rid: 6396631394989638005
+        - rid: 6396631394989638006
         itemsList:
-        - rid: 6396631366641648274
-        - rid: 6396631366641648275
-        - rid: 6396631366641648276
-        - rid: 6396631366641648277
-        - rid: 6396631366641648278
-        - rid: 6396631366641648279
+        - rid: 6396631394989638007
+        - rid: 6396631394989638008
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 138
         <displayName>k__BackingField: Rolando
-        <hitPoints>k__BackingField: 72
+        <hitPoints>k__BackingField: 2
         _bodySprite: {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
         _deathSavingThrows: 
         _abilityScores:
@@ -235,847 +229,733 @@ MonoBehaviour:
           <charisma>k__BackingField:
             <score>k__BackingField: 13
         <characterClass>k__BackingField:
-          rid: 6396631366641648273
+          rid: 6396631394989638006
         <race>k__BackingField:
-          rid: 6396631366641648272
-    - rid: 6396631366641648231
+          rid: 6396631394989638005
+    - rid: 6396631394989637966
       type: {class: Monster, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648280
+        - rid: 6396631394989638009
         itemsList: []
-        _lifeStatus: 0
+        _lifeStatus: 3
         <hitPointsMaximum>k__BackingField: 34
         <displayName>k__BackingField: cockatrice
-        <hitPoints>k__BackingField: 29
+        <hitPoints>k__BackingField: 0
         <type>k__BackingField: {fileID: 11400000, guid: be35ad8af901d4b1aa1f3d2f323f55e4, type: 2}
-    - rid: 6396631366641648232
+    - rid: 6396631394989637967
       type: {class: Monster, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648281
+        - rid: 6396631394989638010
         itemsList: []
         _lifeStatus: 3
         <hitPointsMaximum>k__BackingField: 22
         <displayName>k__BackingField: cockatrice
         <hitPoints>k__BackingField: 0
         <type>k__BackingField: {fileID: 11400000, guid: be35ad8af901d4b1aa1f3d2f323f55e4, type: 2}
-    - rid: 6396631366641648233
+    - rid: 6396631394989637968
       type: {class: Monster, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList: []
         itemsList:
-        - rid: 6396631366641648282
-        - rid: 6396631366641648283
-        - rid: 6396631366641648284
+        - rid: 6396631394989638011
+        - rid: 6396631394989638012
+        - rid: 6396631394989638013
         _lifeStatus: 3
         <hitPointsMaximum>k__BackingField: 17
         <displayName>k__BackingField: orc
         <hitPoints>k__BackingField: 0
         <type>k__BackingField: {fileID: 11400000, guid: 899eaa03d95da4ddb98c18f386e590e1, type: 2}
-    - rid: 6396631366641648234
+    - rid: 6396631394989637969
       type: {class: Monster, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648285
-        - rid: 6396631366641648286
+        - rid: 6396631394989638014
+        - rid: 6396631394989638015
         itemsList: []
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 192
         <displayName>k__BackingField: young red dragon
         <hitPoints>k__BackingField: 192
         <type>k__BackingField: {fileID: 11400000, guid: 026e4b2b3de39464daea955015fbebfb, type: 2}
-    - rid: 6396631366641648235
+    - rid: 6396631394989637970
       type: {class: Monster, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         effectsList:
-        - rid: 6396631366641648287
-        - rid: 6396631366641648288
+        - rid: 6396631394989638016
+        - rid: 6396631394989638017
         itemsList: []
         _lifeStatus: 0
         <hitPointsMaximum>k__BackingField: 161
         <displayName>k__BackingField: young red dragon
-        <hitPoints>k__BackingField: 161
+        <hitPoints>k__BackingField: 131
         <type>k__BackingField: {fileID: 11400000, guid: 026e4b2b3de39464daea955015fbebfb, type: 2}
-    - rid: 6396631366641648236
+    - rid: 6396631394989637971
       type: {class: AttackAbilityModifier, ns: MonsterQuest, asm: Assembly-CSharp}
-    - rid: 6396631366641648237
+    - rid: 6396631394989637972
       type: {class: CoverBonus, ns: MonsterQuest, asm: Assembly-CSharp}
-    - rid: 6396631366641648238
+    - rid: 6396631394989637973
       type: {class: DamageAmountTypeDamageAmountAmountAlteration, ns: MonsterQuest, asm: Assembly-CSharp}
-    - rid: 6396631366641648239
+    - rid: 6396631394989637974
       type: {class: GameState, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <party>k__BackingField:
-          rid: 6396631366641648224
+          rid: 6396631394989637959
         <combat>k__BackingField:
-          rid: 6396631366641648225
+          rid: 6396631394989637960
         <combatsFoughtCount>k__BackingField: 2
-    - rid: 6396631366641648240
+    - rid: 6396631394989637975
       type: {class: Race, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 7174857bbaca648bd9fc6c8a3d2d248f, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648226
-    - rid: 6396631366641648241
+          rid: 6396631394989637961
+    - rid: 6396631394989637976
       type: {class: Class, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: f7f29ddab0ab942a69a83ad9aea4b401, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648226
+          rid: 6396631394989637961
         <level>k__BackingField: 30
         <availableHitDice>k__BackingField: 30
-    - rid: 6396631366641648242
+    - rid: 6396631394989637977
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648289
-        - rid: 6396631366641648290
-        - rid: 6396631366641648291
+        - rid: 6396631394989638018
+        - rid: 6396631394989638019
+        - rid: 6396631394989638020
         <type>k__BackingField: {fileID: 11400000, guid: f15090d628ddd4550a4042629f01ffee, type: 2}
-    - rid: 6396631366641648243
+    - rid: 6396631394989637978
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648292
+        - rid: 6396631394989638021
         <type>k__BackingField: {fileID: 11400000, guid: 5ffb8895511774578a76c0fdd6e36198, type: 2}
-    - rid: 6396631366641648244
+    - rid: 6396631394989637979
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648293
-        - rid: 6396631366641648294
+        - rid: 6396631394989638022
+        - rid: 6396631394989638023
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648245
+    - rid: 6396631394989637980
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648295
-        - rid: 6396631366641648296
+        - rid: 6396631394989638024
+        - rid: 6396631394989638025
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648246
+    - rid: 6396631394989637981
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648297
-        - rid: 6396631366641648298
+        - rid: 6396631394989638026
+        - rid: 6396631394989638027
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648247
+    - rid: 6396631394989637982
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648299
-        - rid: 6396631366641648300
+        - rid: 6396631394989638028
+        - rid: 6396631394989638029
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648248
+    - rid: 6396631394989637983
       type: {class: Race, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 7174857bbaca648bd9fc6c8a3d2d248f, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648227
-    - rid: 6396631366641648249
+          rid: 6396631394989637962
+    - rid: 6396631394989637984
       type: {class: Class, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: f7f29ddab0ab942a69a83ad9aea4b401, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648227
+          rid: 6396631394989637962
         <level>k__BackingField: 30
         <availableHitDice>k__BackingField: 30
-    - rid: 6396631366641648250
+    - rid: 6396631394989637985
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648301
-        - rid: 6396631366641648302
-        - rid: 6396631366641648303
-        - rid: 6396631366641648304
+        - rid: 6396631394989638030
+        - rid: 6396631394989638031
+        - rid: 6396631394989638032
+        - rid: 6396631394989638033
         <type>k__BackingField: {fileID: 11400000, guid: 9fcf44fad108f4807814ebd706e53508, type: 2}
-    - rid: 6396631366641648251
+    - rid: 6396631394989637986
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648305
+        - rid: 6396631394989638034
         <type>k__BackingField: {fileID: 11400000, guid: 5ffb8895511774578a76c0fdd6e36198, type: 2}
-    - rid: 6396631366641648252
+    - rid: 6396631394989637987
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648306
-        - rid: 6396631366641648307
+        - rid: 6396631394989638035
+        - rid: 6396631394989638036
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648253
+    - rid: 6396631394989637988
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648308
-        - rid: 6396631366641648309
+        - rid: 6396631394989638037
+        - rid: 6396631394989638038
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648254
+    - rid: 6396631394989637989
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648310
-        - rid: 6396631366641648311
+        - rid: 6396631394989638039
+        - rid: 6396631394989638040
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648255
+    - rid: 6396631394989637990
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648312
-        - rid: 6396631366641648313
+        - rid: 6396631394989638041
+        - rid: 6396631394989638042
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648256
+    - rid: 6396631394989637991
       type: {class: Race, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 7174857bbaca648bd9fc6c8a3d2d248f, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648228
-    - rid: 6396631366641648257
+          rid: 6396631394989637963
+    - rid: 6396631394989637992
       type: {class: Class, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: f7f29ddab0ab942a69a83ad9aea4b401, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648228
+          rid: 6396631394989637963
         <level>k__BackingField: 30
         <availableHitDice>k__BackingField: 30
-    - rid: 6396631366641648258
+    - rid: 6396631394989637993
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648314
-        - rid: 6396631366641648315
-        - rid: 6396631366641648316
+        - rid: 6396631394989638043
+        - rid: 6396631394989638044
+        - rid: 6396631394989638045
         <type>k__BackingField: {fileID: 11400000, guid: b58f7b63b9aea4fafbbbb346dbccf771, type: 2}
-    - rid: 6396631366641648259
+    - rid: 6396631394989637994
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648317
+        - rid: 6396631394989638046
         <type>k__BackingField: {fileID: 11400000, guid: 5ffb8895511774578a76c0fdd6e36198, type: 2}
-    - rid: 6396631366641648260
+    - rid: 6396631394989637995
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648318
-        - rid: 6396631366641648319
+        - rid: 6396631394989638047
+        - rid: 6396631394989638048
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648261
+    - rid: 6396631394989637996
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648320
-        - rid: 6396631366641648321
+        - rid: 6396631394989638049
+        - rid: 6396631394989638050
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648262
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648322
-        - rid: 6396631366641648323
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648263
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648324
-        - rid: 6396631366641648325
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648264
+    - rid: 6396631394989637997
       type: {class: Race, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 7174857bbaca648bd9fc6c8a3d2d248f, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648229
-    - rid: 6396631366641648265
+          rid: 6396631394989637964
+    - rid: 6396631394989637998
       type: {class: Class, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: f7f29ddab0ab942a69a83ad9aea4b401, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648229
+          rid: 6396631394989637964
         <level>k__BackingField: 30
         <availableHitDice>k__BackingField: 30
-    - rid: 6396631366641648266
+    - rid: 6396631394989637999
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648326
-        - rid: 6396631366641648327
-        - rid: 6396631366641648328
-        - rid: 6396631366641648329
+        - rid: 6396631394989638051
+        - rid: 6396631394989638052
+        - rid: 6396631394989638053
+        - rid: 6396631394989638054
         <type>k__BackingField: {fileID: 11400000, guid: 9fcf44fad108f4807814ebd706e53508, type: 2}
-    - rid: 6396631366641648267
+    - rid: 6396631394989638000
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648330
+        - rid: 6396631394989638055
         <type>k__BackingField: {fileID: 11400000, guid: 5ffb8895511774578a76c0fdd6e36198, type: 2}
-    - rid: 6396631366641648268
+    - rid: 6396631394989638001
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648331
-        - rid: 6396631366641648332
+        - rid: 6396631394989638056
+        - rid: 6396631394989638057
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648269
+    - rid: 6396631394989638002
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648333
-        - rid: 6396631366641648334
+        - rid: 6396631394989638058
+        - rid: 6396631394989638059
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648270
+    - rid: 6396631394989638003
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648335
-        - rid: 6396631366641648336
+        - rid: 6396631394989638060
+        - rid: 6396631394989638061
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648271
+    - rid: 6396631394989638004
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648337
-        - rid: 6396631366641648338
+        - rid: 6396631394989638062
+        - rid: 6396631394989638063
         <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648272
+    - rid: 6396631394989638005
       type: {class: Race, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 7174857bbaca648bd9fc6c8a3d2d248f, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648230
-    - rid: 6396631366641648273
+          rid: 6396631394989637965
+    - rid: 6396631394989638006
       type: {class: Class, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: f7f29ddab0ab942a69a83ad9aea4b401, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648230
+          rid: 6396631394989637965
         <level>k__BackingField: 30
         <availableHitDice>k__BackingField: 30
-    - rid: 6396631366641648274
+    - rid: 6396631394989638007
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648339
-        - rid: 6396631366641648340
-        - rid: 6396631366641648341
-        - rid: 6396631366641648342
+        - rid: 6396631394989638064
+        - rid: 6396631394989638065
+        - rid: 6396631394989638066
+        - rid: 6396631394989638067
         <type>k__BackingField: {fileID: 11400000, guid: c0261fbfb74a44b84b5950a6bfc64870, type: 2}
-    - rid: 6396631366641648275
+    - rid: 6396631394989638008
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648343
+        - rid: 6396631394989638068
         <type>k__BackingField: {fileID: 11400000, guid: 5ffb8895511774578a76c0fdd6e36198, type: 2}
-    - rid: 6396631366641648276
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648344
-        - rid: 6396631366641648345
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648277
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648346
-        - rid: 6396631366641648347
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648278
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648348
-        - rid: 6396631366641648349
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648279
-      type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
-      data:
-        <effects>k__BackingField:
-        - rid: 6396631366641648350
-        - rid: 6396631366641648351
-        <type>k__BackingField: {fileID: 11400000, guid: 68882eb418b54413cb2edf2bcbbcffb2, type: 2}
-    - rid: 6396631366641648280
+    - rid: 6396631394989638009
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: ee499e6605e7a4c19b0cc35baf18096b, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648231
-    - rid: 6396631366641648281
+          rid: 6396631394989637966
+    - rid: 6396631394989638010
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: ee499e6605e7a4c19b0cc35baf18096b, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648232
-    - rid: 6396631366641648282
+          rid: 6396631394989637967
+    - rid: 6396631394989638011
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648352
-        - rid: 6396631366641648353
-        - rid: 6396631366641648354
-        - rid: 6396631366641648355
+        - rid: 6396631394989638069
+        - rid: 6396631394989638070
+        - rid: 6396631394989638071
+        - rid: 6396631394989638072
         <type>k__BackingField: {fileID: 11400000, guid: c0261fbfb74a44b84b5950a6bfc64870, type: 2}
-    - rid: 6396631366641648283
+    - rid: 6396631394989638012
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648356
-        - rid: 6396631366641648357
-        - rid: 6396631366641648358
+        - rid: 6396631394989638073
+        - rid: 6396631394989638074
+        - rid: 6396631394989638075
         <type>k__BackingField: {fileID: 11400000, guid: b58f7b63b9aea4fafbbbb346dbccf771, type: 2}
-    - rid: 6396631366641648284
+    - rid: 6396631394989638013
       type: {class: Item, ns: MonsterQuest, asm: Assembly-CSharp}
       data:
         <effects>k__BackingField:
-        - rid: 6396631366641648359
+        - rid: 6396631394989638076
         <type>k__BackingField: {fileID: 11400000, guid: 331bf1c2c6d04406480147db179a3938, type: 2}
-    - rid: 6396631366641648285
+    - rid: 6396631394989638014
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 8380fbb2392e1415a824eb64fec5878e, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648234
-    - rid: 6396631366641648286
+          rid: 6396631394989637969
+    - rid: 6396631394989638015
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 9f7b2e17aae5f4f1e8e2e66427203be5, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648234
-    - rid: 6396631366641648287
+          rid: 6396631394989637969
+    - rid: 6396631394989638016
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 8380fbb2392e1415a824eb64fec5878e, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648235
-    - rid: 6396631366641648288
+          rid: 6396631394989637970
+    - rid: 6396631394989638017
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 9f7b2e17aae5f4f1e8e2e66427203be5, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648235
-    - rid: 6396631366641648289
+          rid: 6396631394989637970
+    - rid: 6396631394989638018
       type: {class: RangedWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 2e50d03379a774dc98f1be7efbdfa742, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648242
-    - rid: 6396631366641648290
+          rid: 6396631394989637977
+    - rid: 6396631394989638019
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 8422a7a8003f749798795890ff700bd7, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648242
-    - rid: 6396631366641648291
+          rid: 6396631394989637977
+    - rid: 6396631394989638020
       type: {class: Ammunition, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: c0580e1e75f094662a3d4aac5c5985f1, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648242
-    - rid: 6396631366641648292
+          rid: 6396631394989637977
+    - rid: 6396631394989638021
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648243
-    - rid: 6396631366641648293
+          rid: 6396631394989637978
+    - rid: 6396631394989638022
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648244
-    - rid: 6396631366641648294
+          rid: 6396631394989637979
+    - rid: 6396631394989638023
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648244
-    - rid: 6396631366641648295
+          rid: 6396631394989637979
+    - rid: 6396631394989638024
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648245
-    - rid: 6396631366641648296
+          rid: 6396631394989637980
+    - rid: 6396631394989638025
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648245
-    - rid: 6396631366641648297
+          rid: 6396631394989637980
+    - rid: 6396631394989638026
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648246
-    - rid: 6396631366641648298
+          rid: 6396631394989637981
+    - rid: 6396631394989638027
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648246
-    - rid: 6396631366641648299
+          rid: 6396631394989637981
+    - rid: 6396631394989638028
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648247
-    - rid: 6396631366641648300
+          rid: 6396631394989637982
+    - rid: 6396631394989638029
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648247
-    - rid: 6396631366641648301
+          rid: 6396631394989637982
+    - rid: 6396631394989638030
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 3edf8e9ea2f6d404b8aa224b9570f559, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648250
-    - rid: 6396631366641648302
+          rid: 6396631394989637985
+    - rid: 6396631394989638031
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 0a4e171e8c39e4fe18118c2b3d0342e8, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648250
-    - rid: 6396631366641648303
+          rid: 6396631394989637985
+    - rid: 6396631394989638032
       type: {class: Heavy, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6db34ea093a2d444c99195f4bf07be44, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648250
-    - rid: 6396631366641648304
+          rid: 6396631394989637985
+    - rid: 6396631394989638033
       type: {class: TwoHanded, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6e57e5b45661442c6b7a7430cbbf9c56, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648250
-    - rid: 6396631366641648305
+          rid: 6396631394989637985
+    - rid: 6396631394989638034
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648251
-    - rid: 6396631366641648306
+          rid: 6396631394989637986
+    - rid: 6396631394989638035
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648252
-    - rid: 6396631366641648307
+          rid: 6396631394989637987
+    - rid: 6396631394989638036
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648252
-    - rid: 6396631366641648308
+          rid: 6396631394989637987
+    - rid: 6396631394989638037
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648253
-    - rid: 6396631366641648309
+          rid: 6396631394989637988
+    - rid: 6396631394989638038
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648253
-    - rid: 6396631366641648310
+          rid: 6396631394989637988
+    - rid: 6396631394989638039
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648254
-    - rid: 6396631366641648311
+          rid: 6396631394989637989
+    - rid: 6396631394989638040
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648254
-    - rid: 6396631366641648312
+          rid: 6396631394989637989
+    - rid: 6396631394989638041
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648255
-    - rid: 6396631366641648313
+          rid: 6396631394989637990
+    - rid: 6396631394989638042
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648255
-    - rid: 6396631366641648314
+          rid: 6396631394989637990
+    - rid: 6396631394989638043
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 5b2322193c8ee4bb8b72cbf93a0999ee, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648258
-    - rid: 6396631366641648315
+          rid: 6396631394989637993
+    - rid: 6396631394989638044
       type: {class: RangedWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 4f1745ffcbb704f7d9cbe648099852e9, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648258
-    - rid: 6396631366641648316
+          rid: 6396631394989637993
+    - rid: 6396631394989638045
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 5349f60f91dd34be98194b3f6db0ad14, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648258
-    - rid: 6396631366641648317
+          rid: 6396631394989637993
+    - rid: 6396631394989638046
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648259
-    - rid: 6396631366641648318
+          rid: 6396631394989637994
+    - rid: 6396631394989638047
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648260
-    - rid: 6396631366641648319
+          rid: 6396631394989637995
+    - rid: 6396631394989638048
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648260
-    - rid: 6396631366641648320
+          rid: 6396631394989637995
+    - rid: 6396631394989638049
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648261
-    - rid: 6396631366641648321
+          rid: 6396631394989637996
+    - rid: 6396631394989638050
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648261
-    - rid: 6396631366641648322
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648262
-    - rid: 6396631366641648323
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648262
-    - rid: 6396631366641648324
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648263
-    - rid: 6396631366641648325
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648263
-    - rid: 6396631366641648326
+          rid: 6396631394989637996
+    - rid: 6396631394989638051
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 3edf8e9ea2f6d404b8aa224b9570f559, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648266
-    - rid: 6396631366641648327
+          rid: 6396631394989637999
+    - rid: 6396631394989638052
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 0a4e171e8c39e4fe18118c2b3d0342e8, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648266
-    - rid: 6396631366641648328
+          rid: 6396631394989637999
+    - rid: 6396631394989638053
       type: {class: Heavy, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6db34ea093a2d444c99195f4bf07be44, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648266
-    - rid: 6396631366641648329
+          rid: 6396631394989637999
+    - rid: 6396631394989638054
       type: {class: TwoHanded, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6e57e5b45661442c6b7a7430cbbf9c56, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648266
-    - rid: 6396631366641648330
+          rid: 6396631394989637999
+    - rid: 6396631394989638055
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648267
-    - rid: 6396631366641648331
+          rid: 6396631394989638000
+    - rid: 6396631394989638056
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648268
-    - rid: 6396631366641648332
+          rid: 6396631394989638001
+    - rid: 6396631394989638057
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648268
-    - rid: 6396631366641648333
+          rid: 6396631394989638001
+    - rid: 6396631394989638058
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648269
-    - rid: 6396631366641648334
+          rid: 6396631394989638002
+    - rid: 6396631394989638059
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648269
-    - rid: 6396631366641648335
+          rid: 6396631394989638002
+    - rid: 6396631394989638060
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648270
-    - rid: 6396631366641648336
+          rid: 6396631394989638003
+    - rid: 6396631394989638061
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648270
-    - rid: 6396631366641648337
+          rid: 6396631394989638003
+    - rid: 6396631394989638062
       type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648271
-    - rid: 6396631366641648338
+          rid: 6396631394989638004
+    - rid: 6396631394989638063
       type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648271
-    - rid: 6396631366641648339
+          rid: 6396631394989638004
+    - rid: 6396631394989638064
       type: {class: Heavy, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6db34ea093a2d444c99195f4bf07be44, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648274
-    - rid: 6396631366641648340
+          rid: 6396631394989638007
+    - rid: 6396631394989638065
       type: {class: TwoHanded, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6e57e5b45661442c6b7a7430cbbf9c56, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648274
-    - rid: 6396631366641648341
+          rid: 6396631394989638007
+    - rid: 6396631394989638066
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 0b15d2ba94f5d47baa9911ff74caef22, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648274
-    - rid: 6396631366641648342
+          rid: 6396631394989638007
+    - rid: 6396631394989638067
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 4ac1ced37d27c43a39a9f0a6026931eb, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648274
-    - rid: 6396631366641648343
+          rid: 6396631394989638007
+    - rid: 6396631394989638068
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: fb0997981dcc140079e111505b679ab2, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648275
-    - rid: 6396631366641648344
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648276
-    - rid: 6396631366641648345
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648276
-    - rid: 6396631366641648346
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648277
-    - rid: 6396631366641648347
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648277
-    - rid: 6396631366641648348
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648278
-    - rid: 6396631366641648349
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648278
-    - rid: 6396631366641648350
-      type: {class: HealingItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: a0b5f6002d8e040e396211369e1d1bb3, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648279
-    - rid: 6396631366641648351
-      type: {class: ConsumableItem, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
-      data:
-        <type>k__BackingField: {fileID: 11400000, guid: fff4dade823af4d4bb75bb1e3b2f98bf, type: 2}
-        <parent>k__BackingField:
-          rid: 6396631366641648279
-    - rid: 6396631366641648352
+          rid: 6396631394989638008
+    - rid: 6396631394989638069
       type: {class: Heavy, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6db34ea093a2d444c99195f4bf07be44, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648282
-    - rid: 6396631366641648353
+          rid: 6396631394989638011
+    - rid: 6396631394989638070
       type: {class: TwoHanded, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 6e57e5b45661442c6b7a7430cbbf9c56, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648282
-    - rid: 6396631366641648354
+          rid: 6396631394989638011
+    - rid: 6396631394989638071
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 0b15d2ba94f5d47baa9911ff74caef22, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648282
-    - rid: 6396631366641648355
+          rid: 6396631394989638011
+    - rid: 6396631394989638072
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 4ac1ced37d27c43a39a9f0a6026931eb, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648282
-    - rid: 6396631366641648356
+          rid: 6396631394989638011
+    - rid: 6396631394989638073
       type: {class: MeleeWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 5b2322193c8ee4bb8b72cbf93a0999ee, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648283
-    - rid: 6396631366641648357
+          rid: 6396631394989638012
+    - rid: 6396631394989638074
       type: {class: RangedWeaponAttack, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 4f1745ffcbb704f7d9cbe648099852e9, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648283
-    - rid: 6396631366641648358
+          rid: 6396631394989638012
+    - rid: 6396631394989638075
       type: {class: Weapon, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: 5349f60f91dd34be98194b3f6db0ad14, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648283
-    - rid: 6396631366641648359
+          rid: 6396631394989638012
+    - rid: 6396631394989638076
       type: {class: Armor, ns: MonsterQuest.Effects, asm: Assembly-CSharp}
       data:
         <type>k__BackingField: {fileID: 11400000, guid: cb300d691904b4c9f980d1bccf310d13, type: 2}
         <parent>k__BackingField:
-          rid: 6396631366641648284
+          rid: 6396631394989638013

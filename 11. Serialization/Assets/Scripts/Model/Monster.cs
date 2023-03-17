@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public class Monster : Creature
     {
         private static readonly bool[] _deathSavingThrows = Array.Empty<bool>();

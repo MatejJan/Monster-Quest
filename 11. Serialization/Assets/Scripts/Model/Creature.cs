@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public abstract class Creature
     {
         private LifeStatus _lifeStatus;
@@ -25,7 +25,7 @@ namespace MonsterQuest
 
         public abstract AbilityScores abilityScores { get; }
         public int hitPoints { get; protected set; }
-        public CreaturePresenter presenter { get; private set; }
+        [field: NonSerialized] public CreaturePresenter presenter { get; private set; }
 
         public float spaceInFeet => SizeHelper.spaceInFeetPerSizeCategory[sizeCategory];
         
@@ -111,6 +111,11 @@ namespace MonsterQuest
             }
 
             if (presenter is not null) yield return presenter.Heal();
+        }
+        
+        public int MakeAbilityRoll(Ability ability)
+        {
+            return DiceHelper.Roll("d20") + abilityScores[ability].modifier;
         }
     }
 }

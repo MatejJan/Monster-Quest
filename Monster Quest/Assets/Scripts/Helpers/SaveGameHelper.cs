@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using UnityEditor;
@@ -25,7 +22,10 @@ namespace MonsterQuest
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.Indented,
-            ContractResolver = new CustomContractResolver(),
+            ContractResolver = new DefaultContractResolver
+            {
+                IgnoreSerializableAttribute = false
+            },
             Converters = new List<JsonConverter>
             {
                 new UnityObjectConverter()
@@ -82,40 +82,6 @@ namespace MonsterQuest
                 string primaryKey = (string)reader.Value;
 
                 return Database.GetAssetForPrimaryKey<Object>(primaryKey);
-            }
-        }
-
-        // We want to reuse Unity's SerializeField and SerializeReference attributes to know what to serialize and always use private default constructors.
-        private class CustomContractResolver : DefaultContractResolver
-        {
-            public CustomContractResolver()
-            {
-                IgnoreSerializableAttribute = false;
-                SerializeCompilerGeneratedMembers = true;
-            }
-
-            protected override JsonObjectContract CreateObjectContract(Type objectType)
-            {
-                JsonObjectContract jsonObjectContract = base.CreateObjectContract(objectType);
-
-                jsonObjectContract.OverrideCreator = _ => FormatterServices.GetUninitializedObject(objectType);
-                jsonObjectContract.CreatorParameters.Clear();
-
-                return jsonObjectContract;
-            }
-
-            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-            {
-                JsonProperty property = base.CreateProperty(member, memberSerialization);
-
-                bool hasSerializeFieldAttribute = member.GetCustomAttributes(typeof(SerializeField)).Any();
-                bool hasSerializeReferenceAttribute = member.GetCustomAttributes(typeof(SerializeReference)).Any();
-                bool hasSerializeAttribute = hasSerializeFieldAttribute || hasSerializeReferenceAttribute;
-
-                property.Writable = hasSerializeAttribute;
-                property.ShouldSerialize = _ => hasSerializeAttribute;
-
-                return property;
             }
         }
     }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MonsterQuest
 {
+    [Serializable]
     public class Party
     {
         public Party(IEnumerable<Character> initialCharacters)
@@ -10,7 +12,7 @@ namespace MonsterQuest
             characters = new List<Character>(initialCharacters);
         }
         
-        public List<Character> characters { get; private set; }
+        public List<Character> characters { get; }
         
         public int aliveCount => characters.Count(character => character.isAlive);
 

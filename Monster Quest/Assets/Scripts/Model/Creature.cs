@@ -41,7 +41,7 @@ namespace MonsterQuest
             }
         }
 
-        public CreaturePresenter presenter { get; private set; }
+        [field: NonSerialized] public CreaturePresenter presenter { get; private set; }
 
         // Derived properties
 
