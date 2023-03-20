@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 
 namespace MonsterQuest
 {
-    public class SaveGameHelper
+    public static class SaveGameHelper
     {
         private static readonly string _saveFilePath = Path.Combine(Application.persistentDataPath, "save.json");
         
@@ -50,7 +50,7 @@ namespace MonsterQuest
         }
         
         // We need to reference Unity Objects with their addressable primary key. 
-        private class UnityObjectConverter : JsonConverter<UnityEngine.Object>
+        private class UnityObjectConverter : JsonConverter<Object>
         {
             public override void WriteJson(JsonWriter writer, Object asset, JsonSerializer serializer)
             {
