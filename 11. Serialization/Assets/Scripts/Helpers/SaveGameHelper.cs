@@ -35,12 +35,12 @@ namespace MonsterQuest
         public static GameState Load()
         {
             string json = File.ReadAllText(_saveFilePath);
-            return JsonConvert.DeserializeObject<GameState>(json);
+            return JsonConvert.DeserializeObject<GameState>(json, _settings);
         }
 
         public static void Save(GameState state)
         {
-            string json = JsonConvert.SerializeObject(state);
+            string json = JsonConvert.SerializeObject(state, _settings);
             File.WriteAllText(_saveFilePath, json);
         }
 
@@ -50,7 +50,7 @@ namespace MonsterQuest
         }
         
         // We need to reference Unity Objects with their addressable primary key. 
-        private class UnityObjectConverter : JsonConverter<Object>
+        private class UnityObjectConverter : JsonConverter<UnityEngine.Object>
         {
             public override void WriteJson(JsonWriter writer, Object asset, JsonSerializer serializer)
             {
