@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d10daebbc6e43109be059024387f60, type: 3}
+  m_Name: Dragon Turtle
+  m_EditorClassIdentifier: 
+  displayName: dragon turtle
+  sizeCategory: 6
+  alignment: neutral
+  hitPointsRoll: 22d20+110
+  armorClass: 20
+  abilityScores:
+    <strength>k__BackingField:
+      <score>k__BackingField: 25
+    <dexterity>k__BackingField:
+      <score>k__BackingField: 10
+    <constitution>k__BackingField:
+      <score>k__BackingField: 20
+    <intelligence>k__BackingField:
+      <score>k__BackingField: 10
+    <wisdom>k__BackingField:
+      <score>k__BackingField: 12
+    <charisma>k__BackingField:
+      <score>k__BackingField: 12
+  armorType: {fileID: 0}
+  weaponTypes:
+  - {fileID: 11400000, guid: 569a314e0f3e84259a393881073cb7e1, type: 2}
+  - {fileID: 11400000, guid: 6bec4e2567de643b8b6cfe27cb62e750, type: 2}
+  - {fileID: 11400000, guid: 813d9331b5ebc41af9a132c0b9a403f7, type: 2}
+  bodySprite: {fileID: 21300000, guid: 537febb811ba9477fa07dd89d7a224ed, type: 3}
