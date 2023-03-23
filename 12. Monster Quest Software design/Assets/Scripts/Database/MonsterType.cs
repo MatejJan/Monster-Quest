@@ -17,5 +17,6 @@ namespace MonsterQuest
         public ArmorType armorType;
         public WeaponType[] weaponTypes;
         public Sprite bodySprite;
+        public float challengeRating;
     }
 }

@@ -47,6 +47,11 @@ namespace MonsterQuest
                 // Add the modifiers.
                 attackRoll += _attacker.abilityScores[ability].modifier;
 
+                if (_attacker.IsProficientWithWeaponType(_weaponType))
+                {
+                    attackRoll += _attacker.proficiencyBonus;
+                }
+
                 // The attack always misses on a critical miss.
                 if (attackRoll == 1)
                 {

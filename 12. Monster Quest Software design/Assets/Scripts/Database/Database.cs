@@ -8,10 +8,11 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace MonsterQuest
 {
-    public class Database
+    public static class Database
     {
         private static readonly List<MonsterType> _monsterTypes = new();
         private static readonly List<ItemType> _itemTypes = new();
+        private static readonly List<ClassType> _classTypes = new();
         
         private static readonly List<Sprite> _sprites = new();
         private static readonly List<Object> _allObjects = new();
@@ -21,6 +22,7 @@ namespace MonsterQuest
 
         public static IEnumerable<MonsterType> monsterTypes => _monsterTypes;
         public static IEnumerable<ItemType> itemTypes => _itemTypes;
+        public static IEnumerable<ClassType> classTypes => _classTypes;
 
         public static IEnumerator Initialize()
         {
@@ -29,6 +31,7 @@ namespace MonsterQuest
             // Load all assets.
             yield return LoadAssets(_monsterTypes);
             yield return LoadAssets(_itemTypes);
+            yield return LoadAssets(_classTypes);
             
             // We also load all Unity objects so they get their instanceIDs indexed. We need to load the
             // sprites first so they get registered before their textures (which have the same primary key).
@@ -45,7 +48,12 @@ namespace MonsterQuest
         {
             return _itemTypes.First(item => item.displayName == displayName && item is T) as T;
         }
-
+        
+        public static ClassType GetClassType(string displayName)
+        {
+            return _classTypes.First(characterClass => characterClass.displayName == displayName);
+        }
+        
         public static string GetPrimaryKeyForAsset(Object asset)
         {
             if (!_primaryKeysByAssets.ContainsKey(asset))

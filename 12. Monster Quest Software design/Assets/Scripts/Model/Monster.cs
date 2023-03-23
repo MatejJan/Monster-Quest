@@ -22,6 +22,8 @@ namespace MonsterQuest
         public override AbilityScores abilityScores => type.abilityScores;
         public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
         public override int armorClass => type.armorClass;
+        protected override int proficiencyBonusBase => Math.Max(1, (int)type.challengeRating);
+        public override bool IsProficientWithWeaponType(WeaponType _) => true;
 
         public override IAction TakeTurn(GameState gameState)
         {

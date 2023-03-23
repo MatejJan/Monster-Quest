@@ -15,3 +15,6 @@ MonoBehaviour:
   displayName: greatsword
   weight: 6
   damageRoll: 2d6
+  isRanged: 0
+  isFinesse: 0
+  categories: 01000000

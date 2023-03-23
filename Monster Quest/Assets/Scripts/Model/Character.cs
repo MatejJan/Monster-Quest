@@ -132,8 +132,6 @@ namespace MonsterQuest
             }
         }
 
-        // Private methods
-
         public void LevelUp()
         {
             characterClass.LevelUp(out int hitPointsMaximumIncrease);

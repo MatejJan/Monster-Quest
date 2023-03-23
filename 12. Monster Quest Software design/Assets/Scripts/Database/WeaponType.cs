@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -8,5 +9,6 @@ namespace MonsterQuest
         public string damageRoll;
         public bool isRanged;
         public bool isFinesse;
+        public WeaponCategory[] categories;
     }
 }

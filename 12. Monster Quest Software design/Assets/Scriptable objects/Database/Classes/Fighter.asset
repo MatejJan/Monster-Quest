@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbbd012d0d3d4239a87552359d5bfa62, type: 3}
-  m_Name: Greataxe
+  m_Script: {fileID: 11500000, guid: 3758ddd6205f48308990494dd0949acb, type: 3}
+  m_Name: Fighter
   m_EditorClassIdentifier: 
-  displayName: greataxe
-  weight: 7
-  damageRoll: 1d12
-  isRanged: 0
-  isFinesse: 0
-  categories: 01000000
+  displayName: fighter
+  weaponProficiencies: 0000000001000000

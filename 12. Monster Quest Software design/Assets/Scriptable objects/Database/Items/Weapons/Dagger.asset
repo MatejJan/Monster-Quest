@@ -17,3 +17,4 @@ MonoBehaviour:
   damageRoll: 1d4
   isRanged: 0
   isFinesse: 1
+  categories: 0000000007000000

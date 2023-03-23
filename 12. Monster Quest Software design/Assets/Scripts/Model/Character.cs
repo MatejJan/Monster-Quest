@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,11 +12,12 @@ namespace MonsterQuest
     {
         private readonly List<bool> _deathSavingThrows = new();
         
-        public Character(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory, WeaponType weaponType, ArmorType armorType) : base(displayName, bodySprite, sizeCategory)
+        public Character(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory, WeaponType weaponType, ArmorType armorType, ClassType classType) : base(displayName, bodySprite, sizeCategory)
         {
             this.hitPointsMaximum = hitPointsMaximum;
             this.weaponType = weaponType;
             this.armorType = armorType;
+            this.classType = classType;
             
             List<int> availableAbilityScores = new ();
 
@@ -41,9 +43,12 @@ namespace MonsterQuest
             abilityScores.wisdom.score = availableAbilityScores[4];
             abilityScores.charisma.score = availableAbilityScores[5];
 
+            level = 1;
+
             Initialize();
         }
-        
+
+        public int level { get; private set; }
         public WeaponType weaponType { get; }
         public ArmorType armorType { get; }
 
@@ -51,6 +56,15 @@ namespace MonsterQuest
 
         public override IEnumerable<bool> deathSavingThrows => _deathSavingThrows;
         public override int armorClass => armorType.armorClass;
+
+        protected override int proficiencyBonusBase => level;
+        
+        public ClassType classType { get; }
+
+        public override bool IsProficientWithWeaponType(WeaponType weaponType)
+        {
+            return classType.weaponProficiencies.Intersect(weaponType.categories).Any();
+        } 
 
         public override IAction TakeTurn(GameState gameState)
         {
@@ -146,7 +160,11 @@ namespace MonsterQuest
 
             yield return HandleDeathSavingThrows();
         }
-        
+
+        public void LevelUp()
+        {
+            
+        }
         
         private IEnumerator HandleDeathSavingThrows()
         {

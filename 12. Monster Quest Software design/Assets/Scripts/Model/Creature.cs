@@ -22,7 +22,7 @@ namespace MonsterQuest
         public Sprite bodySprite { get; protected set; }
         public int hitPointsMaximum { get; protected set; }
         public SizeCategory sizeCategory { get; protected set; }
-
+        
         public abstract AbilityScores abilityScores { get; }
         public int hitPoints { get; protected set; }
         [field: NonSerialized] public CreaturePresenter presenter { get; private set; }
@@ -34,7 +34,12 @@ namespace MonsterQuest
         public int deathSavingThrowFailures => deathSavingThrows.Count(result => !result);
         
         public abstract int armorClass { get; }
-        
+
+        public int proficiencyBonus => 2 + (proficiencyBonusBase - 1) / 4;
+        protected abstract int proficiencyBonusBase { get; }
+
+        public abstract bool IsProficientWithWeaponType(WeaponType weaponType);
+
         public LifeStatus lifeStatus
         {
             get => _lifeStatus;

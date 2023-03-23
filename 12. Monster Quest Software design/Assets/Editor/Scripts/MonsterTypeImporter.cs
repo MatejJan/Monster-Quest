@@ -49,6 +49,8 @@ namespace MonsterQuest
 
                 monsterType.abilityScores[ability].score = (int)monsterData[ability.ToString().ToLowerInvariant()];
             }
+            
+            monsterType.challengeRating = (float)monsterData["challenge_rating"];
         }
 
         private static void LoadMonsterNames()

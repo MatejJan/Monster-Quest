@@ -17,6 +17,7 @@ namespace MonsterQuest
             PreserveReferencesHandling = PreserveReferencesHandling.All,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented,
             ContractResolver = new DefaultContractResolver()
             {
               IgnoreSerializableAttribute = false

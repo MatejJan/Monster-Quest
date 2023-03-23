@@ -45,13 +45,14 @@ namespace MonsterQuest
             ArmorType studdedLeather = Database.GetItemType<ArmorType>("studded leather");
 
             WeaponType[] weaponTypes = Database.itemTypes.Where(itemType => itemType is WeaponType { weight: > 0 }).Cast<WeaponType>().ToArray();
+            ClassType fighter = Database.GetClassType("fighter");
 
             string[] characterNames = { "Elana", "Jazlyn", "Theron", "Dayana", "Rolando" };
             List<Character> characters = new();
 
             for (int i = 0; i < 5; i++)
             {
-                characters.Add(new(characterNames[i], characterBodySprites[i], 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather));
+                characters.Add(new Character(characterNames[i], characterBodySprites[i], 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather, fighter));
             }
             
             Party party = new(characters);
