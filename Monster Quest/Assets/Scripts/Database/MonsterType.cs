@@ -54,6 +54,7 @@ namespace MonsterQuest
             {
                 return challengeRating switch
                 {
+                    0 => hasEffectiveAttacks ? 10 : 0,
                     0.125f => 25,
                     0.25f => 50,
                     0.5f => 100,
@@ -89,6 +90,20 @@ namespace MonsterQuest
                     30 => 155000,
                     _ => 0
                 };
+            }
+        }
+
+        private bool hasEffectiveAttacks
+        {
+            get
+            {
+                // Possessing an item with an attack effect counts as an effective attack.
+                if (items.Any(itemType => itemType.GetEffect<AttackType>())) return true;
+
+                // Having an attack effect directly counts as an effective attack.
+                if (effects.Any(effectType => effectType is AttackType)) return true;
+
+                return false;
             }
         }
 

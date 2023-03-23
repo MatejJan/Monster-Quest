@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace MonsterQuest
     public class Combat : IRulesHandler
     {
         [SerializeReference] private List<Monster> _monsters;
+        [SerializeReference] private List<Character> _participatingCharacters;
         [SerializeReference] private List<Creature> _creaturesInOrderOfInitiative;
         [SerializeField] private int _roundNumber;
         [SerializeField] private int _currentTurnCreatureIndex;
@@ -18,6 +20,10 @@ namespace MonsterQuest
         {
             this.gameState = gameState;
             _monsters = new List<Monster>(monsters);
+
+            // All conscious characters starting combat count as participating.
+            _participatingCharacters = new List<Character>(gameState.party.characters.Where(character => character.lifeStatus == LifeStatus.Conscious));
+
             RollInitiative();
 
             // Create global providers.
@@ -58,6 +64,27 @@ namespace MonsterQuest
             }
 
             return _creaturesInOrderOfInitiative[_currentTurnCreatureIndex];
+        }
+
+        public void AddParticipatingCharacter(Character character)
+        {
+            if (_participatingCharacters.Contains(character)) return;
+
+            _participatingCharacters.Add(character);
+        }
+
+        public IEnumerator End()
+        {
+            if (gameState.party.aliveCount == 0) yield break;
+
+            // Distribute experience points.
+            int experiencePoints = _monsters.Sum(monster => monster.type.experiencePoints);
+            int experiencePointsPerCharacter = experiencePoints / _participatingCharacters.Count;
+
+            foreach (Character character in _participatingCharacters)
+            {
+                yield return character.GainExperiencePoints(experiencePointsPerCharacter);
+            }
         }
 
         public int GetDistance(Creature a, Creature b)

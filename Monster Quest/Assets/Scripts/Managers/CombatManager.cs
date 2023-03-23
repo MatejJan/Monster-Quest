@@ -29,6 +29,12 @@ namespace MonsterQuest
 
                 if (creature.lifeStatus == LifeStatus.Dead) continue;
 
+                // In case a character became conscious after the start of the combat, mark them as participating.
+                if (creature.lifeStatus == LifeStatus.Conscious && creature is Character character)
+                {
+                    gameState.combat.AddParticipatingCharacter(character);
+                }
+
                 IAction action = creature.TakeTurn(gameState);
 
                 yield return action?.Execute();
@@ -48,6 +54,8 @@ namespace MonsterQuest
             {
                 Console.WriteLine("The party has failed and the monsters continue to attack unsuspecting adventurers.");
             }
+
+            yield return gameState.combat.End();
         }
     }
 }

@@ -17,16 +17,21 @@ namespace MonsterQuest.Effects
 
         public override Effect Create(object parent)
         {
-            return new Class(this, parent);
+            return new Class(this, parent, 1);
+        }
+
+        public Effect Create(object parent, int level)
+        {
+            return new Class(this, parent, level);
         }
     }
 
     [Serializable]
     public class Class : Effect, IWeaponProficiencyRule, IArmorProficiencyRule
     {
-        public Class(ClassType type, object parent) : base(type, parent)
+        public Class(ClassType type, object parent, int level) : base(type, parent)
         {
-            level = 1;
+            this.level = level;
             availableHitDice = level;
         }
 

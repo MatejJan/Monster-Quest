@@ -61,26 +61,17 @@ namespace MonsterQuest
 
             Character[] characters =
             {
-                new("Elana", humanRaceType, fighterClassType, characterBodySprites[0]),
-                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[1]),
-                new("Theron", humanRaceType, fighterClassType, characterBodySprites[2]),
-                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[3]),
-                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[4])
+                new("Elana", humanRaceType, fighterClassType, characterBodySprites[0], charactersStartingLevel),
+                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[1], charactersStartingLevel),
+                new("Theron", humanRaceType, fighterClassType, characterBodySprites[2], charactersStartingLevel),
+                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[3], charactersStartingLevel),
+                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[4], charactersStartingLevel)
             };
 
             Party party = new(characters);
 
             // Create a new game state.
             _state = new GameState(party);
-
-            // Level up the characters to the desired starting level.
-            foreach (Character character in characters)
-            {
-                while (character.characterClass.level < charactersStartingLevel)
-                {
-                    character.LevelUp();
-                }
-            }
 
             // Give characters equipment.
             ItemType[] weaponItemTypes =
@@ -197,6 +188,8 @@ namespace MonsterQuest
 
                 // Save the game before a new fight.
                 SaveGameHelper.Save(_state);
+
+                yield return new WaitForSeconds(1);
             }
 
             Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");

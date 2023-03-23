@@ -14,7 +14,7 @@ namespace MonsterQuest
         [SerializeField] private List<bool> _deathSavingThrows;
         [SerializeField] private AbilityScores _abilityScores;
 
-        public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite)
+        public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite, int startingLevel = 1)
         {
             this.displayName = displayName;
             DebugHelper.StartLog($"Creating {definiteName}.");
@@ -22,8 +22,10 @@ namespace MonsterQuest
             race = raceType.Create(this) as Race;
             effectsList.Add(race);
 
-            characterClass = classType.Create(this) as Class;
+            characterClass = classType.Create(this, startingLevel) as Class;
             effectsList.Add(characterClass);
+
+            experiencePoints = CharacterRules.GetExperiencePointsForLevel(startingLevel);
 
             _bodySprite = bodySprite;
 
@@ -67,6 +69,7 @@ namespace MonsterQuest
         // State properties
         [field: SerializeReference] public Class characterClass { get; private set; }
         [field: SerializeReference] public Race race { get; private set; }
+        [field: SerializeField] public int experiencePoints { get; private set; }
 
         // Derived properties
         public override AbilityScores abilityScores => _abilityScores;
@@ -132,12 +135,31 @@ namespace MonsterQuest
             }
         }
 
-        public void LevelUp()
+        public IEnumerator GainExperiencePoints(int amount)
+        {
+            Console.WriteLine($"{displayName.ToUpperFirst()} gains {amount} experience points.");
+
+            presenter.GainExperiencePoints();
+
+            experiencePoints += amount;
+
+            // Determine new level based on new experience points.
+            int newLevel = CharacterRules.GetLevelForExperiencePoints(experiencePoints);
+
+            while (characterClass.level < newLevel)
+            {
+                yield return LevelUp();
+            }
+        }
+
+        private IEnumerator LevelUp()
         {
             characterClass.LevelUp(out int hitPointsMaximumIncrease);
-
             hitPointsMaximum += hitPointsMaximumIncrease;
-            hitPoints += hitPointsMaximumIncrease;
+
+            Console.WriteLine($"{displayName.ToUpperFirst()} levels up to level {characterClass.level}! Their maximum HP increases to {hitPointsMaximum}.");
+
+            yield return presenter.LevelUp();
         }
     }
 }
