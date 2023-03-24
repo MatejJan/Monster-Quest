@@ -9,14 +9,19 @@ namespace MonsterQuest
     {
         public IEnumerator Simulate(GameState gameState)
         {
-            Monster monster = gameState.combat.monster;
+            Combat combat = gameState.combat;
+            Monster monster = combat.monster;
             Party party = gameState.party;
 
             do
             {
                 SaveGameHelper.Save(gameState);
-                Creature creature = gameState.combat.StartNextCreatureTurn();
+                Creature creature = combat.StartNextCreatureTurn();
                 if (creature.lifeStatus == LifeStatus.Dead) continue;
+                if (creature.lifeStatus == LifeStatus.Conscious && creature is Character character)
+                {
+                    combat.AddParticipatingCharacter(character);
+                }
 
                 IAction action = creature.TakeTurn(gameState);
                 yield return action.Execute();
@@ -30,6 +35,8 @@ namespace MonsterQuest
             {
                 Console.WriteLine($"The party has failed and the {monster.displayName} continues to attack unsuspecting adventurers.");
             }
+            
+            yield return combat.End();
         }
     }
 }

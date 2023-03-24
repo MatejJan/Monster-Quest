@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="500d95c7-c206-4ce0-9311-c478b2c4ea33" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rules/Actions/AttackAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rules/Actions/AttackAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body sprite.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body sprite.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body vertical displacement.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body vertical displacement.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature stand.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature stand.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animations.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animations.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scriptable objects/Database/Classes/Fighter.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scriptable objects/Database/Classes/Fighter.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/ClassType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/ClassType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/MonsterType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/MonsterType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/CombatManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/CombatManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Character.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Character.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Combat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Combat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Creature.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Presenters/CreaturePresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Presenters/CreaturePresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Rules/Actions/AttackAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Rules/Actions/AttackAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/ClassType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/ClassType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Model/Character.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Model/Character.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Rules/CharacterRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Rules/CharacterRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NSzJOMJQuNkDlJ9ISFkfDZvTrD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2021.3.21f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;$PROJECT_DIR$&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="500d95c7-c206-4ce0-9311-c478b2c4ea33" name="Changes" comment="" />
+      <created>1679672198884</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679672198884</updated>
+      <workItem from="1679672203057" duration="27000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

@@ -22,11 +22,6 @@ namespace MonsterQuest
             race = raceType.Create(this) as Race;
             effectsList.Add(race);
 
-            characterClass = classType.Create(this, startingLevel) as Class;
-            effectsList.Add(characterClass);
-
-            experiencePoints = CharacterRules.GetExperiencePointsForLevel(startingLevel);
-
             _bodySprite = bodySprite;
 
             // Generate ability scores.
@@ -56,6 +51,14 @@ namespace MonsterQuest
 
             // Calculate hit points at first level.
             hitPointsMaximum = classType.hitPointsBase + _abilityScores.constitution.modifier;
+
+            // Create character class at starting level.
+            characterClass = classType.Create(this, startingLevel, out int hitPointsMaximumIncrease) as Class;
+            effectsList.Add(characterClass);
+
+            hitPointsMaximum += hitPointsMaximumIncrease;
+
+            experiencePoints = CharacterRules.GetExperiencePointsForLevel(startingLevel);
 
             // Prepare death saving throws.
             _deathSavingThrows = new List<bool>();

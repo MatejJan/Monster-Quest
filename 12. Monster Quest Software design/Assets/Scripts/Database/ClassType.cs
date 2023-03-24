@@ -7,5 +7,8 @@ namespace MonsterQuest
     {
         public string displayName;
         public WeaponCategory[] weaponProficiencies;
+        public int hitDiceSides;
+        
+        public string hitDice => $"d{hitDiceSides}";
     }
 }

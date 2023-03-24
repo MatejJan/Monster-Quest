@@ -43,14 +43,6 @@ namespace MonsterQuest
             {
                 // Perform an attack roll.
                 int attackRoll = DiceHelper.Roll("d20");
-                
-                // Add the modifiers.
-                attackRoll += _attacker.abilityScores[ability].modifier;
-
-                if (_attacker.IsProficientWithWeaponType(_weaponType))
-                {
-                    attackRoll += _attacker.proficiencyBonus;
-                }
 
                 // The attack always misses on a critical miss.
                 if (attackRoll == 1)
@@ -66,6 +58,14 @@ namespace MonsterQuest
                 // Otherwise the attack value must be greater than or equal to the target's armor class.
                 else
                 {
+                    // Add the modifiers.
+                    attackRoll += _attacker.abilityScores[ability].modifier;
+
+                    if (_attacker.IsProficientWithWeaponType(_weaponType))
+                    {
+                        attackRoll += _attacker.proficiencyBonus;
+                    }
+                    
                     // Determine the target's armor class.
                     int armorClass = _target.armorClass;
 

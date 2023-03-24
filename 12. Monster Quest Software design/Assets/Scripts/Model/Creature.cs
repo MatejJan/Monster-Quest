@@ -80,6 +80,7 @@ namespace MonsterQuest
             
             if (hitPoints <= 0)
             {
+                hitPoints = 0;
                 yield return TakeDamageAtZeroHitPoints(wasCriticalHit);
             }
             else

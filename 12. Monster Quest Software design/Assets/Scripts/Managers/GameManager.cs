@@ -52,7 +52,7 @@ namespace MonsterQuest
 
             for (int i = 0; i < 5; i++)
             {
-                characters.Add(new Character(characterNames[i], characterBodySprites[i], 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather, fighter));
+                characters.Add(new Character(characterNames[i], characterBodySprites[i], SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather, fighter));
             }
             
             Party party = new(characters);
@@ -78,18 +78,29 @@ namespace MonsterQuest
                 }
                 
                 yield return _combatPresenter.InitializeMonster(_state);
+                yield return new WaitForSeconds(1);
+
                 yield return _combatManager.Simulate(_state);
 
                 if (_state.party.aliveCount == 0) break;
+                
+                yield return new WaitForSeconds(1);
+
+                foreach (Character character in _state.party.aliveCharacters)
+                {
+                    yield return character.TakeShortRest();
+                }
+
+                yield return new WaitForSeconds(1);
             }
 
             if (_state.party.aliveCount > 1)
             {
-                Console.WriteLine($"After {monsterTypes.Length} grueling battles, the heroes {_state.party} return from the dungeons to live another day.");
+                Console.WriteLine($"After {monsterTypes.Length} grueling battles, the heroes {StringHelper.JoinWithAnd(_state.party.aliveCharacters.Select(character => character.displayName))} return from the dungeons to live another day.");
             }
             else if (_state.party.aliveCount == 1)
             {
-                Console.WriteLine($"After {monsterTypes.Length} grueling battles, {_state.party.characters[0].displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
+                Console.WriteLine($"After {monsterTypes.Length} grueling battles, {_state.party.aliveCharacters.First().displayName} returns from the dungeons. Unfortunately, none of the other party members survived.");
             }
             
             SaveGameHelper.Delete();

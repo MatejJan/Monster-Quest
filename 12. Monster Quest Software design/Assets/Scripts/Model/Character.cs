@@ -12,15 +12,12 @@ namespace MonsterQuest
     {
         private readonly List<bool> _deathSavingThrows = new();
         
-        public Character(string displayName, Sprite bodySprite, int hitPointsMaximum, SizeCategory sizeCategory, WeaponType weaponType, ArmorType armorType, ClassType classType) : base(displayName, bodySprite, sizeCategory)
+        public Character(string displayName, Sprite bodySprite, SizeCategory sizeCategory, WeaponType weaponType, ArmorType armorType, ClassType classType) : base(displayName, bodySprite, sizeCategory)
         {
-            this.hitPointsMaximum = hitPointsMaximum;
             this.weaponType = weaponType;
             this.armorType = armorType;
             this.classType = classType;
             
-            List<int> availableAbilityScores = new ();
-
             for (var i = 0; i < 6; i++)
             {
                 var rolls = new List<int>();
@@ -33,22 +30,20 @@ namespace MonsterQuest
                 rolls.Sort();
                 int score = rolls[1] + rolls[2] + rolls[3];
 
-                availableAbilityScores.Add(score);
+                abilityScores[(Ability)(i+1)].score = score;
             }
 
-            abilityScores.strength.score = availableAbilityScores[0];
-            abilityScores.dexterity.score = availableAbilityScores[1];
-            abilityScores.constitution.score = availableAbilityScores[2];
-            abilityScores.intelligence.score = availableAbilityScores[3];
-            abilityScores.wisdom.score = availableAbilityScores[4];
-            abilityScores.charisma.score = availableAbilityScores[5];
-
+            experiencePoints = 0;
             level = 1;
+            availableHitDice = level;
+            hitPointsMaximum = classType.hitDiceSides + abilityScores.constitution.modifier;
 
             Initialize();
         }
 
+        public int experiencePoints { get; private set; }
         public int level { get; private set; }
+        public int availableHitDice { get; private set; }
         public WeaponType weaponType { get; }
         public ArmorType armorType { get; }
 
@@ -161,9 +156,49 @@ namespace MonsterQuest
             yield return HandleDeathSavingThrows();
         }
 
-        public void LevelUp()
+        public IEnumerator GainExperiencePoints(int amount)
         {
+            Console.WriteLine($"{displayName.ToUpperFirst()} gains {amount} experience points.");
+
+            if (presenter is not null && lifeStatus == LifeStatus.Conscious) presenter.GainExperiencePoints();
             
+            experiencePoints += amount;
+            
+            // Determine new level based on new experience points.
+            int newLevel = CharacterRules.GetLevelForExperiencePoints(experiencePoints);
+
+            while(level < newLevel)
+            {
+                yield return LevelUp();
+            }
+        }
+
+        private IEnumerator LevelUp()
+        {
+            level++;
+            availableHitDice++;
+            int hitDiceRoll = DiceHelper.Roll(classType.hitDice);
+            int hitPointsIncrease = Math.Max(1, hitDiceRoll + abilityScores.constitution.modifier);
+            hitPointsMaximum += hitPointsIncrease;
+            
+            Console.WriteLine($"{displayName.ToUpperFirst()} levels up to level {level}! Their maximum HP increases to {hitPointsMaximum}.");
+
+            if (presenter is not null && isAlive) yield return presenter.LevelUp();
+        }
+
+        public IEnumerator TakeShortRest()
+        {
+            while (hitPoints <= hitPointsMaximum * 0.75f && availableHitDice > 0)
+            {
+                yield return SpendHitDice();
+            }
+        }
+
+        private IEnumerator SpendHitDice()
+        {
+            availableHitDice--;
+            int healAmount = Math.Max(0, DiceHelper.Roll(classType.hitDice) + abilityScores.constitution.modifier);
+            yield return Heal(healAmount);
         }
         
         private IEnumerator HandleDeathSavingThrows()
