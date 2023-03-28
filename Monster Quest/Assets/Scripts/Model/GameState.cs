@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MonsterQuest
 {
     [Serializable]
-    public class GameState : IRulesHandler
+    public class GameState : IRulesHandler, IStateEventProvider
     {
         private bool _callingRules;
         private List<Action> _rulesMutationActions;
@@ -27,11 +27,39 @@ namespace MonsterQuest
 
         public IEnumerable<object> rules => party.rules.Concat(combat.rules);
 
+        // Events 
+
+        [field: NonSerialized] public event Action<string> stateEvent;
+
         // Methods 
+
+        public void StartProvidingStateEvents()
+        {
+            party.stateEvent += ReportStateEvent;
+            party.StartProvidingStateEvents();
+
+            if (combat is not null)
+            {
+                StartProvidingCombatStateEvents();
+            }
+        }
+
+        private void StartProvidingCombatStateEvents()
+        {
+            combat.stateEvent += ReportStateEvent;
+            combat.StartProvidingStateEvents();
+        }
+
+        private void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
+        }
 
         public void EnterCombatWithMonsters(IEnumerable<Monster> monsters)
         {
             combat = new Combat(this, monsters);
+            StartProvidingCombatStateEvents();
+
             combatsFoughtCount++;
         }
 

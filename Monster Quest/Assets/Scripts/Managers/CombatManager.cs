@@ -5,10 +5,18 @@ using UnityEngine;
 
 namespace MonsterQuest
 {
-    public class CombatManager : MonoBehaviour
+    public class CombatManager : MonoBehaviour, IStateEventProvider
     {
-        // Event for end of a combat round.
-        public event Action onTurnEnd;
+        // Events 
+
+        public event Action<string> stateEvent;
+
+        // Methods 
+
+        private void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
+        }
 
         public IEnumerator Simulate(GameState gameState)
         {
@@ -37,22 +45,28 @@ namespace MonsterQuest
 
                 IAction action = creature.TakeTurn(gameState);
 
+                if (action is IStateEventProvider stateEventProvider)
+                {
+                    stateEventProvider.stateEvent += ReportStateEvent;
+                    stateEventProvider.StartProvidingStateEvents();
+                }
+
                 yield return action?.Execute();
 
                 UpdateIfHostileGroupsArePresent();
 
                 if (!hostileGroupsArePresent) break;
 
-                onTurnEnd?.Invoke();
+                SaveGameHelper.Save(gameState);
             }
 
             if (gameState.party.aliveCount > 0)
             {
-                Console.WriteLine("The heroes celebrate their victory!");
+                ReportStateEvent("The heroes celebrate their victory!");
             }
             else
             {
-                Console.WriteLine("The party has failed and the monsters continue to attack unsuspecting adventurers.");
+                ReportStateEvent("The party has failed and the monsters continue to attack unsuspecting adventurers.");
             }
 
             yield return gameState.combat.End();

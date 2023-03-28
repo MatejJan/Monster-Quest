@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace MonsterQuest
 {
@@ -10,6 +11,7 @@ namespace MonsterQuest
             this.target = target;
         }
 
+        private GameState gameState { get; }
         private Character character { get; }
         private Character target { get; }
 
@@ -25,11 +27,22 @@ namespace MonsterQuest
 
             if (character.presenter is not null) yield return character.presenter.PerformAbilityCheck(success, rollResult);
 
-            Console.WriteLine($"{character.definiteName.ToUpperFirst()} administer first aid to {target.definiteName} {(success ? "and manages" : "but fails")} to stabilize them.");
+            ReportStateEvent($"{character.definiteName.ToUpperFirst()} administer first aid to {target.definiteName} {(success ? "and manages" : "but fails")} to stabilize them.");
 
             if (success) target.Stabilize();
 
             DebugHelper.EndLog();
+        }
+
+        // Events 
+
+        public event Action<string> stateEvent;
+
+        // Methods 
+
+        private void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
         }
     }
 }

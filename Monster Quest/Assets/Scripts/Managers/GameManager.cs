@@ -32,17 +32,16 @@ namespace MonsterQuest
             // Wait for the Manual to be initialized.
             yield return Database.Initialize();
 
-            // Save game in between rounds.
-            _combatManager.onTurnEnd += () => SaveGameHelper.Save(_state);
-
             // Load an existing or start a new game.
             if (loadGameState)
             {
                 _state = loadGameState.gameState;
+                StartReportingStateEvents();
             }
             else if (SaveGameHelper.saveFileExists)
             {
                 _state = SaveGameHelper.Load();
+                StartReportingStateEvents();
             }
             else
             {
@@ -51,6 +50,13 @@ namespace MonsterQuest
 
             // Start the simulation.
             yield return Simulate();
+        }
+
+        // Methods 
+
+        private void ReportStateEvent(string message)
+        {
+            Console.WriteLine(message);
         }
 
         private void NewGame()
@@ -72,6 +78,7 @@ namespace MonsterQuest
 
             // Create a new game state.
             _state = new GameState(party);
+            StartReportingStateEvents();
 
             // Give characters equipment.
             ItemType[] weaponItemTypes =
@@ -99,7 +106,15 @@ namespace MonsterQuest
             }
 
             // Output intro.
-            Console.WriteLine($"Warriors {_state.party} descend into the dungeon.");
+            ReportStateEvent($"Warriors {_state.party} descend into the dungeon.");
+        }
+
+        private void StartReportingStateEvents()
+        {
+            _state.stateEvent += ReportStateEvent;
+            _state.StartProvidingStateEvents();
+
+            _combatManager.stateEvent += ReportStateEvent;
         }
 
         private IEnumerator Simulate()
@@ -121,7 +136,7 @@ namespace MonsterQuest
 
                     if (monsters.Count == 1)
                     {
-                        Console.WriteLine($"Watch out, {monsters[0].indefiniteName} with {monsters[0].hitPoints} HP appears!");
+                        ReportStateEvent($"Watch out, {monsters[0].indefiniteName} with {monsters[0].hitPoints} HP appears!");
                     }
                     else
                     {
@@ -151,7 +166,7 @@ namespace MonsterQuest
 
                         string monstersDescription = EnglishHelper.JoinWithAnd(monsterGroupDescriptions);
 
-                        Console.WriteLine($"Watch out, {monstersDescription} with {totalHitPoints} total HP appears!");
+                        ReportStateEvent($"Watch out, {monstersDescription} with {totalHitPoints} total HP appears!");
                     }
 
                     // Save the start of the combat.
@@ -192,7 +207,7 @@ namespace MonsterQuest
                 yield return new WaitForSeconds(1);
             }
 
-            Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
+            ReportStateEvent($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
         }
 
         private List<Monster> CreateMonsters()

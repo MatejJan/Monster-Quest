@@ -29,7 +29,7 @@ namespace MonsterQuest
             switch (deathSavingThrowRollResult)
             {
                 case 1:
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} critically fails a death saving throw.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} critically fails a death saving throw.");
 
                     // Critical fails add 2 saving throw failures.
                     yield return ApplyDeathSavingThrows(2, false, deathSavingThrowRollResult);
@@ -38,7 +38,7 @@ namespace MonsterQuest
 
                 case 20:
                     // Critical successes regain consciousness with 1 HP.
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
 
                     yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
 
@@ -49,14 +49,14 @@ namespace MonsterQuest
                     break;
 
                 case < 10:
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} fails a death saving throw.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} fails a death saving throw.");
 
                     yield return ApplyDeathSavingThrows(1, false, deathSavingThrowRollResult);
 
                     break;
 
                 default:
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} succeeds a death saving throw.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} succeeds a death saving throw.");
 
                     yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
 
@@ -72,7 +72,7 @@ namespace MonsterQuest
             if (remainingDamageAmount >= hitPointsMaximum)
             {
                 lifeStatus = LifeStatus.Dead;
-                Console.WriteLine($"{definiteName.ToUpperFirst()} instantly dies.");
+                ReportStateEvent($"{definiteName.ToUpperFirst()} instantly dies.");
 
                 if (presenter is not null) yield return presenter.GetAttacked(true);
 
@@ -85,7 +85,7 @@ namespace MonsterQuest
             if (lifeStatus == LifeStatus.Conscious)
             {
                 lifeStatus = LifeStatus.UnconsciousUnstable;
-                Console.WriteLine($"{definiteName.ToUpperFirst()} falls unconscious.");
+                ReportStateEvent($"{definiteName.ToUpperFirst()} falls unconscious.");
 
                 if (presenter is not null) yield return presenter.GetAttacked();
 
@@ -100,13 +100,13 @@ namespace MonsterQuest
                 // When damage was dealt when unconscious, they receive a death saving throw failure (2 on a critical hit).
                 if (hit.wasCritical)
                 {
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} suffers two death saving throw failures.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} suffers two death saving throw failures.");
 
                     yield return ApplyDeathSavingThrows(2, false);
                 }
                 else
                 {
-                    Console.WriteLine($"{definiteName.ToUpperFirst()} suffers a death saving throw failure.");
+                    ReportStateEvent($"{definiteName.ToUpperFirst()} suffers a death saving throw failure.");
 
                     yield return ApplyDeathSavingThrows(1, false);
                 }
@@ -136,7 +136,7 @@ namespace MonsterQuest
             // If the character succeeds 3 death saving throws, they stabilize.
             if (deathSavingThrowSuccesses >= 3)
             {
-                Console.WriteLine($"{definiteName.ToUpperFirst()} succeeded 3 times and they stabilize.");
+                ReportStateEvent($"{definiteName.ToUpperFirst()} succeeded 3 times and they stabilize.");
 
                 Stabilize();
             }

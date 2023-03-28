@@ -140,7 +140,7 @@ namespace MonsterQuest
 
         public IEnumerator GainExperiencePoints(int amount)
         {
-            Console.WriteLine($"{displayName.ToUpperFirst()} gains {amount} experience points.");
+            ReportStateEvent($"{displayName.ToUpperFirst()} gains {amount} experience points.");
 
             presenter.GainExperiencePoints();
 
@@ -160,7 +160,7 @@ namespace MonsterQuest
             characterClass.LevelUp(out int hitPointsMaximumIncrease);
             hitPointsMaximum += hitPointsMaximumIncrease;
 
-            Console.WriteLine($"{displayName.ToUpperFirst()} levels up to level {characterClass.level}! Their maximum HP increases to {hitPointsMaximum}.");
+            ReportStateEvent($"{displayName.ToUpperFirst()} levels up to level {characterClass.level}! Their maximum HP increases to {hitPointsMaximum}.");
 
             yield return presenter.LevelUp();
         }

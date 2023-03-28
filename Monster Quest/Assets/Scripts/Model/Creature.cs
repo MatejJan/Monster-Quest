@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MonsterQuest
 {
     [Serializable]
-    public abstract partial class Creature : IRulesHandler, IRulesProvider
+    public abstract partial class Creature : IRulesHandler, IRulesProvider, IStateEventProvider
     {
         // Fields
 
@@ -76,7 +76,16 @@ namespace MonsterQuest
 
         public string rulesProviderName => indefiniteName;
 
+        // Events 
+
+        [field: NonSerialized] public event Action<string> stateEvent;
+
         // Methods
+
+        protected void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
+        }
 
         protected void Initialize()
         {
@@ -204,7 +213,7 @@ namespace MonsterQuest
             hitPoints = 0;
             lifeStatus = LifeStatus.Dead;
 
-            Console.WriteLine($"{definiteName.ToUpperFirst()} dies.");
+            ReportStateEvent($"{definiteName.ToUpperFirst()} dies.");
 
             if (presenter is not null) yield return presenter.Die();
         }
@@ -213,17 +222,17 @@ namespace MonsterQuest
         {
             hitPoints = Math.Min(hitPoints + amount, hitPointsMaximum);
 
-            Console.Write($"{definiteName.ToUpperFirst()} heals {amount} HP and ");
+            ReportStateEvent($"{definiteName.ToUpperFirst()} heals {amount} HP and ");
 
             if (lifeStatus == LifeStatus.Conscious)
             {
-                Console.WriteLine($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
+                ReportStateEvent($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
             }
             else
             {
                 lifeStatus = LifeStatus.Conscious;
 
-                Console.WriteLine($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
+                ReportStateEvent($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
 
                 if (presenter is not null) yield return presenter.RegainConsciousness();
             }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MonsterQuest
 {
     [Serializable]
-    public class Combat : IRulesHandler
+    public class Combat : IRulesHandler, IStateEventProvider
     {
         [SerializeReference] private List<Monster> _monsters;
         [SerializeReference] private List<Character> _participatingCharacters;
@@ -49,7 +49,19 @@ namespace MonsterQuest
         public IEnumerable<Creature> creatures => _monsters.Concat<Creature>(gameState.party.characters);
         public IEnumerable<object> rules => _globalRules.Concat(monsters.SelectMany(monster => monster.rules));
 
+        // Events 
+
+        [field: NonSerialized] public event Action<string> stateEvent;
+
         // Methods
+
+        public void StartProvidingStateEvents()
+        {
+            foreach (Monster monster in _monsters)
+            {
+                monster.stateEvent += ReportStateEvent;
+            }
+        }
 
         public Creature StartNextCreatureTurn()
         {
@@ -158,6 +170,11 @@ namespace MonsterQuest
                     }
                 }
             }
+        }
+
+        private void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
         }
     }
 }

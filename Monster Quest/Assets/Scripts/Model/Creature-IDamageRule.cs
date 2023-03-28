@@ -27,11 +27,11 @@ namespace MonsterQuest
                     {
                         modifiedDamageAmount = modifiedDamageAmount.CloneWithValue(damageAmount.value / 2);
 
-                        Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and succeeds on a saving throw to halve the damage.");
+                        ReportStateEvent($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and succeeds on a saving throw to halve the damage.");
                     }
                     else
                     {
-                        Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and fails on a saving throw to resist it.");
+                        ReportStateEvent($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and fails on a saving throw to resist it.");
                     }
                 }
 
@@ -59,35 +59,39 @@ namespace MonsterQuest
                     finalDamageAmount = finalDamageAmount.CloneWithValue(finalDamageAmount.value * 2);
                 }
 
+                string damageMessage = "";
+
                 if (damageAmount.roll.savingThrowAbility != Ability.None)
                 {
-                    Console.Write($"{definiteName.ToUpperFirst()} receives {modifiedDamageAmount}");
+                    damageMessage += $"{definiteName.ToUpperFirst()} receives {modifiedDamageAmount}";
                 }
                 else
                 {
-                    Console.Write($"{definiteName.ToUpperFirst()} is hit with {modifiedDamageAmount}");
+                    damageMessage += $"{definiteName.ToUpperFirst()} is hit with {modifiedDamageAmount}";
                 }
 
                 if (damageAlteration.immunity)
                 {
-                    Console.WriteLine(" but is immune and takes no damage.");
+                    damageMessage += " but is immune and takes no damage.";
                 }
                 else if (damageAlteration.resistance && damageAlteration.vulnerability)
                 {
-                    Console.WriteLine($". {definiteName.ToUpperFirst()} is both resistant and vulnerable to it and takes {finalDamageAmount.value} damage.");
+                    damageMessage += $". {definiteName.ToUpperFirst()} is both resistant and vulnerable to it and takes {finalDamageAmount.value} damage.";
                 }
                 else if (damageAlteration.resistance)
                 {
-                    Console.WriteLine($" but due to their resistance only takes {finalDamageAmount.value} damage.");
+                    damageMessage += $" but due to their resistance only takes {finalDamageAmount.value} damage.";
                 }
                 else if (damageAlteration.vulnerability)
                 {
-                    Console.WriteLine($" but due to their vulnerability takes {finalDamageAmount.value} damage.");
+                    damageMessage += $" but due to their vulnerability takes {finalDamageAmount.value} damage.";
                 }
                 else
                 {
-                    Console.WriteLine(".");
+                    damageMessage += ".";
                 }
+
+                ReportStateEvent(damageMessage);
 
                 hitPoints -= finalDamageAmount.value;
             }
@@ -107,7 +111,7 @@ namespace MonsterQuest
             }
             else
             {
-                Console.WriteLine($"{definiteName.ToUpperFirst()} has {hitPoints} HP left.");
+                ReportStateEvent($"{definiteName.ToUpperFirst()} has {hitPoints} HP left.");
 
                 if (presenter is not null) yield return presenter.GetAttacked();
             }

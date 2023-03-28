@@ -5,7 +5,7 @@ using MonsterQuest.Effects;
 
 namespace MonsterQuest
 {
-    public class AttackAction : IAction
+    public class AttackAction : IAction, IStateEventProvider
     {
         public AttackAction(GameState gameState, Creature attacker, Creature target, Attack effect, Item weapon, Ability? ability = null, bool isBonusAction = false)
         {
@@ -25,6 +25,8 @@ namespace MonsterQuest
         public Item weapon { get; }
         public Ability? ability { get; }
         public bool isBonusAction { get; }
+
+        // Methods
 
         public IEnumerator Execute()
         {
@@ -121,7 +123,7 @@ namespace MonsterQuest
                 descriptionVerb = effect is RangedAttack ? "shoots" : "attacks";
             }
 
-            Console.Write($"{attacker.definiteName.ToUpperFirst()} {descriptionVerb} ");
+            string attackMessage = $"{attacker.definiteName.ToUpperFirst()} {descriptionVerb} ";
 
             string descriptionObject = string.IsNullOrEmpty(effect.attackType.descriptionObject) ? weapon?.indefiniteName : effect.attackType.descriptionObject;
 
@@ -129,22 +131,24 @@ namespace MonsterQuest
             {
                 if (descriptionObject is not null)
                 {
-                    Console.Write($"{descriptionObject} ");
+                    attackMessage += $"{descriptionObject} ";
                 }
 
-                Console.Write($"at {target.definiteName} ");
+                attackMessage += $"at {target.definiteName} ";
             }
             else
             {
-                Console.Write($"{target.definiteName} ");
+                attackMessage += $"{target.definiteName} ";
 
                 if (descriptionObject is not null)
                 {
-                    Console.Write($"with {descriptionObject} ");
+                    attackMessage += $"with {descriptionObject} ";
                 }
             }
 
-            Console.WriteLine($"and {(wasHit ? $"{(wasCritical ? "gets a critical hit!" : "hits.")}" : $"{(wasCritical ? "gets a critical miss" : "misses")}.")}");
+            attackMessage += $"and {(wasHit ? $"{(wasCritical ? "gets a critical hit!" : "hits.")}" : $"{(wasCritical ? "gets a critical miss" : "misses")}.")}";
+
+            ReportStateEvent(attackMessage);
 
             if (attacker.presenter is not null) yield return attacker.presenter.Attack();
 
@@ -204,6 +208,15 @@ namespace MonsterQuest
 
             // Inform that damage was dealt.
             yield return gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamageDealt(damage));
+        }
+
+        // Events 
+
+        public event Action<string> stateEvent;
+
+        private void ReportStateEvent(string message)
+        {
+            stateEvent?.Invoke(message);
         }
     }
 }
