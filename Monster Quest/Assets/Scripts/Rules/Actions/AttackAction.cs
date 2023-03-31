@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using MonsterQuest.Effects;
+using MonsterQuest.Events;
 
 namespace MonsterQuest
 {
@@ -28,142 +28,117 @@ namespace MonsterQuest
 
         // Methods
 
-        public IEnumerator Execute()
+        public void Execute()
         {
+            AttackEvent attackEvent = new()
+            {
+                attackAction = this
+            };
+
             DebugHelper.StartLog($"Performing attack action by {attacker.definiteName} targeting {target.definiteName} … ");
 
             // Determine if a target redirect occurs.
             DebugHelper.StartLog("Determining target redirect … ");
-            Creature newTarget = gameState.GetRuleValues((ITargetRedirectionRule rule) => rule.RedirectTarget(this)).Resolve();
-            target = newTarget ?? target;
+            attackEvent.targetRedirectionValues = gameState.GetRuleValues((ITargetRedirectionRule rule) => rule.RedirectTarget(this));
+            Creature newTarget = attackEvent.targetRedirectionValues.Resolve();
+
+            if (newTarget is not null)
+            {
+                attackEvent.redirectedFromTarget = target;
+                target = newTarget;
+            }
+
             DebugHelper.EndLog();
 
-            // Face the target.
-            if (attacker.presenter is not null) yield return attacker.presenter.FaceCreature(target);
-
             // Determine whether the attack is a hit or a miss.
-            bool wasHit = false;
-            bool wasCritical = false;
-
             // Attacks on unconscious targets within 5 feet is always a critical hit.
             if (target.isUnconscious && gameState.combat.GetDistance(attacker, target) <= 5)
             {
-                wasHit = true;
-                wasCritical = true;
+                attackEvent.wasHit = true;
+                attackEvent.wasCritical = true;
             }
             else
             {
                 // Query what attack roll method will be used for this attack (normal, advantage, disadvantage).
                 DebugHelper.StartLog("Determining advantage or disadvantage for the attack roll … ");
-                AttackRollMethod[] attackRollMethods = gameState.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this)).Resolve();
+                attackEvent.attackRollMethodValues = gameState.GetRuleValues((IAttackRollMethodRule rule) => rule.GetAttackRollMethod(this));
+                attackEvent.attackRollMethods = attackEvent.attackRollMethodValues.Resolve();
                 DebugHelper.EndLog();
 
-                bool advantage = attackRollMethods.Contains(AttackRollMethod.Advantage);
-                bool disadvantage = attackRollMethods.Contains(AttackRollMethod.Disadvantage);
+                attackEvent.hadAdvantage = attackEvent.attackRollMethods.Contains(AttackRollMethod.Advantage);
+                attackEvent.hadDisadvantage = attackEvent.attackRollMethods.Contains(AttackRollMethod.Disadvantage);
 
-                int attackRoll = DiceHelper.Roll("d20");
+                attackEvent.firstAttackRollResult = new RollResult("d20");
+                attackEvent.attackRollTotal = attackEvent.firstAttackRollResult.result;
 
-                if (advantage && !disadvantage)
+                if (attackEvent.hadAdvantage && !attackEvent.hadDisadvantage)
                 {
                     // We have an advantage, roll again and take the maximum.
                     DebugHelper.StartLog("Rolling again for advantage.");
-                    attackRoll = Math.Max(attackRoll, DiceHelper.Roll("d20"));
+                    attackEvent.secondAttackRollResult = new RollResult("d20");
+                    attackEvent.attackRollTotal = Math.Max(attackEvent.attackRollTotal, attackEvent.secondAttackRollResult.result);
                     DebugHelper.EndLog();
                 }
-                else if (disadvantage && !advantage)
+                else if (attackEvent.hadDisadvantage && !attackEvent.hadAdvantage)
                 {
                     // We have a disadvantage, roll again and take the minimum.
                     DebugHelper.StartLog("Rolling again for disadvantage.");
-                    attackRoll = Math.Min(attackRoll, DiceHelper.Roll("d20"));
+                    attackEvent.secondAttackRollResult = new RollResult("d20");
+                    attackEvent.attackRollTotal = Math.Min(attackEvent.attackRollTotal, attackEvent.secondAttackRollResult.result);
                     DebugHelper.EndLog();
                 }
 
                 // The attack always misses on a critical miss.
-                if (attackRoll == 1)
+                if (attackEvent.attackRollTotal == 1)
                 {
-                    wasCritical = true;
+                    attackEvent.wasCritical = true;
                 }
                 // The attack always hits on a critical hit.
-                else if (attackRoll == 20)
+                else if (attackEvent.attackRollTotal == 20)
                 {
-                    wasHit = true;
-                    wasCritical = true;
+                    attackEvent.wasHit = true;
+                    attackEvent.wasCritical = true;
                 }
                 // Otherwise the attack value must be greater than or equal to the target's armor class.
                 else
                 {
                     // Add attack roll modifiers.
                     DebugHelper.StartLog("Determining attack roll modifiers … ");
-                    int attackRollModifier = gameState.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this)).Resolve();
+                    attackEvent.attackRollModifierValues = gameState.GetRuleValues((IAttackRollModifierRule rule) => rule.GetAttackRollModifier(this));
+                    attackEvent.attackRollModifier = attackEvent.attackRollModifierValues.Resolve();
                     DebugHelper.EndLog();
 
-                    attackRoll += attackRollModifier;
+                    attackEvent.attackRollTotal += attackEvent.attackRollModifier;
 
                     // Determine the target's armor class.
                     DebugHelper.StartLog("Determining target's armor class … ");
-                    int armorClass = gameState.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this)).Resolve();
+                    attackEvent.targetArmorClassValues = gameState.GetRuleValues((IArmorClassRule rule) => rule.GetArmorClass(this));
+                    attackEvent.targetArmorClass = attackEvent.targetArmorClassValues.Resolve();
                     DebugHelper.EndLog();
 
                     // Determine result.
-                    wasHit = attackRoll >= armorClass;
+                    attackEvent.wasHit = attackEvent.attackRollTotal >= attackEvent.targetArmorClass;
                 }
             }
 
             DebugHelper.EndLog();
 
-            // Describe the outcome of the attack.
-            string descriptionVerb;
-
-            if (!string.IsNullOrEmpty(effect.attackType.descriptionVerb))
-            {
-                descriptionVerb = effect.attackType.descriptionVerb;
-            }
-            else
-            {
-                descriptionVerb = effect is RangedAttack ? "shoots" : "attacks";
-            }
-
-            string attackMessage = $"{attacker.definiteName.ToUpperFirst()} {descriptionVerb} ";
-
-            string descriptionObject = string.IsNullOrEmpty(effect.attackType.descriptionObject) ? weapon?.indefiniteName : effect.attackType.descriptionObject;
-
-            if (effect is RangedAttack)
-            {
-                if (descriptionObject is not null)
-                {
-                    attackMessage += $"{descriptionObject} ";
-                }
-
-                attackMessage += $"at {target.definiteName} ";
-            }
-            else
-            {
-                attackMessage += $"{target.definiteName} ";
-
-                if (descriptionObject is not null)
-                {
-                    attackMessage += $"with {descriptionObject} ";
-                }
-            }
-
-            attackMessage += $"and {(wasHit ? $"{(wasCritical ? "gets a critical hit!" : "hits.")}" : $"{(wasCritical ? "gets a critical miss" : "misses")}.")}";
-
-            ReportStateEvent(attackMessage);
-
-            if (attacker.presenter is not null) yield return attacker.presenter.Attack();
-
             // End the attack if it was a miss.
-            if (!wasHit)
+            if (!attackEvent.wasHit)
             {
-                yield break;
+                ReportStateEvent(attackEvent);
+
+                return;
             }
 
             // Create the hit.
-            Hit hit = new(this, wasCritical);
+            Hit hit = new(this, attackEvent.wasCritical);
 
             // Query what kind of damage rolls need to be performed.
             DebugHelper.StartLog("Determining damage rolls … ");
-            DamageRoll[] damageRolls = gameState.GetRuleValues((IDamageRollRule rule) => rule.GetDamageRolls(hit)).Resolve();
+            attackEvent.damageRollValues = gameState.GetRuleValues((IDamageRollRule rule) => rule.GetDamageRolls(hit));
+            DamageRoll[] damageRolls = attackEvent.damageRollValues.Resolve();
+            attackEvent.damageRollResults = new AttackEvent.DamageRollResult[damageRolls.Length];
             DebugHelper.EndLog();
 
             // Roll for damages.
@@ -172,51 +147,62 @@ namespace MonsterQuest
             for (int i = 0; i < damageRolls.Length; i++)
             {
                 DamageRoll damageRoll = damageRolls[i];
-                string roll = damageRoll.roll;
+
+                AttackEvent.DamageRollResult damageRollResult = new()
+                {
+                    damageRoll = damageRoll
+                };
+
+                attackEvent.damageRollResults[i] = damageRollResult;
 
                 // Roll the damage.
-                int amount = DiceHelper.Roll(roll);
+                damageRollResult.firstDamageRollResult = new RollResult(damageRoll.roll);
+                damageRollResult.amount = damageRollResult.firstDamageRollResult.result;
 
                 // Roll twice for critical hits.
-                if (wasCritical)
+                if (attackEvent.wasCritical)
                 {
-                    amount += DiceHelper.Roll(roll);
+                    damageRollResult.secondDamageRollResult = new RollResult(damageRoll.roll);
+                    damageRollResult.amount += damageRollResult.secondDamageRollResult.result;
                 }
 
                 // Add damage modifiers to base attacks (not extra).
                 if (!damageRoll.isExtraDamage)
                 {
                     DebugHelper.StartLog("Determining damage modifiers … ");
-                    int damageRollModifier = gameState.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this)).Resolve();
+                    damageRollResult.damageRollModifierValues = gameState.GetRuleValues((IDamageRollModifierRule rule) => rule.GetDamageRollModifier(this));
+                    damageRollResult.damageRollModifier = damageRollResult.damageRollModifierValues.Resolve();
                     DebugHelper.EndLog();
 
                     // The resulting amount cannot be negative.
-                    amount = Math.Max(0, amount + damageRollModifier);
+                    damageRollResult.amount = Math.Max(0, damageRollResult.amount + damageRollResult.damageRollModifier.Value);
                 }
 
                 // Create the damage.
-                damageAmounts[i] = new DamageAmount(hit, damageRoll, amount);
+                damageAmounts[i] = new DamageAmount(hit, damageRoll, damageRollResult.amount);
             }
 
             Damage damage = new(damageAmounts);
+
+            ReportStateEvent(attackEvent);
 
             DebugHelper.StartLog($"Dealing damage: {damage}.");
             DebugHelper.EndLog();
 
             // Apply the damage.
-            yield return gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamage(damage));
+            gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamage(damage));
 
             // Inform that damage was dealt.
-            yield return gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamageDealt(damage));
+            gameState.CallRules((IReactToDamageRule rule) => rule.ReactToDamageDealt(damage));
         }
 
         // Events 
 
-        public event Action<string> stateEvent;
+        public event Action<object> stateEvent;
 
-        private void ReportStateEvent(string message)
+        private void ReportStateEvent(object eventData)
         {
-            stateEvent?.Invoke(message);
+            stateEvent?.Invoke(eventData);
         }
     }
 }

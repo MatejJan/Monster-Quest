@@ -6,7 +6,7 @@ namespace MonsterQuest
 {
     public static class DiceHelper
     {
-        private static int Roll(int numberOfRolls, int diceSides, int fixedBonus = 0, int multiplier = 1, int divider = 1)
+        private static int Roll(int numberOfRolls, int diceSides, int fixedBonus, int multiplier, int divider, out int[] rolls)
         {
             if (Console.verbose)
             {
@@ -14,6 +14,7 @@ namespace MonsterQuest
                 Console.Write($"Rolling {numberOfRolls}d{diceSides}{(fixedBonus == 0 ? "" : fixedBonus.ToString("+#;-#;"))}{(multiplier > 1 ? $"*{multiplier}" : "")}{(divider > 1 ? $"/{divider}" : "")} …");
             }
 
+            rolls = new int[numberOfRolls];
             int result = fixedBonus;
 
             for (int i = 0; i < numberOfRolls; i++)
@@ -21,6 +22,7 @@ namespace MonsterQuest
                 int roll = Random.Range(1, diceSides + 1);
                 if (Console.verbose) Console.Write($" {roll}");
 
+                rolls[i] = roll;
                 result += roll;
             }
 
@@ -37,6 +39,11 @@ namespace MonsterQuest
 
         public static int Roll(string diceNotation)
         {
+            return Roll(diceNotation, out _);
+        }
+
+        public static int Roll(string diceNotation, out int[] rolls)
+        {
             Match match = Regex.Match(diceNotation, @"(\d+)?d(\d+)([+-]\d+)?(?:\*(\d+))?(?:\/(\d+))?");
 
             if (!match.Success) throw new ArgumentException($"Invalid dice notation was provided ({diceNotation}).");
@@ -47,7 +54,7 @@ namespace MonsterQuest
             int multiplier = match.Groups[4].Success ? int.Parse(match.Groups[4].Value) : 1;
             int divider = match.Groups[5].Success ? int.Parse(match.Groups[5].Value) : 1;
 
-            return Roll(numberOfRolls, diceSides, fixedBonus, multiplier, divider);
+            return Roll(numberOfRolls, diceSides, fixedBonus, multiplier, divider, out rolls);
         }
 
         public static string GetRollWithHalfTheDice(string diceNotation)

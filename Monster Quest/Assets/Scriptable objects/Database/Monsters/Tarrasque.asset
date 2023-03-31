@@ -58,7 +58,11 @@ MonoBehaviour:
   languageAbilities: []
   telepathyRange: 0
   challengeRating: 30
-  effects: []
+  effects:
+  - {fileID: 11400000, guid: bed5d9b2da4644f5386791b4af5b8e57, type: 2}
+  - {fileID: 11400000, guid: c7bbff42fe4e349cba1c8428f2a18361, type: 2}
+  - {fileID: 11400000, guid: fcffc6ac879004cdda5e42ebe2f53a56, type: 2}
+  - {fileID: 11400000, guid: 2d11fa857708c420d8991a6214447cc6, type: 2}
   items: []
   bodySprite: {fileID: 21300000, guid: 6d86e01d9bd00447083e82eaeea5b8f4, type: 3}
   flyHeight: 0

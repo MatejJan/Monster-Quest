@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,7 +23,7 @@ namespace MonsterQuest
 
         // Events 
 
-        [field: NonSerialized] public event Action<string> stateEvent;
+        [field: NonSerialized] public event Action<object> stateEvent;
 
         // Methods
 
@@ -36,16 +35,16 @@ namespace MonsterQuest
             }
         }
 
-        private void ReportStateEvent(string message)
+        private void ReportStateEvent(object eventData)
         {
-            stateEvent?.Invoke(message);
+            stateEvent?.Invoke(eventData);
         }
 
-        public IEnumerator TakeShortRest()
+        public void TakeShortRest()
         {
             foreach (Character character in aliveCharacters)
             {
-                yield return character.TakeShortRest();
+                character.TakeShortRest();
             }
         }
 

@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Effects;
+using MonsterQuest.Events;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -26,22 +26,28 @@ namespace MonsterQuest
 
         // State properties
 
-        [field: SerializeField] public int hitPointsMaximum { get; protected set; }
         [field: SerializeField] public string displayName { get; protected set; }
 
         [field: SerializeField] public int hitPoints { get; protected set; }
+        [field: SerializeField] public int hitPointsMaximum { get; protected set; }
 
         public LifeStatus lifeStatus
         {
             get => _lifeStatus;
             protected set
             {
+                LifeStatusEvent lifeStatusEvent = new()
+                {
+                    creature = this,
+                    previousLifeStatus = _lifeStatus,
+                    newLifeStatus = value
+                };
+
                 _lifeStatus = value;
-                if (presenter is not null) presenter.UpdateStableStatus();
+
+                ReportStateEvent(lifeStatusEvent);
             }
         }
-
-        [field: NonSerialized] public CreaturePresenter presenter { get; private set; }
 
         // Derived properties
 
@@ -78,23 +84,18 @@ namespace MonsterQuest
 
         // Events 
 
-        [field: NonSerialized] public event Action<string> stateEvent;
+        [field: NonSerialized] public event Action<object> stateEvent;
 
         // Methods
 
-        protected void ReportStateEvent(string message)
+        protected void ReportStateEvent(object eventData)
         {
-            stateEvent?.Invoke(message);
+            stateEvent?.Invoke(eventData);
         }
 
         protected void Initialize()
         {
             hitPoints = hitPointsMaximum;
-        }
-
-        public void InitializePresenter(CreaturePresenter creaturePresenter)
-        {
-            presenter = creaturePresenter;
         }
 
         public void GiveItem(GameState gameState, Item item)
@@ -172,35 +173,27 @@ namespace MonsterQuest
             return MakeAbilityCheck(ability, successAmount, out _);
         }
 
-        public bool MakeAbilityCheck(Ability ability, int successAmount, out int rollResult)
+        public bool MakeAbilityCheck(Ability ability, int successAmount, out RollResult rollResult)
         {
             DebugHelper.StartLog($"{definiteName.ToUpperFirst()} is making a DC {successAmount} {ability} check …");
 
-            rollResult = DiceHelper.Roll("d20");
-            int abilityModifier = abilityScores[ability].modifier;
-            bool result = rollResult + abilityModifier >= successAmount;
+            rollResult = new RollResult($"d20{abilityScores[ability].modifier:+#;-#}");
+            bool result = rollResult.result >= successAmount;
 
             DebugHelper.EndLog($"The check {(result ? "succeeds" : "fails")}.");
 
             return result;
         }
 
-        public int MakeAbilityRoll(Ability ability)
-        {
-            return MakeAbilityRoll(ability, out _);
-        }
-
-        public int MakeAbilityRoll(Ability ability, out int rollResult)
+        public RollResult MakeAbilityRoll(Ability ability)
         {
             DebugHelper.StartLog($"{definiteName.ToUpperFirst()} is making a {ability} roll …");
 
-            rollResult = DiceHelper.Roll("d20");
-            int abilityModifier = abilityScores[ability].modifier;
-            int result = rollResult + abilityModifier;
+            RollResult rollResult = new($"d20{abilityScores[ability].modifier:+#;-#}");
 
-            DebugHelper.EndLog($"They roll a {rollResult} for a total of {result}.");
+            DebugHelper.EndLog($"They roll a {rollResult.rolls[0]} for a total of {rollResult.result}.");
 
-            return result;
+            return rollResult;
         }
 
         public bool MakeSavingThrow(Ability ability, int successAmount)
@@ -208,38 +201,41 @@ namespace MonsterQuest
             return MakeAbilityCheck(ability, successAmount);
         }
 
-        public IEnumerator Die()
+        public bool MakeSavingThrow(Ability ability, int successAmount, out RollResult rollResult)
+        {
+            return MakeAbilityCheck(ability, successAmount, out rollResult);
+        }
+
+        public void Die()
         {
             hitPoints = 0;
             lifeStatus = LifeStatus.Dead;
-
-            ReportStateEvent($"{definiteName.ToUpperFirst()} dies.");
-
-            if (presenter is not null) yield return presenter.Die();
         }
 
-        public virtual IEnumerator Heal(int amount)
+        public virtual void Heal(int amount)
         {
+            // Increase hit points.
+            HealEvent healEvent = new()
+            {
+                creature = this,
+                hitPointsStart = hitPoints,
+                hitPointsMaximum = hitPointsMaximum,
+                amount = amount
+            };
+
             hitPoints = Math.Min(hitPoints + amount, hitPointsMaximum);
 
-            ReportStateEvent($"{definiteName.ToUpperFirst()} heals {amount} HP and ");
+            healEvent.hitPointsEnd = hitPoints;
 
-            if (lifeStatus == LifeStatus.Conscious)
-            {
-                ReportStateEvent($"is at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
-            }
-            else
+            ReportStateEvent(healEvent);
+
+            // Regain consciousness if needed.
+            if (lifeStatus != LifeStatus.Conscious)
             {
                 lifeStatus = LifeStatus.Conscious;
-
-                ReportStateEvent($"regains consciousness. They are at {(hitPoints == hitPointsMaximum ? "full health" : $"{hitPoints} HP")}.");
-
-                if (presenter is not null) yield return presenter.RegainConsciousness();
             }
-
-            if (presenter is not null) yield return presenter.Heal();
         }
 
-        protected abstract IEnumerator TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit);
+        protected abstract void TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit);
     }
 }

@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Effects;
+using MonsterQuest.Events;
 using UnityEngine;
 
 namespace MonsterQuest
@@ -124,45 +124,48 @@ namespace MonsterQuest
             // Attempt to stabilize them if our wisdom is at least average.
             if (unstableCharacter?.deathSavingThrowFailures > 0 && abilityScores.wisdom >= 10)
             {
-                return new StabilizeCreatureAction(this, unstableCharacter);
+                return new StabilizeCharacterAction(this, unstableCharacter);
             }
 
             return base.TakeTurn(gameState);
         }
 
-        public IEnumerator TakeShortRest()
+        public void TakeShortRest()
         {
             while (hitPoints <= hitPointsMaximum * 0.75f && characterClass.availableHitDice > 0)
             {
-                yield return characterClass.SpendHitDice();
+                characterClass.SpendHitDice();
             }
         }
 
-        public IEnumerator GainExperiencePoints(int amount)
+        public void GainExperiencePoints(int amount)
         {
-            ReportStateEvent($"{displayName.ToUpperFirst()} gains {amount} experience points.");
-
-            presenter.GainExperiencePoints();
-
             experiencePoints += amount;
+
+            ReportStateEvent(new GainExperienceEvent
+            {
+                character = this,
+                amount = amount
+            });
 
             // Determine new level based on new experience points.
             int newLevel = CharacterRules.GetLevelForExperiencePoints(experiencePoints);
 
             while (characterClass.level < newLevel)
             {
-                yield return LevelUp();
+                LevelUp();
             }
         }
 
-        private IEnumerator LevelUp()
+        private void LevelUp()
         {
             characterClass.LevelUp(out int hitPointsMaximumIncrease);
             hitPointsMaximum += hitPointsMaximumIncrease;
 
-            ReportStateEvent($"{displayName.ToUpperFirst()} levels up to level {characterClass.level}! Their maximum HP increases to {hitPointsMaximum}.");
-
-            yield return presenter.LevelUp();
+            ReportStateEvent(new LevelUpEvent
+            {
+                character = this
+            });
         }
     }
 }

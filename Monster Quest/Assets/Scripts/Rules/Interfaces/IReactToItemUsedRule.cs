@@ -1,17 +1,9 @@
-using System.Collections;
-
 namespace MonsterQuest
 {
     public interface IReactToUseItem
     {
-        public IEnumerator ReactToUseItem(UseItemAction useItemAction)
-        {
-            yield break;
-        }
+        public void ReactToUseItem(UseItemAction useItemAction) { }
 
-        public IEnumerator ReactToItemUsed(UseItemAction useItemAction)
-        {
-            yield break;
-        }
+        public void ReactToItemUsed(UseItemAction useItemAction) { }
     }
 }

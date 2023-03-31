@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -48,19 +47,17 @@ namespace MonsterQuest.Effects
             });
         }
 
-        public IEnumerator ReactToDamageDealt(DamageAmount damageAmount)
+        public void ReactToDamageDealt(DamageAmount damageAmount)
         {
             // React only to extra damage dealt with this weapon.
-            if (damageAmount.roll != _lastDamageRoll) yield break;
+            if (damageAmount.roll != _lastDamageRoll) return;
 
             // If a construct has 25 hit points or fewer after taking this damage, it is destroyed.
             Creature target = damageAmount.hit.target;
 
             if (IsTargetAConstruct(target) && target.hitPoints <= 25)
             {
-                Console.WriteLine($"{(parent as Item)?.type.definiteName.ToUpperFirst()} deals a fatal blow and shatters the construct to pieces.");
-
-                yield return target.Die();
+                target.Die();
             }
         }
 

@@ -60,7 +60,10 @@ MonoBehaviour:
     canSpeak: 1
   telepathyRange: 0
   challengeRating: 17
-  effects: []
+  effects:
+  - {fileID: 11400000, guid: 759fe10b540c343edb0e1a0765036016, type: 2}
+  - {fileID: 11400000, guid: fd6296633881045a5b65d1aa4241f453, type: 2}
+  - {fileID: 11400000, guid: 657da0b45dac447b0880e50386120972, type: 2}
   items: []
   bodySprite: {fileID: 21300000, guid: 95bce42ad7a8c4db5b17c8ff919a8aaa, type: 3}
   flyHeight: 0.1

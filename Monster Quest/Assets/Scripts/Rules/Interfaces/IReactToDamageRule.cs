@@ -1,17 +1,9 @@
-using System.Collections;
-
 namespace MonsterQuest
 {
     public interface IReactToDamageRule
     {
-        public IEnumerator ReactToDamage(Damage damage)
-        {
-            yield break;
-        }
+        public void ReactToDamage(Damage damage) { }
 
-        public IEnumerator ReactToDamageDealt(Damage damage)
-        {
-            yield break;
-        }
+        public void ReactToDamageDealt(Damage damage) { }
     }
 }

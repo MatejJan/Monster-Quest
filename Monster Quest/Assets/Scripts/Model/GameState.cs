@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +28,7 @@ namespace MonsterQuest
 
         // Events 
 
-        [field: NonSerialized] public event Action<string> stateEvent;
+        [field: NonSerialized] public event Action<object> stateEvent;
 
         // Methods 
 
@@ -50,9 +49,9 @@ namespace MonsterQuest
             combat.StartProvidingStateEvents();
         }
 
-        private void ReportStateEvent(string message)
+        private void ReportStateEvent(object eventData)
         {
-            stateEvent?.Invoke(message);
+            stateEvent?.Invoke(eventData);
         }
 
         public void EnterCombatWithMonsters(IEnumerable<Monster> monsters)
@@ -68,7 +67,7 @@ namespace MonsterQuest
             combat = null;
         }
 
-        public IEnumerator CallRules<TRule>(Func<TRule, IEnumerator> callback) where TRule : class
+        public void CallRules<TRule>(Action<TRule> callback) where TRule : class
         {
             _callingRules = true;
             _rulesMutationActions ??= new List<Action>();
@@ -78,12 +77,7 @@ namespace MonsterQuest
             {
                 if (rule is not TRule typedRule) continue;
 
-                IEnumerator result = callback(typedRule);
-
-                if (result is not null)
-                {
-                    yield return result;
-                }
+                callback(typedRule);
             }
 
             // Apply any actions that mutate rules.

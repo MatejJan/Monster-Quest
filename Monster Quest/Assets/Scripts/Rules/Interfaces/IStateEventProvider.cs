@@ -4,7 +4,7 @@ namespace MonsterQuest
 {
     public interface IStateEventProvider
     {
-        event Action<string> stateEvent;
+        event Action<object> stateEvent;
 
         void StartProvidingStateEvents() { }
     }

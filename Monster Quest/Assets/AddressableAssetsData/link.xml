@@ -1,0 +1,46 @@
+<linker>
+  <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="MonsterQuest.Effects.AmmunitionType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.ArmorType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.ClassType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.ConsumableItemType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.FinesseType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.HealingItemType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.HeavyType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.LightType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.MeleeWeaponAttackType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.RangedWeaponAttackType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.SwarmMeleeWeaponAttackType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.ThrownType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.TwoHandedType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.VersatileMeleeWeaponAttackType" preserve="all" />
+    <type fullname="MonsterQuest.Effects.WeaponType" preserve="all" />
+    <type fullname="MonsterQuest.ItemType" preserve="all" />
+    <type fullname="MonsterQuest.MonsterType" preserve="all" />
+    <type fullname="MonsterQuest.RaceType" preserve="all" />
+    <type fullname="MonsterQuest.AbilityScore" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.AbilityScores" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.CoinValue" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.DamageRoll" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.MonsterType/LanguageAbility" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.MonsterType/SavingThrowBonus" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.MonsterType/SenseRange" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.MonsterType/SkillBonus" preserve="nothing" serialized="true" />
+    <type fullname="MonsterQuest.Speed" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.InstanceProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Object" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.Texture2D" preserve="all" />
+  </assembly>
+</linker>

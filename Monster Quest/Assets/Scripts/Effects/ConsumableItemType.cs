@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -18,10 +17,10 @@ namespace MonsterQuest.Effects
     {
         public ConsumableItem(EffectType type, object parent) : base(type, parent) { }
 
-        public IEnumerator ReactToItemUsed(UseItemAction useItemAction)
+        public void ReactToItemUsed(UseItemAction useItemAction)
         {
             // Only provide information for the current item.
-            if (useItemAction.item != parent) yield return null;
+            if (useItemAction.item != parent) return;
 
             // A consumable item must be removed when used.
             useItemAction.creature.RemoveItem(useItemAction.gameState, useItemAction.item);

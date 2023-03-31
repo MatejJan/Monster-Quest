@@ -19,7 +19,7 @@ MonoBehaviour:
     <isExtraDamage>k__BackingField: 0
     <savingThrowAbility>k__BackingField: 0
     <savingThrowDC>k__BackingField: 0
-  attackAbility: 0
+  attackAbility: 2
   customAttackModifiers: 0
   attackRollModifier: 0
   damageRollModifier: 0

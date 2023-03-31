@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace MonsterQuest.Effects
@@ -76,7 +75,7 @@ namespace MonsterQuest.Effects
             availableHitDice++;
         }
 
-        public IEnumerator SpendHitDice()
+        public void SpendHitDice()
         {
             Character character = parent as Character;
 
@@ -86,7 +85,7 @@ namespace MonsterQuest.Effects
 
             availableHitDice--;
 
-            yield return character.Heal(hitPointsRegained);
+            character.Heal(hitPointsRegained);
         }
 
         public void RegainHitDice(int amount)

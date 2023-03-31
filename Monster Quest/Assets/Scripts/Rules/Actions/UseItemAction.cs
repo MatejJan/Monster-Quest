@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using MonsterQuest.Events;
 
 namespace MonsterQuest
 {
-    public class UseItemAction : IAction
+    public class UseItemAction : IAction, IStateEventProvider
     {
         public UseItemAction(GameState gameState, Creature creature, Item item, Creature target = null)
         {
@@ -17,17 +18,33 @@ namespace MonsterQuest
         public Item item { get; }
         public Creature target { get; }
 
-        public IEnumerator Execute()
+        public void Execute()
         {
             DebugHelper.StartLog($"{creature.definiteName.ToUpperFirst()} is using {item.definiteName} … ");
 
+            ReportStateEvent(new UseItemEvent
+            {
+                useItemAction = this
+            });
+
             // Use the item.
-            yield return gameState.CallRules((IReactToUseItem rule) => rule.ReactToUseItem(this));
+            gameState.CallRules((IReactToUseItem rule) => rule.ReactToUseItem(this));
 
             // Inform that item was used.
-            yield return gameState.CallRules((IReactToUseItem rule) => rule.ReactToItemUsed(this));
+            gameState.CallRules((IReactToUseItem rule) => rule.ReactToItemUsed(this));
 
             DebugHelper.EndLog();
+        }
+
+        // Events 
+
+        public event Action<object> stateEvent;
+
+        // Methods 
+
+        private void ReportStateEvent(object eventData)
+        {
+            stateEvent?.Invoke(eventData);
         }
     }
 }

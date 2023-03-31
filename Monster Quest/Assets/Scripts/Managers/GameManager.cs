@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MonsterQuest.Effects;
+using MonsterQuest.Presenters;
 using UnityEngine;
 using Random = UnityEngine.Random;
-#if UNITY_EDITOR
-#endif
 
 namespace MonsterQuest
 {
@@ -15,17 +14,14 @@ namespace MonsterQuest
         [SerializeField] private GameStateAsset loadGameState;
         [SerializeField] private Sprite[] characterBodySprites;
         [SerializeField] private int charactersStartingLevel;
+        [SerializeField] private Presenter[] _presenters;
 
-        private CombatManager _combatManager;
-        private CombatPresenter _combatPresenter;
+        //private readonly List<Presenter> _presenters = new();
+
+        private readonly Queue<object> _eventsToBePresented = new();
+
+        private Coroutine _presentingCoroutine;
         private GameState _state;
-
-        private void Awake()
-        {
-            Transform combatTransform = transform.Find("Combat");
-            _combatManager = combatTransform.GetComponent<CombatManager>();
-            _combatPresenter = combatTransform.GetComponent<CombatPresenter>();
-        }
 
         private IEnumerator Start()
         {
@@ -36,12 +32,12 @@ namespace MonsterQuest
             if (loadGameState)
             {
                 _state = loadGameState.gameState;
-                StartReportingStateEvents();
+                StartPresentingStateEvents();
             }
             else if (SaveGameHelper.saveFileExists)
             {
                 _state = SaveGameHelper.Load();
-                StartReportingStateEvents();
+                StartPresentingStateEvents();
             }
             else
             {
@@ -54,9 +50,28 @@ namespace MonsterQuest
 
         // Methods 
 
-        private void ReportStateEvent(string message)
+        private void PresentStateEvent(object eventData)
         {
-            Console.WriteLine(message);
+            // Queue the event to be presented.
+            _eventsToBePresented.Enqueue(eventData);
+
+            // Start presenting if not already active.
+            if (_presentingCoroutine is null)
+            {
+                _presentingCoroutine = StartCoroutine(PresentQueuedStateEvents());
+            }
+        }
+
+        private IEnumerator PresentQueuedStateEvents()
+        {
+            while (_eventsToBePresented.Count > 0)
+            {
+                object eventData = _eventsToBePresented.Dequeue();
+
+                yield return _presenters.Select(presenter => presenter.Present(eventData)).WaitForAll(this);
+            }
+
+            _presentingCoroutine = null;
         }
 
         private void NewGame()
@@ -78,7 +93,7 @@ namespace MonsterQuest
 
             // Create a new game state.
             _state = new GameState(party);
-            StartReportingStateEvents();
+            StartPresentingStateEvents();
 
             // Give characters equipment.
             ItemType[] weaponItemTypes =
@@ -106,21 +121,22 @@ namespace MonsterQuest
             }
 
             // Output intro.
-            ReportStateEvent($"Warriors {_state.party} descend into the dungeon.");
+            PresentStateEvent($"Warriors {_state.party} descend into the dungeon.");
         }
 
-        private void StartReportingStateEvents()
+        private void StartPresentingStateEvents()
         {
-            _state.stateEvent += ReportStateEvent;
+            _state.stateEvent += PresentStateEvent;
             _state.StartProvidingStateEvents();
-
-            _combatManager.stateEvent += ReportStateEvent;
         }
 
         private IEnumerator Simulate()
         {
+            CombatManager combatManager = new(_state);
+            combatManager.stateEvent += PresentStateEvent;
+
             // Present the characters.
-            yield return _combatPresenter.InitializeParty(_state);
+            yield return _presenters.Select(presenter => presenter.InitializeParty(_state)).WaitForAll(this);
 
             while (true)
             {
@@ -134,52 +150,26 @@ namespace MonsterQuest
                     List<Monster> monsters = CreateMonsters();
                     _state.EnterCombatWithMonsters(monsters);
 
-                    if (monsters.Count == 1)
-                    {
-                        ReportStateEvent($"Watch out, {monsters[0].indefiniteName} with {monsters[0].hitPoints} HP appears!");
-                    }
-                    else
-                    {
-                        Dictionary<MonsterType, IEnumerable<Monster>> monsterGroupsByType = _state.combat.GetMonsterGroupsByType();
-                        List<string> monsterGroupDescriptions = new();
-                        int totalHitPoints = 0;
-
-                        foreach (KeyValuePair<MonsterType, IEnumerable<Monster>> monsterGroupEntry in monsterGroupsByType)
-                        {
-                            totalHitPoints += monsterGroupEntry.Value.Sum(monster => monster.hitPoints);
-
-                            string displayName = monsterGroupEntry.Key.displayName;
-                            int count = monsterGroupEntry.Value.Count();
-                            string description;
-
-                            if (count == 1)
-                            {
-                                description = EnglishHelper.GetIndefiniteNounForm(displayName);
-                            }
-                            else
-                            {
-                                description = $"{count} {EnglishHelper.GetPluralNounForm(displayName)}";
-                            }
-
-                            monsterGroupDescriptions.Add(description);
-                        }
-
-                        string monstersDescription = EnglishHelper.JoinWithAnd(monsterGroupDescriptions);
-
-                        ReportStateEvent($"Watch out, {monstersDescription} with {totalHitPoints} total HP appears!");
-                    }
-
                     // Save the start of the combat.
                     SaveGameHelper.Save(_state);
                 }
 
                 // Present the monsters.
-                yield return _combatPresenter.InitializeMonsters(_state);
+                yield return _presenters.Select(presenter => presenter.InitializeMonsters(_state)).WaitForAll(this);
 
                 yield return new WaitForSeconds(1);
 
                 // Simulate the combat.
-                yield return _combatManager.Simulate(_state);
+                while (combatManager.combatActive)
+                {
+                    // Move combat one turn forward.
+                    combatManager.SimulateTurn();
+
+                    SaveGameHelper.Save(_state);
+
+                    // Wait for all presenters to be done with this turn.
+                    yield return _presentingCoroutine;
+                }
 
                 // If everyone died, stop simulation.
                 if (_state.party.aliveCount == 0)
@@ -193,7 +183,7 @@ namespace MonsterQuest
                 _state.ExitCombat();
 
                 // Take a short rest between fights.
-                yield return _state.party.TakeShortRest();
+                _state.party.TakeShortRest();
 
                 // Gain a health potion as a reward.
                 foreach (Character character in _state.party.aliveCharacters)
@@ -204,10 +194,13 @@ namespace MonsterQuest
                 // Save the game before a new fight.
                 SaveGameHelper.Save(_state);
 
+                // Wait for all presenters to be done with post-combat scenes.
+                yield return _presentingCoroutine;
+
                 yield return new WaitForSeconds(1);
             }
 
-            ReportStateEvent($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
+            Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
         }
 
         private List<Monster> CreateMonsters()

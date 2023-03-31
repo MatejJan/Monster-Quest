@@ -1,115 +1,125 @@
-using System.Collections;
+using System.Linq;
+using MonsterQuest.Events;
 
 namespace MonsterQuest
 {
     public partial class Character
     {
-        public override IEnumerator Heal(int amount)
+        public override void Heal(int amount)
         {
             // Characters reset saving throws when healing.
-            ResetDeathSavingThrows();
+            if (_deathSavingThrows.Count > 0)
+            {
+                ResetDeathSavingThrows();
 
-            yield return base.Heal(amount);
+                ReportStateEvent(new DeathSavingThrowEvent
+                {
+                    creature = this,
+                    deathSavingThrows = deathSavingThrows.ToArray()
+                });
+            }
+
+            base.Heal(amount);
         }
 
         public void Stabilize()
         {
-            lifeStatus = LifeStatus.UnconsciousStable;
+            // Reset saving throws if needed.
+            if (_deathSavingThrows.Count > 0)
+            {
+                ResetDeathSavingThrows();
 
-            ResetDeathSavingThrows();
+                ReportStateEvent(new DeathSavingThrowEvent
+                {
+                    creature = this,
+                    deathSavingThrows = deathSavingThrows.ToArray()
+                });
+            }
+
+            // Update life status.
+            lifeStatus = LifeStatus.UnconsciousStable;
         }
 
-        public IEnumerator HandleUnconsciousState()
+        public void HandleUnconsciousState()
         {
             // Unstable unconscious characters must make a death saving throw.
-            if (lifeStatus != LifeStatus.UnconsciousUnstable) yield break;
+            if (lifeStatus != LifeStatus.UnconsciousUnstable) return;
 
-            int deathSavingThrowRollResult = DiceHelper.Roll("d20");
+            DeathSavingThrowEvent deathSavingThrowEvent = new()
+            {
+                creature = this,
+                rollResult = new RollResult("d20"),
+                amount = 1
+            };
 
-            switch (deathSavingThrowRollResult)
+            switch (deathSavingThrowEvent.rollResult)
             {
                 case 1:
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} critically fails a death saving throw.");
-
                     // Critical fails add 2 saving throw failures.
-                    yield return ApplyDeathSavingThrows(2, false, deathSavingThrowRollResult);
+                    deathSavingThrowEvent.amount = 2;
+                    deathSavingThrowEvent.succeeded = false;
+
+                    ApplyDeathSavingThrows(deathSavingThrowEvent);
 
                     break;
 
                 case 20:
                     // Critical successes regain consciousness with 1 HP.
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} critically succeeds a death saving throw.");
+                    deathSavingThrowEvent.succeeded = true;
 
-                    yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
-
-                    ResetDeathSavingThrows();
-
-                    yield return Heal(1);
+                    ApplyDeathSavingThrows(deathSavingThrowEvent);
+                    Heal(1);
 
                     break;
 
                 case < 10:
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} fails a death saving throw.");
+                    deathSavingThrowEvent.succeeded = false;
 
-                    yield return ApplyDeathSavingThrows(1, false, deathSavingThrowRollResult);
+                    ApplyDeathSavingThrows(deathSavingThrowEvent);
 
                     break;
 
                 default:
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} succeeds a death saving throw.");
+                    deathSavingThrowEvent.succeeded = true;
 
-                    yield return ApplyDeathSavingThrows(1, true, deathSavingThrowRollResult);
+                    ApplyDeathSavingThrows(deathSavingThrowEvent);
 
                     break;
             }
 
-            yield return HandleDeathSavingThrows();
+            HandleDeathSavingThrows();
         }
 
-        protected override IEnumerator TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit)
+        protected override void TakeDamageAtZeroHitPoints(int remainingDamageAmount, Hit hit)
         {
             // Characters instantly die if the remaining damage they would have taken is greater or equal to their maximum HP.
             if (remainingDamageAmount >= hitPointsMaximum)
             {
-                lifeStatus = LifeStatus.Dead;
-                ReportStateEvent($"{definiteName.ToUpperFirst()} instantly dies.");
+                Die();
 
-                if (presenter is not null) yield return presenter.GetAttacked(true);
-
-                if (presenter is not null) yield return presenter.Die();
-
-                yield break;
+                return;
             }
 
             // Alive characters fall unconscious.
             if (lifeStatus == LifeStatus.Conscious)
             {
                 lifeStatus = LifeStatus.UnconsciousUnstable;
-                ReportStateEvent($"{definiteName.ToUpperFirst()} falls unconscious.");
 
-                if (presenter is not null) yield return presenter.GetAttacked();
-
-                yield break;
+                return;
             }
 
             // The creature is unconscious. See if damage was dealt.
             if (remainingDamageAmount > 0)
             {
-                if (presenter is not null) yield return presenter.GetAttacked();
-
                 // When damage was dealt when unconscious, they receive a death saving throw failure (2 on a critical hit).
-                if (hit.wasCritical)
+                DeathSavingThrowEvent deathSavingThrowEvent = new()
                 {
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} suffers two death saving throw failures.");
+                    creature = this,
+                    succeeded = false,
+                    amount = hit.wasCritical ? 2 : 1
+                };
 
-                    yield return ApplyDeathSavingThrows(2, false);
-                }
-                else
-                {
-                    ReportStateEvent($"{definiteName.ToUpperFirst()} suffers a death saving throw failure.");
-
-                    yield return ApplyDeathSavingThrows(1, false);
-                }
+                ApplyDeathSavingThrows(deathSavingThrowEvent);
 
                 // Destabilize if necessary.
                 if (lifeStatus == LifeStatus.UnconsciousStable)
@@ -118,44 +128,41 @@ namespace MonsterQuest
                 }
             }
 
-            yield return HandleDeathSavingThrows();
+            HandleDeathSavingThrows();
         }
 
-        private IEnumerator HandleDeathSavingThrows()
+        private void HandleDeathSavingThrows()
         {
             // If the character fails 3 death saving throws, they die.
             if (deathSavingThrowFailures >= 3)
             {
-                lifeStatus = LifeStatus.Dead;
+                Die();
 
-                yield return Die();
-
-                yield break;
+                return;
             }
 
             // If the character succeeds 3 death saving throws, they stabilize.
             if (deathSavingThrowSuccesses >= 3)
             {
-                ReportStateEvent($"{definiteName.ToUpperFirst()} succeeded 3 times and they stabilize.");
-
                 Stabilize();
             }
         }
 
-        private IEnumerator ApplyDeathSavingThrows(int amount, bool success, int? rollResult = null)
+        private void ApplyDeathSavingThrows(DeathSavingThrowEvent deathSavingThrowEvent)
         {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < deathSavingThrowEvent.amount; i++)
             {
-                _deathSavingThrows.Add(success);
-
-                if (presenter is not null) yield return presenter.PerformDeathSavingThrow(success, i == 0 ? rollResult : null);
+                _deathSavingThrows.Add(deathSavingThrowEvent.succeeded);
             }
+
+            deathSavingThrowEvent.deathSavingThrows = deathSavingThrows.ToArray();
+
+            ReportStateEvent(deathSavingThrowEvent);
         }
 
         private void ResetDeathSavingThrows()
         {
             _deathSavingThrows.Clear();
-            if (presenter is not null) presenter.ResetDeathSavingThrows();
         }
     }
 }
