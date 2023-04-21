@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MonsterQuest.Effects
 {
-    public abstract class AttackType : EffectType, IRulesProvider, IRuleDescriptionsProvider
+    public abstract class AttackType : EffectType, IRulesProvider, IRuleDescriptionsProvider, IInformativeMonsterAttackAttackAbilityRule
     {
         public TargetType targetType = TargetType.All;
         public DamageRoll[] damageRolls;
@@ -20,6 +20,17 @@ namespace MonsterQuest.Effects
         public string descriptionObject;
 
         public virtual string typeName => "attack";
+
+        public SingleValue<Ability> GetAttackAbility(InformativeMonsterAttackAction attackAction)
+        {
+            // Only provide information for the current attack.
+            if (attackAction.effect != this) return null;
+
+            // The attack type can specify its own attack ability.
+            if (attackAbility != Ability.None) return new SingleValue<Ability>(this, attackAbility, 1);
+
+            return null;
+        }
 
         public ArrayValue<RuleDescription> GetRuleDescriptions(object context = null)
         {
@@ -136,7 +147,7 @@ namespace MonsterQuest.Effects
             if (!IsOwnAttack(attackAction)) return null;
 
             // The attack type can specify its own attack ability.
-            if (attackType.attackAbility != Ability.None) return new SingleValue<Ability>(this, attackType.attackAbility);
+            if (attackType.attackAbility != Ability.None) return new SingleValue<Ability>(this, attackType.attackAbility, 1);
 
             return null;
         }

@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
 namespace MonsterQuest
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private Sprite[] characterBodySprites;
-        [SerializeField] private MonsterType[] monsterTypes;
+        [SerializeField] private AssetReferenceSprite[] characterBodySprites;
+        [SerializeField] private AssetReferenceT<MonsterType>[] monsterTypes;
         
         private CombatManager _combatManager;
         private CombatPresenter _combatPresenter;
@@ -33,13 +34,13 @@ namespace MonsterQuest
             }
             else
             {
-                NewGame();
+                yield return NewGame();
             }
             
             yield return Simulate();
         }
         
-        private void NewGame()
+        private IEnumerator NewGame()
         {
             // Create a new party.
             ArmorType studdedLeather = Database.GetItemType<ArmorType>("studded leather");
@@ -51,13 +52,21 @@ namespace MonsterQuest
 
             for (int i = 0; i < 5; i++)
             {
-                characters.Add(new(characterNames[i], characterBodySprites[i], 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather));
+                var loadSpriteHandle = characterBodySprites[i].LoadAssetAsync();
+                if (!characterBodySprites[i].IsDone) yield return loadSpriteHandle;
+                characters.Add(new Character(characterNames[i], characterBodySprites[i].Asset as Sprite, 10, SizeCategory.Medium, weaponTypes[Random.Range(0, weaponTypes.Length)], studdedLeather));
             }
             
             Party party = new(characters);
             
             // Create a new game state.
-            _state = new GameState(party, monsterTypes);
+            foreach (var monsterType in monsterTypes)
+            {
+                var loadHandle = monsterType.LoadAssetAsync();
+                if (!loadHandle.IsDone) yield return loadHandle;
+            }
+            
+            _state = new GameState(party, monsterTypes.Select(monsterType => monsterType.Asset as MonsterType).ToArray());
             
             Console.WriteLine($"Fighters {_state.party} descend into the dungeon.");
         }

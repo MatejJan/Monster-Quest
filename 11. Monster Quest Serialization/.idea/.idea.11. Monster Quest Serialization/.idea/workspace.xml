@@ -2,28 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="500d95c7-c206-4ce0-9311-c478b2c4ea33" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rules/Actions/AttackAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rules/Actions/AttackAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body sprite.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body sprite.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body vertical displacement.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature body vertical displacement.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature stand.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature stand.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature.controller" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animation controllers/Creatures/Creature.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animations.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Animations.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scenes/Game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scriptable objects/Database/Classes/Fighter.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scriptable objects/Database/Classes/Fighter.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/ClassType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/ClassType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/MonsterType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Database/MonsterType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/CombatManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/CombatManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Character.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Character.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Combat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Combat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Creature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Model/Creature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Presenters/CreaturePresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Presenters/CreaturePresenter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Rules/Actions/AttackAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/Assets/Scripts/Rules/Actions/AttackAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../12. Monster Quest Software design/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../12. Monster Quest Software design/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/ClassType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/ClassType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Model/Character.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Model/Character.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Rules/CharacterRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Rules/CharacterRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.11. Monster Quest Serialization/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.11. Monster Quest Serialization/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/OSX/addressables_content_state.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/OSX/addressables_content_state.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/AddressableAssetsData/link.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/AddressableAssetsData/link.xml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Game States/Last.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Game States/Last.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/AttackType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Effects/AttackType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Lit2DSceneTemplate.scenetemplate" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Lit2DSceneTemplate.scenetemplate.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Renderer2D.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Renderer2D.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Scenes/URP2DSceneTemplate.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/Scenes/URP2DSceneTemplate.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/UniversalRP.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Settings/UniversalRP.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Sprites/Characters/Wizard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/Sprites/Characters/Wizard.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Assets/UniversalRenderPipelineGlobalSettings.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monster Quest/ProjectSettings/VFXManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/ProjectSettings/VFXManager.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Monster Quest/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../Monster Quest/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +51,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Discover.Launch.Via.Unity": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -51,8 +59,16 @@
   }
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/Retronator MQ.app/Contents/MacOS/Monster Quest Serialization" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop/Retronator MQ.app/Contents/MacOS" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2021.3.21f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2021.3.22f1/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;$PROJECT_DIR$&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -89,6 +105,7 @@
       <option name="presentableId" value="Default" />
       <updated>1679672198884</updated>
       <workItem from="1679672203057" duration="27000" />
+      <workItem from="1681744580967" duration="2874000" />
     </task>
     <servers />
   </component>
@@ -97,7 +114,7 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
-  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>

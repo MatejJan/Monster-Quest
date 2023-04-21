@@ -188,7 +188,10 @@ namespace MonsterQuest
                 // Gain a health potion as a reward.
                 foreach (Character character in _state.party.aliveCharacters)
                 {
-                    character.GiveItem(_state, Database.GetItemType("potion of healing").Create());
+                    if (character.isAlive)
+                    {
+                        character.GiveItem(_state, Database.GetItemType("potion of healing").Create());
+                    }
                 }
 
                 // Save the game before a new fight.

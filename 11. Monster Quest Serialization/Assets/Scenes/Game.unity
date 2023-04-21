@@ -721,14 +721,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterBodySprites:
-  - {fileID: 21300000, guid: 674a45a2e4c6e4392bc8cd791ed443c0, type: 3}
-  - {fileID: 21300000, guid: 956386156c63c4eee816fc62eaa55e2c, type: 3}
-  - {fileID: 21300000, guid: e12d725ecf6954adf9e66d736a1d0c22, type: 3}
-  - {fileID: 21300000, guid: 05200a5325ada4d1dbd78ee326031452, type: 3}
-  - {fileID: 21300000, guid: e902acf33b7bc4135b6e250d8c77ad21, type: 3}
+  - m_AssetGUID: 956386156c63c4eee816fc62eaa55e2c
+    m_SubObjectName: Assassin
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 05200a5325ada4d1dbd78ee326031452
+    m_SubObjectName: Mage
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: e902acf33b7bc4135b6e250d8c77ad21
+    m_SubObjectName: Paladin
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: e12d725ecf6954adf9e66d736a1d0c22
+    m_SubObjectName: Warrior
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 674a45a2e4c6e4392bc8cd791ed443c0
+    m_SubObjectName: Wizard
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
   monsterTypes:
-  - {fileID: 11400000, guid: 74ff0a96b98ac41cdb58eaf3ab4f94a5, type: 2}
-  - {fileID: 11400000, guid: daeba81460efc458ebbf19e0b932529f, type: 2}
+  - m_AssetGUID: 74ff0a96b98ac41cdb58eaf3ab4f94a5
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: daeba81460efc458ebbf19e0b932529f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 6292211193a004416bd7ec39354c6c85
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: cf4563540ac464e8caa28ed453353a90
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!1 &1088585501
 GameObject:
   m_ObjectHideFlags: 0
