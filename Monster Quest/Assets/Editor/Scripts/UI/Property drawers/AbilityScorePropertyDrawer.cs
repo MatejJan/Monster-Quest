@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -26,7 +25,7 @@ namespace MonsterQuest.Editor
 
             // Note: We have to track the score property itself because tracking classes in general is not supported.
             // We do have to save the ability to be able to get to the modifier though.
-            _abilityScore = property.GetUnderlyingValue() as AbilityScore;
+            _abilityScore = property.managedReferenceValue as AbilityScore;
             _modifier.TrackPropertyValue(property.FindPropertyRelative(score.bindingPath), UpdateModifier);
             UpdateModifier(null);
 
