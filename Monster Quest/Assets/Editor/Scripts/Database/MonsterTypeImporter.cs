@@ -298,9 +298,6 @@ namespace MonsterQuest
                 }
 
                 /*
-    public float challengeRating;
-    
-    
 "challenge_rating": 2,
 "xp": 450,
 "special_abilities": [

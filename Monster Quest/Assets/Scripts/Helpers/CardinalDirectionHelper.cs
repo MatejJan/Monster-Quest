@@ -9,7 +9,7 @@ namespace MonsterQuest
     {
         private static readonly CardinalDirection[] _cardinalDirections = Enum.GetValues(typeof(CardinalDirection)).Cast<CardinalDirection>().ToArray();
 
-        public static readonly Dictionary<CardinalDirection, Vector2> cardinalDirectionVectors = new()
+        public static readonly Dictionary<CardinalDirection, Vector2> cardinalDirectionVector2S = new()
         {
             {
                 CardinalDirection.South, new Vector2(0, -1)
@@ -34,6 +34,34 @@ namespace MonsterQuest
             },
             {
                 CardinalDirection.Southeast, new Vector2(1, -1)
+            }
+        };
+
+        public static readonly Dictionary<CardinalDirection, Vector3> cardinalDirectionVector3S = new()
+        {
+            {
+                CardinalDirection.South, new Vector3(0, 0, -1)
+            },
+            {
+                CardinalDirection.Southwest, new Vector3(-1, 0, -1)
+            },
+            {
+                CardinalDirection.West, new Vector3(-1, 0, 0)
+            },
+            {
+                CardinalDirection.Northwest, new Vector3(-1, 0, 1)
+            },
+            {
+                CardinalDirection.North, new Vector3(0, 0, 1)
+            },
+            {
+                CardinalDirection.Northeast, new Vector3(1, 0, 1)
+            },
+            {
+                CardinalDirection.East, new Vector3(1, 0, 0)
+            },
+            {
+                CardinalDirection.Southeast, new Vector3(1, 0, -1)
             }
         };
 

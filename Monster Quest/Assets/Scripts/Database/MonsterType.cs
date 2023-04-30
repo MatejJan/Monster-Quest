@@ -34,9 +34,7 @@ namespace MonsterQuest
         public EffectType[] effects;
         public ItemType[] items;
 
-        // Visuals
-        public Sprite bodySprite;
-        public float flyHeight;
+        // Derived properties and methods
 
         public int passivePerception
         {
@@ -126,8 +124,6 @@ namespace MonsterQuest
             // Return the proficiency bonus modifier.
             return new IntegerValue(this, 0, proficiencyBonus);
         }
-
-        // Derived properties
 
         public string rulesProviderName => displayName;
 

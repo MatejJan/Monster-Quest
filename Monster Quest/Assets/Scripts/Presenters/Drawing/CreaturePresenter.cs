@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace MonsterQuest.Presenters.Drawing
 {
@@ -28,6 +30,8 @@ namespace MonsterQuest.Presenters.Drawing
         private Animator _bodySpriteAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
         private Animator _standAnimator;
+
+        private AsyncOperationHandle<Sprite> _bodySpriteHandle;
 
         private bool _destroyed;
 
@@ -79,16 +83,17 @@ namespace MonsterQuest.Presenters.Drawing
             _dicePresenter = GameObject.Find("Dice").GetComponent<DicePresenter>();
         }
 
+        private void OnDestroy()
+        {
+            Addressables.Release(_bodySpriteHandle);
+        }
+
         public event Action destroyed;
 
         public void Initialize(CombatPresenter combatPresenter, Creature creature)
         {
             _combatPresenter = combatPresenter;
             _creature = creature;
-
-            // Set body sprite.
-            _bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
-            _bodySpriteRenderer.sprite = _creature.bodySprite;
 
             // Set stand sprite.
             SpriteRenderer[] standSpriteRenderers = _standBaseTransform.GetComponentsInChildren<SpriteRenderer>();
@@ -97,6 +102,13 @@ namespace MonsterQuest.Presenters.Drawing
             {
                 standSpriteRenderer.sprite = standSprites[(int)_creature.sizeCategory - 1];
             }
+
+            // Load body sprite.
+            BodyAsset bodyAsset = Assets.GetBodyAsset(creature.bodyAssetName);
+            _bodySpriteHandle = Addressables.LoadAssetAsync<Sprite>(bodyAsset.spriteReference);
+            _bodySpriteHandle.Completed += OnBodySpriteLoaded;
+
+            _bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();
 
             // Animate flying if needed.
             if (_creature.lifeStatus == LifeStatus.Conscious) FlyIfPossible(false);
@@ -125,6 +137,20 @@ namespace MonsterQuest.Presenters.Drawing
             foreach (bool deathSavingThrow in _creature.deathSavingThrows)
             {
                 _deathSavingThrowsPresenter.AddDeathSavingThrow(deathSavingThrow);
+            }
+        }
+
+        // Instantiate the loaded prefab on complete
+        private void OnBodySpriteLoaded(AsyncOperationHandle<Sprite> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                // Set body sprite.
+                _bodySpriteRenderer.sprite = handle.Result;
+            }
+            else
+            {
+                Debug.LogError("Creature body sprite failed to load.");
             }
         }
     }

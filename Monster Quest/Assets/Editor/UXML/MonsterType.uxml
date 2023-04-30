@@ -67,13 +67,6 @@
             <uie:PropertyField name="effects" binding-path="effects"/>
             <uie:PropertyField name="items" binding-path="items"/>
         </ui:VisualElement>
-        <ui:VisualElement name="visuals" class="extra-section">
-            <ui:Label text="Visuals"/>
-            <uie:ObjectField name="body-sprite" binding-path="bodySprite" label="Body Sprite"
-                             type="UnityEngine.Sprite, UnityEngine.CoreModule"/>
-            <uie:FloatField name="fly-height" binding-path="flyHeight" label="Fly Height"/>
-            <ui:Image name="preview" style="max-height: 200px; margin-top: 20px;"/>
-        </ui:VisualElement>
     </ui:VisualElement>
     <ui:ScrollView name="display-name-autocomplete" style="max-height: 200px;"/>
 </ui:UXML>

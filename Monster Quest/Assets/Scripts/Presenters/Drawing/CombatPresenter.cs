@@ -39,7 +39,7 @@ namespace MonsterQuest.Presenters.Drawing
 
             float totalWidth = creaturesArray.Sum(creature => creature.spaceInFeet);
             float currentX = -totalWidth / 2;
-            Vector3 facingDirection = CardinalDirectionHelper.cardinalDirectionVectors[direction];
+            Vector3 facingDirection = CardinalDirectionHelper.cardinalDirectionVector2S[direction];
 
             foreach (Creature creature in creaturesArray)
             {

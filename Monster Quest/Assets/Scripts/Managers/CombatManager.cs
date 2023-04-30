@@ -47,15 +47,6 @@ namespace MonsterQuest
 
             if (areHostileGroupsPresent) return;
 
-            if (_gameState.party.aliveCount > 0)
-            {
-                Console.WriteLine("The heroes celebrate their victory!");
-            }
-            else
-            {
-                Console.WriteLine("The party has failed and the monsters continue to attack unsuspecting adventurers.");
-            }
-
             _gameState.combat.End();
         }
 

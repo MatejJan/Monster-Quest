@@ -23,10 +23,30 @@ MonoBehaviour:
     m_SerializedLabels:
     - database
   - m_GUID: a35ed174b36f747eea4e33bafa28afc8
-    m_Address: Assets/Sprites/Characters
+    m_Address: Assets/Sprites/Drawing/Characters
     m_ReadOnly: 0
     m_SerializedLabels:
-    - database
+    - assets
+  - m_GUID: 6c0cbbdea91a04390b43d6cebbf96dda
+    m_Address: Assets/Sprites/Drawing/Monsters
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - assets
+  - m_GUID: 77fc1bc7e7b5e4bc8b72b42463ac9621
+    m_Address: Assets/Scriptable objects/Assets
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - assets
+  - m_GUID: 29acc72620f814853ab646e21c88ebd9
+    m_Address: Assets/Meshes/Miniatures/Characters
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - assets
+  - m_GUID: 523d94c9363c2440fa5ecf2a5471029c
+    m_Address: Assets/Meshes/Miniatures/Monsters
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - assets
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d6874f72e6a9e4a5abcc2ce01a63ac09, type: 2}
   m_SchemaSet:

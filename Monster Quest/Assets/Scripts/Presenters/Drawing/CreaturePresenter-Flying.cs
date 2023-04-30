@@ -9,12 +9,14 @@ namespace MonsterQuest.Presenters.Drawing
 
         private void FlyIfPossible(bool transition = true)
         {
-            _bodyVerticalDisplacementAnimator.SetBool(_flyHash, _creature.flyHeight > 0);
+            float flyHeight = 0;
 
-            // Move to creature to flying height if needed.
-            if (_creature.flyHeight == 0) return;
+            _bodyVerticalDisplacementAnimator.SetBool(_flyHash, flyHeight > 0);
 
-            StartCoroutine(FlyToHeight(_creature.flyHeight, transition ? 1 : 0));
+            // Move creature to flying height if needed.
+            if (flyHeight == 0) return;
+
+            StartCoroutine(FlyToHeight(flyHeight, transition ? 1 : 0));
         }
 
         private void StopFlying()

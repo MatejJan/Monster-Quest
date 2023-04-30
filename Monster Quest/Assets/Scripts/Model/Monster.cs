@@ -47,8 +47,7 @@ namespace MonsterQuest
         public override AbilityScores abilityScores => type.abilityScores;
         public override SizeCategory sizeCategory => type.sizeCategory;
 
-        public override Sprite bodySprite => type.bodySprite;
-        public override float flyHeight => type.flyHeight;
+        public override string bodyAssetName => type.name;
 
         protected override int proficiencyBonusBase => (int)type.challengeRating;
 

@@ -10,11 +10,11 @@ namespace MonsterQuest
     [Serializable]
     public partial class Character : Creature, IArmorClassRule
     {
-        [SerializeField] private Sprite _bodySprite;
+        [SerializeField] private string _bodyAssetName;
         [SerializeField] private List<bool> _deathSavingThrows;
         [SerializeField] private AbilityScores _abilityScores;
 
-        public Character(string displayName, RaceType raceType, ClassType classType, Sprite bodySprite, int startingLevel = 1)
+        public Character(string displayName, RaceType raceType, ClassType classType, string bodyAssetName, int startingLevel = 1)
         {
             this.displayName = displayName;
             DebugHelper.StartLog($"Creating {definiteName}.");
@@ -22,7 +22,7 @@ namespace MonsterQuest
             race = raceType.Create(this) as Race;
             effectsList.Add(race);
 
-            _bodySprite = bodySprite;
+            _bodyAssetName = bodyAssetName;
 
             // Generate ability scores.
             DebugHelper.StartLog("Rolling ability scores …");
@@ -78,8 +78,7 @@ namespace MonsterQuest
         public override AbilityScores abilityScores => _abilityScores;
         public override SizeCategory sizeCategory => race.raceType.sizeCategory;
 
-        public override Sprite bodySprite => _bodySprite;
-        public override float flyHeight => 0;
+        public override string bodyAssetName => _bodyAssetName;
 
         protected override int proficiencyBonusBase => characterClass.level;
 

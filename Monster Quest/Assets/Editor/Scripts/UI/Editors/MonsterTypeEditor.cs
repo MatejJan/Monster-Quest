@@ -192,7 +192,6 @@ namespace MonsterQuest.Editor
             UpdateExperiencePoints(monsterType);
             UpdateProficiencyBonus(monsterType);
             UpdateRules(monsterType);
-            UpdatePreview(monsterType);
         }
 
         private void UpdateSpeed(MonsterType monsterType)
@@ -414,12 +413,6 @@ namespace MonsterQuest.Editor
 
             label.AddToClassList("rule");
             parent.Add(label);
-        }
-
-        private void UpdatePreview(MonsterType monsterType)
-        {
-            Image preview = _root.Q<Image>("preview");
-            preview.sprite = monsterType.bodySprite;
         }
     }
 }

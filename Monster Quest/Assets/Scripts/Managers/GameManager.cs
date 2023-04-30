@@ -12,11 +12,9 @@ namespace MonsterQuest
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private GameStateAsset loadGameState;
-        [SerializeField] private Sprite[] characterBodySprites;
+        [SerializeField] private string[] characterBodyAssetNames;
         [SerializeField] private int charactersStartingLevel;
         [SerializeField] private Presenter[] _presenters;
-
-        //private readonly List<Presenter> _presenters = new();
 
         private readonly Queue<object> _eventsToBePresented = new();
 
@@ -25,8 +23,9 @@ namespace MonsterQuest
 
         private IEnumerator Start()
         {
-            // Wait for the Manual to be initialized.
+            // Wait for addressables to be initialized.
             yield return Database.Initialize();
+            yield return Assets.Initialize();
 
             // Load an existing or start a new game.
             if (loadGameState)
@@ -82,11 +81,11 @@ namespace MonsterQuest
 
             Character[] characters =
             {
-                new("Elana", humanRaceType, fighterClassType, characterBodySprites[0], charactersStartingLevel),
-                new("Jazlyn", humanRaceType, fighterClassType, characterBodySprites[1], charactersStartingLevel),
-                new("Theron", humanRaceType, fighterClassType, characterBodySprites[2], charactersStartingLevel),
-                new("Dayana", humanRaceType, fighterClassType, characterBodySprites[3], charactersStartingLevel),
-                new("Rolando", humanRaceType, fighterClassType, characterBodySprites[4], charactersStartingLevel)
+                new("Elana", humanRaceType, fighterClassType, characterBodyAssetNames[0], charactersStartingLevel),
+                new("Jazlyn", humanRaceType, fighterClassType, characterBodyAssetNames[1], charactersStartingLevel),
+                /*new("Theron", humanRaceType, fighterClassType, characterBodyAssetNames[2], charactersStartingLevel),
+                new("Dayana", humanRaceType, fighterClassType, characterBodyAssetNames[3], charactersStartingLevel),
+                new("Rolando", humanRaceType, fighterClassType, characterBodyAssetNames[4], charactersStartingLevel)*/
             };
 
             Party party = new(characters);
@@ -202,8 +201,6 @@ namespace MonsterQuest
 
                 yield return new WaitForSeconds(1);
             }
-
-            Console.WriteLine($"RIP. The heroes {_state.party} entered {EnglishHelper.GetNounWithCount("battle", _state.combatsFoughtCount)}, but their last one proved to be fatal.");
         }
 
         private List<Monster> CreateMonsters()
@@ -214,6 +211,10 @@ namespace MonsterQuest
 
             List<MonsterType> remainingMonsterTypes = new(Database.monsterTypes);
             List<Monster> monsters = new();
+
+            monsters.Add(new Monster(Database.GetMonsterType("orc")));
+
+            return monsters;
 
             while (totalChallengeRating < maxTotalChallengeRating && monsters.Count < 5)
             {

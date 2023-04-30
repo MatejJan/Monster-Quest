@@ -15,7 +15,6 @@ namespace MonsterQuest
         private static readonly List<ClassType> _classTypes = new();
         private static readonly List<MonsterType> _monsterTypes = new();
         private static readonly List<ItemType> _itemTypes = new();
-        private static readonly List<Sprite> _sprites = new();
         private static readonly List<Object> _allObjects = new();
 
         private static readonly Dictionary<Object, string> _primaryKeysByAssets = new();
@@ -35,10 +34,6 @@ namespace MonsterQuest
             yield return LoadAssets(_classTypes);
             yield return LoadAssets(_monsterTypes);
             yield return LoadAssets(_itemTypes);
-
-            // We also load all Unity objects so they get their instanceIDs indexed. We need to load the
-            // sprites first so they get registered before their textures (which have the same primary key).
-            yield return LoadAssets(_sprites);
             yield return LoadAssets(_allObjects);
         }
 
@@ -66,7 +61,7 @@ namespace MonsterQuest
         {
             if (!_primaryKeysByAssets.ContainsKey(asset))
             {
-                Debug.LogError("Referenced Unity Object is not part of the database.");
+                Debug.LogError($"Referenced Unity Object is not part of the database. {asset}");
 
                 return null;
             }
@@ -78,7 +73,7 @@ namespace MonsterQuest
         {
             if (!_assetsByPrimaryKey.ContainsKey(primaryKey))
             {
-                Debug.LogError("Referenced addressable is not part of the database.");
+                Debug.LogError($"Referenced addressable is not part of the database. {primaryKey}");
 
                 return null;
             }
@@ -122,11 +117,7 @@ namespace MonsterQuest
                     {
                         if (_assetsByPrimaryKey[location.PrimaryKey] != asset)
                         {
-                            // If we're loading a texture asset, the collision is probably with the associated sprite, so we don't raise an error.
-                            if (asset is not Texture)
-                            {
-                                Debug.LogError($"Multiple assets with the same primary key. {location.PrimaryKey} - {instanceId}");
-                            }
+                            Debug.LogError($"Multiple assets with the same primary key. {location.PrimaryKey} - {instanceId}");
                         }
                     }
                     else

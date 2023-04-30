@@ -61,8 +61,7 @@ namespace MonsterQuest
         public string definiteName => EnglishHelper.GetDefiniteNounForm(displayName);
         public string indefiniteName => EnglishHelper.GetIndefiniteNounForm(displayName);
 
-        public abstract Sprite bodySprite { get; }
-        public abstract float flyHeight { get; }
+        public abstract string bodyAssetName { get; }
 
         public int proficiencyBonus => CreatureRules.GetProficiencyBonus(proficiencyBonusBase);
         protected abstract int proficiencyBonusBase { get; }

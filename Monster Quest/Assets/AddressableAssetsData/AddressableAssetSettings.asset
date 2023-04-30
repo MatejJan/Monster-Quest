@@ -90,6 +90,7 @@ MonoBehaviour:
     - race
     - manual
     - database
+    - assets
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 43ac9886ef7b745ee97909739d1419d7, type: 2}
