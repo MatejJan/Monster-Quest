@@ -2,6 +2,7 @@ namespace MonsterQuest.Events
 {
     public class DamageEvent
     {
+        public Creature attacker;
         public Creature creature;
         public Damage damage;
         public DamageAmountResult[] damageAmountResults;

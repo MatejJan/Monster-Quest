@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -23,10 +24,13 @@ namespace MonsterQuest.Presenters.Miniatures
         private static readonly int _levelUpHash = Animator.StringToHash("Level up");
 
         [SerializeField] private GameObject[] stands;
+        [SerializeField] private float attackedForce;
+        [SerializeField] private float attackedForceInstantDeath;
 
         private Animator _animator;
-        private Animator _bodySpriteAnimator;
+        private Animator _bodyAnimator;
         private Animator _bodyVerticalDisplacementAnimator;
+        private Animator _miniatureAnimator;
         private Animator _standAnimator;
 
         private AsyncOperationHandle<GameObject> _modelHandle;
@@ -39,15 +43,20 @@ namespace MonsterQuest.Presenters.Miniatures
 
         private Creature _creature;
 
+        private FixedJoint _bodyFixedJoint;
+
         private float _currentHitPointRatio;
         private IEnumerator _hitPointAnimationCoroutine;
         private Material _material;
+        private Rigidbody _bodyRigidBody;
+        private Rigidbody _miniatureRigidBody;
         private Transform _bodyMeshTransform;
-
         private Transform _bodyTransform;
         private Transform _bodyVerticalDisplacementTransform;
         private Transform _deathSavingThrowsTransform;
         private Transform _hitPointsMaskTransform;
+
+        private Transform _miniatureTransform;
         private Transform _standMeshTransform;
         private Transform _standTransform;
 
@@ -55,15 +64,22 @@ namespace MonsterQuest.Presenters.Miniatures
         {
             _animator = GetComponent<Animator>();
 
-            _bodyTransform = transform.Find("Body");
+            _miniatureTransform = transform.Find("Miniature");
+            _miniatureAnimator = _miniatureTransform.GetComponent<Animator>();
+
+            _bodyTransform = _miniatureTransform.Find("Body");
 
             _bodyVerticalDisplacementTransform = _bodyTransform.Find("Vertical displacement");
             _bodyVerticalDisplacementAnimator = _bodyVerticalDisplacementTransform.GetComponent<Animator>();
 
             _bodyMeshTransform = _bodyVerticalDisplacementTransform.Find("Mesh");
 
-            _standTransform = transform.Find("Stand");
+            _standTransform = _miniatureTransform.Find("Stand");
             _standMeshTransform = _standTransform.Find("Mesh");
+
+            _bodyFixedJoint = _miniatureTransform.GetComponent<FixedJoint>();
+            _bodyRigidBody = _bodyMeshTransform.GetComponent<Rigidbody>();
+            _miniatureRigidBody = _miniatureTransform.GetComponent<Rigidbody>();
         }
 
         private void OnDestroy()
@@ -71,11 +87,29 @@ namespace MonsterQuest.Presenters.Miniatures
             Addressables.Release(_modelHandle);
         }
 
+        private void EnablePhysics()
+        {
+            SetRigidBodiesIsKinematic(false);
+        }
+
+        private void DisablePhysics()
+        {
+            SetRigidBodiesIsKinematic(true);
+        }
+
+        private void SetRigidBodiesIsKinematic(bool value)
+        {
+            _bodyRigidBody.isKinematic = value;
+            _miniatureRigidBody.isKinematic = value;
+        }
+
         private void OnBodyMeshLoaded(AsyncOperationHandle<GameObject> handle)
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                _bodyMeshTransform.GetComponent<MeshFilter>().sharedMesh = handle.Result.GetComponent<MeshFilter>().sharedMesh;
+                Mesh bodyMesh = handle.Result.GetComponent<MeshFilter>().sharedMesh;
+                _bodyMeshTransform.GetComponent<MeshFilter>().sharedMesh = bodyMesh;
+                _bodyMeshTransform.GetComponent<MeshCollider>().sharedMesh = bodyMesh;
                 _bodyMeshTransform.GetComponent<MeshRenderer>().material = _material;
             }
             else
@@ -83,6 +117,8 @@ namespace MonsterQuest.Presenters.Miniatures
                 Debug.LogError("Creature body model failed to load.");
             }
         }
+
+        public event Action destroyed;
 
         public void Initialize(CombatPresenter combatPresenter, Creature creature, Material material)
         {
@@ -92,8 +128,12 @@ namespace MonsterQuest.Presenters.Miniatures
 
             // Add stand model.
             GameObject stand = stands[(int)_creature.sizeCategory - 1];
-            _standMeshTransform.GetComponent<MeshFilter>().sharedMesh = stand.GetComponent<MeshFilter>().sharedMesh;
+            Mesh standMesh = stand.GetComponent<MeshFilter>().sharedMesh;
+
+            _standMeshTransform.GetComponent<MeshFilter>().sharedMesh = standMesh;
             _standMeshTransform.GetComponent<MeshRenderer>().material = _material;
+
+            _miniatureTransform.GetComponent<MeshCollider>().sharedMesh = standMesh;
 
             // Load creature model.
             BodyAsset bodyAsset = Assets.GetBodyAsset(creature.bodyAssetName);

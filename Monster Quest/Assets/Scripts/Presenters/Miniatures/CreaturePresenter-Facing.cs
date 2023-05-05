@@ -24,7 +24,7 @@ namespace MonsterQuest.Presenters.Miniatures
 
             // Get the angle we need to rotate by.
             Vector3 directionToCreature = otherPresenter.transform.position - transform.position;
-            float angleDegrees = Mathf.Atan2(directionToCreature.y, directionToCreature.x) * Mathf.Rad2Deg;
+            float angleDegrees = -Mathf.Atan2(directionToCreature.z, directionToCreature.x) * Mathf.Rad2Deg;
 
             yield return FaceAngle(angleDegrees, immediate);
         }
@@ -45,7 +45,7 @@ namespace MonsterQuest.Presenters.Miniatures
 
         private IEnumerator AnimateLocalRotation(float angleDegrees)
         {
-            float startAngleDegrees = _bodyTransform.localRotation.eulerAngles.y;
+            float startAngleDegrees = transform.localRotation.eulerAngles.y;
             float deltaAngle = Mathf.DeltaAngle(startAngleDegrees, angleDegrees);
             angleDegrees = startAngleDegrees + deltaAngle;
 
@@ -71,7 +71,7 @@ namespace MonsterQuest.Presenters.Miniatures
         private void SetLocalRotation(float angleDegrees)
         {
             // Rotate the body orientation.
-            _bodyTransform.localRotation = Quaternion.Euler(0, angleDegrees, 0);
+            transform.localRotation = Quaternion.Euler(0, angleDegrees, 0);
         }
     }
 }

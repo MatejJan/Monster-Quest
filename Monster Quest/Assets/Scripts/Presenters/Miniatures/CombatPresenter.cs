@@ -39,12 +39,12 @@ namespace MonsterQuest.Presenters.Miniatures
 
         public IEnumerator InitializeParty(GameState gameState)
         {
-            yield return InitializeCreatures(gameState.party.characters, 0, CardinalDirection.North, charactersMaterial);
+            yield return InitializeCreatures(gameState.party.characters, 15, CardinalDirection.North, charactersMaterial);
         }
 
         public IEnumerator InitializeMonsters(GameState gameState)
         {
-            yield return InitializeCreatures(gameState.combat.monsters, 40, CardinalDirection.South, monstersMaterial);
+            yield return InitializeCreatures(gameState.combat.monsters, 25, CardinalDirection.South, monstersMaterial);
         }
 
         private IEnumerator InitializeCreatures(IEnumerable<Creature> creatures, float z, CardinalDirection direction, Material material)
@@ -66,13 +66,14 @@ namespace MonsterQuest.Presenters.Miniatures
                 GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
                 characterGameObject.name = creature.displayName;
 
-                Vector3 position = new Vector3(currentX - spaceRadius, 0, z) + facingDirection * spaceRadius;
+                Vector3 position = new Vector3(currentX - spaceRadius, 0, z) - facingDirection * spaceRadius;
                 characterGameObject.transform.position = position;
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
                 creaturePresenter.Initialize(this, creature, material);
 
                 _creaturePresenters[creature] = creaturePresenter;
+                creaturePresenter.destroyed += () => _creaturePresenters.Remove(creature);
 
                 yield return creaturePresenter.FaceDirection(direction, true);
             }

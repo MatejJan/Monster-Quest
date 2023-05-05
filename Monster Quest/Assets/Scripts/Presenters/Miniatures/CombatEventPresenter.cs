@@ -1,4 +1,4 @@
-namespace MonsterQuest.Presenters.Drawing
+namespace MonsterQuest.Presenters.Miniatures
 {
     public class CombatEventPresenter
     {

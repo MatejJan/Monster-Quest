@@ -18,7 +18,8 @@ namespace MonsterQuest
                 creature = this,
                 damageAmountResults = new DamageEvent.DamageAmountResult[damage.amounts.Length],
                 hitPointsStart = hitPoints,
-                hitPointsMaximum = hitPointsMaximum
+                hitPointsMaximum = hitPointsMaximum,
+                attacker = damage.hit.attackAction.attacker
             };
 
             for (int i = 0; i < damage.amounts.Length; i++)
