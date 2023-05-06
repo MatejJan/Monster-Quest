@@ -39,12 +39,12 @@ namespace MonsterQuest.Presenters.Miniatures
 
         public IEnumerator InitializeParty(GameState gameState)
         {
-            yield return InitializeCreatures(gameState.party.characters, 15, CardinalDirection.North, charactersMaterial);
+            yield return InitializeCreatures(gameState.party.characters, 20, CardinalDirection.North, charactersMaterial);
         }
 
         public IEnumerator InitializeMonsters(GameState gameState)
         {
-            yield return InitializeCreatures(gameState.combat.monsters, 25, CardinalDirection.South, monstersMaterial);
+            yield return InitializeCreatures(gameState.combat.monsters, 20, CardinalDirection.South, monstersMaterial);
         }
 
         private IEnumerator InitializeCreatures(IEnumerable<Creature> creatures, float z, CardinalDirection direction, Material material)

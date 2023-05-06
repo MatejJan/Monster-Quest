@@ -9,6 +9,8 @@ namespace MonsterQuest.Presenters.Miniatures
 
         public IEnumerator Attack()
         {
+            yield return WaitForResetMiniature();
+
             // Trigger the attack animation.
             _miniatureAnimator.SetTrigger(_attackHash);
 
@@ -18,8 +20,9 @@ namespace MonsterQuest.Presenters.Miniatures
         public IEnumerator GetAttacked(Vector3 sourcePosition, bool knockedOut = false, bool instantDeath = false)
         {
             // Update hit points indicator.
-            //UpdateHitPoints();
+            UpdateHitPoints();
 
+            // Move the miniature with force.
             EnablePhysics();
 
             if (knockedOut)
@@ -29,11 +32,11 @@ namespace MonsterQuest.Presenters.Miniatures
 
             Vector3 position = transform.position;
             Vector3 forceDirection = (position - sourcePosition).normalized;
-            Vector3 forcePosition = position + Vector3.up * 3;
+            Vector3 forcePosition = position + Vector3.up * attackedForceHeight;
 
             _bodyRigidBody.AddForceAtPosition(forceDirection * (instantDeath ? attackedForceInstantDeath : attackedForce), forcePosition);
 
-            yield return new WaitForSeconds(instantDeath ? 5 : 2);
+            yield return new WaitForSeconds(1);
 
             DisablePhysics();
         }

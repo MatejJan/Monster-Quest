@@ -14,17 +14,21 @@ namespace MonsterQuest.Presenters.Miniatures
 
         public IEnumerator Heal()
         {
-            // Update hit points indicator.
-            //UpdateHitPoints();
+            yield return WaitForResetMiniature();
 
-            yield break;
+            // Trigger the use animation.
+            _bodyVerticalDisplacementAnimator.SetTrigger(_useHash);
+
+            // Update hit points indicator.
+            UpdateHitPoints();
+
+            yield return new WaitForSeconds(1f);
         }
 
         public IEnumerator RegainConsciousness()
         {
             // The creature should stand.
             //_bodySpriteAnimator.SetTrigger(_standHash);
-            _standing = true;
 
             // Start flying again.
             //FlyIfPossible();
@@ -36,6 +40,7 @@ namespace MonsterQuest.Presenters.Miniatures
         {
             //_animator.SetTrigger(_dieHash);
 
+            if (_resetMiniatureCoroutine is not null) StopCoroutine(_resetMiniatureCoroutine);
             EnablePhysics();
 
             yield return new WaitForSeconds(5);

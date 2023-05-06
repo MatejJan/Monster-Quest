@@ -1,8 +1,10 @@
-Shader "Monster Quest/Drawing/Multiply"
+Shader "Monster Quest/Miniatures/Hit points"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color ("Color", Color) = (1,1,1,1)
+        _AngleRatio ("Angle ratio", Range(0,1)) = 1.0
     }
     SubShader
     {
@@ -10,11 +12,16 @@ Shader "Monster Quest/Drawing/Multiply"
         {
             "Queue"="Transparent" 
             "RenderType"="Transparent" 
+            "PreviewType"="Plane"
+            "IgnoreProjector"="True"
         }
         
         LOD 100
         
-        Blend DstColor Zero
+        Cull Off
+        Lighting Off
+        ZWrite Off
+        Blend One OneMinusSrcAlpha
 
         Pass
         {
@@ -41,7 +48,11 @@ Shader "Monster Quest/Drawing/Multiply"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-
+            float4 _Color;
+            float _AngleRatio;
+            
+            static const float PI = 3.14159265;
+            
             v2f vert (appdata v)
             {
                 v2f o;
@@ -53,8 +64,14 @@ Shader "Monster Quest/Drawing/Multiply"
 
             fixed4 frag (v2f i) : SV_Target
             {
+                float2 uvRelative = i.uv * 2.0 - 1.0;
+                float angle = (atan2(uvRelative.y, uvRelative.x) / PI + 1.0) / 2.0;
+                if (angle > _AngleRatio) discard;
+                
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+                col.rgb *= col.a;
+                
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

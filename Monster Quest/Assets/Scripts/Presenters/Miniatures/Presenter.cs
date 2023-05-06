@@ -14,7 +14,8 @@ namespace MonsterQuest.Presenters.Miniatures
 
         // private DeathSavingThrowEventPresenter _deathSavingThrowEventPresenter;
         // private GainExperienceEventPresenter _gainExperienceEventPresenter;
-        // private HealEventPresenter _healEventPresenter;
+        private HealEventPresenter _healEventPresenter;
+
         // private LevelUpEventPresenter _levelUpEventPresenter;
         private LifeStatusEventPresenter _lifeStatusEventPresenter;
         // private StabilizeCharacterEventPresenter _stabilizeCharacterEventPresenter;
@@ -26,7 +27,8 @@ namespace MonsterQuest.Presenters.Miniatures
 
         // protected override IEventPresenter<DeathSavingThrowEvent> deathSavingThrowEventPresenter => _deathSavingThrowEventPresenter;
         // protected override IEventPresenter<GainExperienceEvent> gainExperienceEventPresenter => _gainExperienceEventPresenter;
-        // protected override IEventPresenter<HealEvent> healEventPresenter => _healEventPresenter;
+        protected override IEventPresenter<HealEvent> healEventPresenter => _healEventPresenter;
+
         // protected override IEventPresenter<LevelUpEvent> levelUpEventPresenter => _levelUpEventPresenter;
         protected override IEventPresenter<LifeStatusEvent> lifeStatusEventPresenter => _lifeStatusEventPresenter;
         // protected override IEventPresenter<StabilizeCharacterEvent> stabilizeCharacterEventPresenter => _stabilizeCharacterEventPresenter;
@@ -41,7 +43,7 @@ namespace MonsterQuest.Presenters.Miniatures
             _damageEventPresenter = new DamageEventPresenter(_combatPresenter);
             // _deathSavingThrowEventPresenter = new DeathSavingThrowEventPresenter(_combatPresenter);
             // _gainExperienceEventPresenter = new GainExperienceEventPresenter(_combatPresenter);
-            // _healEventPresenter = new HealEventPresenter(_combatPresenter);
+            _healEventPresenter = new HealEventPresenter(_combatPresenter);
             // _levelUpEventPresenter = new LevelUpEventPresenter(_combatPresenter);
             _lifeStatusEventPresenter = new LifeStatusEventPresenter(_combatPresenter);
             // _stabilizeCharacterEventPresenter = new StabilizeCharacterEventPresenter(_combatPresenter);

@@ -45,7 +45,7 @@ namespace MonsterQuest.Presenters.Miniatures
 
         private IEnumerator AnimateLocalRotation(float angleDegrees)
         {
-            float startAngleDegrees = transform.localRotation.eulerAngles.y;
+            float startAngleDegrees = _orientationTransform.localRotation.eulerAngles.y;
             float deltaAngle = Mathf.DeltaAngle(startAngleDegrees, angleDegrees);
             angleDegrees = startAngleDegrees + deltaAngle;
 
@@ -71,7 +71,7 @@ namespace MonsterQuest.Presenters.Miniatures
         private void SetLocalRotation(float angleDegrees)
         {
             // Rotate the body orientation.
-            transform.localRotation = Quaternion.Euler(0, angleDegrees, 0);
+            _orientationTransform.localRotation = Quaternion.Euler(0, angleDegrees, 0);
         }
     }
 }
