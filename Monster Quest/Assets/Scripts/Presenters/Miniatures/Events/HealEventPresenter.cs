@@ -11,7 +11,7 @@ namespace MonsterQuest.Presenters.Miniatures
         {
             CreaturePresenter creaturePresenter = combatPresenter.GetCreaturePresenterForCreature(healEvent.creature);
 
-            yield return creaturePresenter.Heal();
+            yield return creaturePresenter.Heal(healEvent.hitPointsEnd, healEvent.hitPointsStart > 0);
         }
     }
 }

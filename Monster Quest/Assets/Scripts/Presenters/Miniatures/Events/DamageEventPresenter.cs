@@ -17,7 +17,7 @@ namespace MonsterQuest.Presenters.Miniatures
             bool knockedOut = damageEvent.hitPointsEnd == 0;
             bool instantDeath = damageEvent.remainingDamageAmount > damageEvent.hitPointsMaximum;
 
-            yield return creaturePresenter.GetAttacked(sourcePosition, knockedOut, instantDeath);
+            yield return creaturePresenter.GetAttacked(damageEvent.hitPointsEnd, sourcePosition, knockedOut, instantDeath);
         }
     }
 }

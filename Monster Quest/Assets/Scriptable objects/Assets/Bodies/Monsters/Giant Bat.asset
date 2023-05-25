@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be442606a4d46d191cde587ca6cf6a8, type: 3}
+  m_Name: Giant Bat
+  m_EditorClassIdentifier: 
+  spriteReference:
+    m_AssetGUID: 30712f763c58d433c9ff0dd47b622d9b
+    m_SubObjectName: Giant bat
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  highPolyModelReference:
+    m_AssetGUID: 78a370b8438824a2ba160b370d2a3efe
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  lowPolyModelReference:
+    m_AssetGUID: d38fcf30522a9477892cb4c0dfe6ad3e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  convexColliderModelReference:
+    m_AssetGUID: 403c0fc5efa6044d8a5d23da5c6f6209
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  flyHeight: 0
+  verticalExtensionHeight: 5

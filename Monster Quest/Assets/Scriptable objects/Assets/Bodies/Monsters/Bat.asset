@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be442606a4d46d191cde587ca6cf6a8, type: 3}
+  m_Name: Bat
+  m_EditorClassIdentifier: 
+  spriteReference:
+    m_AssetGUID: e014a65054ed24983b70e5a9368c2932
+    m_SubObjectName: Bat
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  highPolyModelReference:
+    m_AssetGUID: ea3e1f87fd8aa4af18c235eb375072ae
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  lowPolyModelReference:
+    m_AssetGUID: 516b357720c9c428eba9214942b14700
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  convexColliderModelReference:
+    m_AssetGUID: d395c672142f242c1bf9e87f64a9893c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  flyHeight: 1
+  verticalExtensionHeight: 5

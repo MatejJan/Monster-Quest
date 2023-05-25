@@ -60,7 +60,7 @@ namespace MonsterQuest
             gameStateAsset.gameState = state;
             AssetDatabase.CreateAsset(gameStateAsset, _lastGameStateAssetPath);
 
-            AssetDatabase.SaveAssets();
+            AssetDatabase.SaveAssetIfDirty(gameStateAsset);
 #endif
         }
 

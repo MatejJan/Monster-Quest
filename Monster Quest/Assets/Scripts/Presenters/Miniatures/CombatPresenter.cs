@@ -14,6 +14,7 @@ namespace MonsterQuest.Presenters.Miniatures
         [SerializeField] private GameObject[] tilePrefabs;
 
         private readonly Dictionary<Creature, CreaturePresenter> _creaturePresenters = new();
+        private Presenter _presenter;
 
         private Transform _creaturesTransform;
         private Transform _environmentTransform;
@@ -30,6 +31,13 @@ namespace MonsterQuest.Presenters.Miniatures
                     Instantiate(tilePrefabs[x % 2 == y % 2 ? 1 : 0], new Vector3((x + 0.5f) * 5, 0, (y + 0.5f) * 5), Quaternion.identity, _environmentTransform);
                 }
             }
+
+            StaticBatchingUtility.Combine(_environmentTransform.gameObject);
+        }
+
+        public void Initialize(Presenter presenter)
+        {
+            _presenter = presenter;
         }
 
         public CreaturePresenter GetCreaturePresenterForCreature(Creature creature)
@@ -51,17 +59,18 @@ namespace MonsterQuest.Presenters.Miniatures
         {
             Creature[] creaturesArray = creatures.ToArray();
 
-            float totalWidth = creaturesArray.Sum(creature => creature.spaceInFeet);
+            float totalWidth = creaturesArray.Sum(creature => Mathf.Max(5, creature.spaceInFeet));
             float currentX = 20 - Mathf.Floor(totalWidth / 10) * 5;
             Vector3 facingDirection = CardinalDirectionHelper.cardinalDirectionVector3S[direction];
 
             foreach (Creature creature in creaturesArray)
             {
-                currentX += creature.spaceInFeet;
+                float spaceInFeet = Mathf.Max(5, creature.spaceInFeet);
+                currentX += spaceInFeet;
 
                 if (!creature.isAlive) continue;
 
-                float spaceRadius = creature.spaceInFeet / 2;
+                float spaceRadius = spaceInFeet / 2;
 
                 GameObject characterGameObject = Instantiate(creaturePrefab, _creaturesTransform);
                 characterGameObject.name = creature.displayName;
@@ -70,12 +79,20 @@ namespace MonsterQuest.Presenters.Miniatures
                 characterGameObject.transform.position = position;
 
                 CreaturePresenter creaturePresenter = characterGameObject.GetComponent<CreaturePresenter>();
-                creaturePresenter.Initialize(this, creature, material);
+                creaturePresenter.Initialize(this, creature, material, _presenter.creatureModelQuality);
 
                 _creaturePresenters[creature] = creaturePresenter;
                 creaturePresenter.destroyed += () => _creaturePresenters.Remove(creature);
 
                 yield return creaturePresenter.FaceDirection(direction, true);
+            }
+        }
+
+        public void SetCreatureModelQuality(CreaturePresenter.ModelQuality quality)
+        {
+            foreach (KeyValuePair<Creature, CreaturePresenter> creaturePresenterEntry in _creaturePresenters)
+            {
+                creaturePresenterEntry.Value.SetModelQuality(quality);
             }
         }
     }

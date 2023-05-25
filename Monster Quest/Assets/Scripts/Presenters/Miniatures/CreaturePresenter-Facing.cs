@@ -33,6 +33,9 @@ namespace MonsterQuest.Presenters.Miniatures
 
         private IEnumerator FaceAngle(float angleDegrees, bool immediate)
         {
+            // Account for models facing in the forward direction.
+            angleDegrees -= CardinalDirectionHelper.cardinalDirectionRotationsDegrees[CardinalDirection.South];
+
             if (immediate)
             {
                 SetLocalRotation(angleDegrees);

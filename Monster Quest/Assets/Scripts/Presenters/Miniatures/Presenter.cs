@@ -18,8 +18,11 @@ namespace MonsterQuest.Presenters.Miniatures
 
         // private LevelUpEventPresenter _levelUpEventPresenter;
         private LifeStatusEventPresenter _lifeStatusEventPresenter;
+
         // private StabilizeCharacterEventPresenter _stabilizeCharacterEventPresenter;
-        // private UseItemEventPresenter _useItemEventPresenter;
+        private UseItemEventPresenter _useItemEventPresenter;
+
+        [field: SerializeField] public CreaturePresenter.ModelQuality creatureModelQuality { get; private set; }
 
         protected override IEventPresenter<AttackEvent> attackEventPresenter => _attackEventPresenter;
 
@@ -31,13 +34,15 @@ namespace MonsterQuest.Presenters.Miniatures
 
         // protected override IEventPresenter<LevelUpEvent> levelUpEventPresenter => _levelUpEventPresenter;
         protected override IEventPresenter<LifeStatusEvent> lifeStatusEventPresenter => _lifeStatusEventPresenter;
+
         // protected override IEventPresenter<StabilizeCharacterEvent> stabilizeCharacterEventPresenter => _stabilizeCharacterEventPresenter;
-        // protected override IEventPresenter<UseItemEvent> useItemEventPresenter => _useItemEventPresenter;
+        protected override IEventPresenter<UseItemEvent> useItemEventPresenter => _useItemEventPresenter;
 
         private void Awake()
         {
             Transform combatTransform = transform.Find("Combat");
             _combatPresenter = combatTransform.GetComponent<CombatPresenter>();
+            _combatPresenter.Initialize(this);
 
             _attackEventPresenter = new AttackEventPresenter(_combatPresenter);
             _damageEventPresenter = new DamageEventPresenter(_combatPresenter);
@@ -47,7 +52,14 @@ namespace MonsterQuest.Presenters.Miniatures
             // _levelUpEventPresenter = new LevelUpEventPresenter(_combatPresenter);
             _lifeStatusEventPresenter = new LifeStatusEventPresenter(_combatPresenter);
             // _stabilizeCharacterEventPresenter = new StabilizeCharacterEventPresenter(_combatPresenter);
-            // _useItemEventPresenter = new UseItemEventPresenter(_combatPresenter);
+            _useItemEventPresenter = new UseItemEventPresenter(_combatPresenter);
+        }
+
+        public void SetCreatureModelQuality(CreaturePresenter.ModelQuality quality)
+        {
+            creatureModelQuality = quality;
+
+            _combatPresenter.SetCreatureModelQuality(quality);
         }
 
         public override IEnumerator InitializeParty(GameState gameState)

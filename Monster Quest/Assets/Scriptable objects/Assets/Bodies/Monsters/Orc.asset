@@ -18,8 +18,20 @@ MonoBehaviour:
     m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 0
-  modelReference:
+  highPolyModelReference:
     m_AssetGUID: 51d2460aac55e48308471989015de95f
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  lowPolyModelReference:
+    m_AssetGUID: c48e7ab1bc99a4a88bfebf8e55d56651
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  convexColliderModelReference:
+    m_AssetGUID: 0a75ffc44bd584f5f8498a0afb708e23
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  flyHeight: 0
+  verticalExtensionHeight: 0

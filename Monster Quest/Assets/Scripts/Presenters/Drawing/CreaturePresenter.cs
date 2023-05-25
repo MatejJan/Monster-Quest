@@ -33,8 +33,9 @@ namespace MonsterQuest.Presenters.Drawing
 
         private AsyncOperationHandle<Sprite> _bodySpriteHandle;
 
-        private bool _destroyed;
+        private BodyAsset _bodyAsset;
 
+        private bool _destroyed;
         private bool _standing;
 
         private CombatPresenter _combatPresenter;
@@ -104,8 +105,8 @@ namespace MonsterQuest.Presenters.Drawing
             }
 
             // Load body sprite.
-            BodyAsset bodyAsset = Assets.GetBodyAsset(creature.bodyAssetName);
-            _bodySpriteHandle = Addressables.LoadAssetAsync<Sprite>(bodyAsset.spriteReference);
+            _bodyAsset = Assets.GetBodyAsset(creature.bodyAssetName);
+            _bodySpriteHandle = Addressables.LoadAssetAsync<Sprite>(_bodyAsset.spriteReference);
             _bodySpriteHandle.Completed += OnBodySpriteLoaded;
 
             _bodySpriteRenderer = _bodySpriteTransform.GetComponent<SpriteRenderer>();

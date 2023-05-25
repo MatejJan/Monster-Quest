@@ -19,7 +19,12 @@ namespace MonsterQuest.Presenters.Miniatures
                     break;
 
                 case LifeStatus.Conscious:
-                    //yield return creaturePresenter.RegainConsciousness();
+                    yield return creaturePresenter.RegainConsciousness();
+
+                    break;
+
+                case LifeStatus.UnconsciousUnstable:
+                    yield return creaturePresenter.FallUnconscious();
 
                     break;
             }

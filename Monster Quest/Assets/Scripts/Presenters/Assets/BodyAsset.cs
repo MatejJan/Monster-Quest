@@ -7,6 +7,10 @@ namespace MonsterQuest.Presenters
     public class BodyAsset : ScriptableObject
     {
         public AssetReferenceSprite spriteReference;
-        public AssetReferenceGameObject modelReference;
+        public AssetReferenceGameObject highPolyModelReference;
+        public AssetReferenceGameObject lowPolyModelReference;
+        public AssetReferenceGameObject convexColliderModelReference;
+        public float flyHeight;
+        public float verticalExtensionHeight;
     }
 }

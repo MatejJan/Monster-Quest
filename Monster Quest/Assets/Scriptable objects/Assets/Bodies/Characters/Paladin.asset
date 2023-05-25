@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be442606a4d46d191cde587ca6cf6a8, type: 3}
+  m_Name: Paladin
+  m_EditorClassIdentifier: 
+  spriteReference:
+    m_AssetGUID: e902acf33b7bc4135b6e250d8c77ad21
+    m_SubObjectName: Paladin
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 0
+  highPolyModelReference:
+    m_AssetGUID: 9c5dad6e41e8b406796d6409da80cefb
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  lowPolyModelReference:
+    m_AssetGUID: a4f5b4b44a5d64118bbc9e9985a18410
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  convexColliderModelReference:
+    m_AssetGUID: b600fa12bf9c1476f827e48702d78b3e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  flyHeight: 0
+  verticalExtensionHeight: 0

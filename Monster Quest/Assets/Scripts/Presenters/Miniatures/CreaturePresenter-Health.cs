@@ -7,43 +7,39 @@ namespace MonsterQuest.Presenters.Miniatures
     {
         // Public methods
 
-        public void UpdateStableStatus()
+        public IEnumerator Heal(float hitPointsEnd, bool consciousAction)
         {
-            //_standAnimator.SetBool(_stableHash, _creature.lifeStatus != LifeStatus.UnconsciousUnstable);
-        }
-
-        public IEnumerator Heal()
-        {
-            yield return WaitForResetMiniature();
-
-            // Trigger the use animation.
-            _bodyVerticalDisplacementAnimator.SetTrigger(_useHash);
+            yield return WaitForResetStandingMiniature();
 
             // Update hit points indicator.
-            UpdateHitPoints();
+            UpdateHitPoints(hitPointsEnd);
 
-            yield return new WaitForSeconds(1f);
+            if (consciousAction)
+            {
+                // Trigger the use animation.
+                _bodyVerticalDisplacementAnimator.SetTrigger(_useHash);
+
+                yield return new WaitForSeconds(1f);
+            }
+        }
+
+        public IEnumerator FallUnconscious()
+        {
+            // Give 2 extra seconds for the physics engine to animate falling.
+            yield return new WaitForSeconds(2);
         }
 
         public IEnumerator RegainConsciousness()
         {
-            // The creature should stand.
-            //_bodySpriteAnimator.SetTrigger(_standHash);
-
-            // Start flying again.
-            //FlyIfPossible();
-
-            yield return new WaitForSeconds(1f);
+            yield return StandUp();
         }
 
         public IEnumerator Die()
         {
-            //_animator.SetTrigger(_dieHash);
+            // Give 3 extra seconds for the physics engine to animate falling without the distance constraint.
+            if (_configurableJoint is not null) Destroy(_configurableJoint);
 
-            if (_resetMiniatureCoroutine is not null) StopCoroutine(_resetMiniatureCoroutine);
-            EnablePhysics();
-
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(3);
 
             Destroy(gameObject);
             _destroyed = true;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace MonsterQuest.Presenters.Miniatures
 
         public IEnumerator Attack()
         {
-            yield return WaitForResetMiniature();
+            yield return WaitForResetStandingMiniature();
 
             // Trigger the attack animation.
             _miniatureAnimator.SetTrigger(_attackHash);
@@ -17,28 +18,52 @@ namespace MonsterQuest.Presenters.Miniatures
             yield return new WaitForSeconds(15f / 60f);
         }
 
-        public IEnumerator GetAttacked(Vector3 sourcePosition, bool knockedOut = false, bool instantDeath = false)
+        public IEnumerator GetAttacked(int hitPointsEnd, Vector3 sourcePosition, bool knockedOut, bool instantDeath)
         {
+            // Cancel any resetting animations.
+            CancelResetStandingMiniature();
+
             // Update hit points indicator.
-            UpdateHitPoints();
+            UpdateHitPoints(hitPointsEnd);
 
             // Move the miniature with force.
-            EnablePhysics();
+            float forceAmount = attackedForce;
 
-            if (knockedOut)
+            if (_standing)
             {
-                Destroy(_bodyFixedJoint);
+                if (knockedOut)
+                {
+                    forceAmount = attackedForceKnockedOut;
+                    BreakDown();
+                }
+
+                if (instantDeath)
+                {
+                    forceAmount = attackedForceInstantDeath;
+                    Destroy(_configurableJoint);
+                }
+
+                EnableStandingMiniaturePhysics();
+            }
+            else
+            {
+                attackedForce = attackedForceOnKnockedOut;
             }
 
             Vector3 position = transform.position;
             Vector3 forceDirection = (position - sourcePosition).normalized;
-            Vector3 forcePosition = position + Vector3.up * attackedForceHeight;
+            Vector3 forcePosition = position + Vector3.up * Math.Max(attackedForceHeight, _bodyAsset.verticalExtensionHeight);
 
-            _bodyRigidBody.AddForceAtPosition(forceDirection * (instantDeath ? attackedForceInstantDeath : attackedForce), forcePosition);
+            _bodyMeshRigidBody.AddForceAtPosition(forceDirection * forceAmount, forcePosition);
 
+            // Let physics do its animation before proceeding.
             yield return new WaitForSeconds(1);
 
-            DisablePhysics();
+            if (_standing)
+            {
+                // Standing miniatures should reset to be ready for animations.
+                ResetStandingMiniature();
+            }
         }
     }
 }

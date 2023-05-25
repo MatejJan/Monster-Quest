@@ -15,7 +15,6 @@ namespace MonsterQuest
                 coroutines.Add(monoBehaviour.StartCoroutine(enumerator));
             }
 
-            // Wait until all presenters have presented this event.
             foreach (Coroutine coroutine in coroutines)
             {
                 yield return coroutine;

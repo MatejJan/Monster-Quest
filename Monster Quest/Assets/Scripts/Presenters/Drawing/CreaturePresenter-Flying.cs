@@ -9,7 +9,7 @@ namespace MonsterQuest.Presenters.Drawing
 
         private void FlyIfPossible(bool transition = true)
         {
-            float flyHeight = 0;
+            float flyHeight = _bodyAsset.flyHeight;
 
             _bodyVerticalDisplacementAnimator.SetBool(_flyHash, flyHeight > 0);
 

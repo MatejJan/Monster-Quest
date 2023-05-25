@@ -13,9 +13,9 @@ namespace MonsterQuest.Presenters.Miniatures
             _currentHitPointRatio = ratio;
         }
 
-        private void UpdateHitPoints()
+        private void UpdateHitPoints(float hitPoints)
         {
-            AnimateToHitPointRatio(Mathf.Max(0f, _creature.hitPoints) / _creature.hitPointsMaximum);
+            AnimateToHitPointRatio(Mathf.Max(0f, hitPoints) / _creature.hitPointsMaximum);
         }
 
         private void AnimateToHitPointRatio(float ratio)
@@ -40,7 +40,7 @@ namespace MonsterQuest.Presenters.Miniatures
                 transitionProgress = Mathf.Clamp01(transitionDuration > 0 ? (Time.time - startTime) / transitionDuration : 1);
 
                 // Ease out to desired ratio.
-                float easedTransitionProgress = Mathf.Sin(transitionProgress * Mathf.PI / 2);
+                float easedTransitionProgress = EasingHelper.EaseOut(transitionProgress);
                 float newRatio = Mathf.Lerp(startRatio, endRatio, easedTransitionProgress);
                 SetHitPointRatio(newRatio);
 

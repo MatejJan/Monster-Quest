@@ -11,6 +11,7 @@ namespace MonsterQuest
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private MonsterType[] availableMonsterTypes;
         [SerializeField] private GameStateAsset loadGameState;
         [SerializeField] private string[] characterBodyAssetNames;
         [SerializeField] private int charactersStartingLevel;
@@ -84,8 +85,8 @@ namespace MonsterQuest
                 new("Elana", humanRaceType, fighterClassType, characterBodyAssetNames[0], charactersStartingLevel),
                 new("Jazlyn", humanRaceType, fighterClassType, characterBodyAssetNames[1], charactersStartingLevel),
                 /*new("Theron", humanRaceType, fighterClassType, characterBodyAssetNames[2], charactersStartingLevel),
-                new("Dayana", humanRaceType, fighterClassType, characterBodyAssetNames[3], charactersStartingLevel),
-                new("Rolando", humanRaceType, fighterClassType, characterBodyAssetNames[4], charactersStartingLevel)*/
+                new("Dayana", humanRaceType, fighterClassType, characterBodyAssetNames[3], charactersStartingLevel),*/
+                new("Rolando", humanRaceType, fighterClassType, characterBodyAssetNames[2], charactersStartingLevel)
             };
 
             Party party = new(characters);
@@ -209,12 +210,8 @@ namespace MonsterQuest
             float maxTotalChallengeRating = _state.party.characters.Where(character => character.isAlive).Sum(character => character.characterClass.level) / 4f;
             float totalChallengeRating = 0;
 
-            List<MonsterType> remainingMonsterTypes = new(Database.monsterTypes);
+            List<MonsterType> remainingMonsterTypes = new(availableMonsterTypes ?? Database.monsterTypes);
             List<Monster> monsters = new();
-
-            monsters.Add(new Monster(Database.GetMonsterType("orc")));
-
-            return monsters;
 
             while (totalChallengeRating < maxTotalChallengeRating && monsters.Count < 5)
             {
