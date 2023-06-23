@@ -46,6 +46,8 @@ namespace MonsterQuest
 
         public IEnumerable<Monster> monsters => _monsters;
         public IEnumerable<Creature> creatures => _monsters.Concat<Creature>(gameState.party.characters);
+        public bool combatActive => areHostileGroupsPresent;
+        private bool areHostileGroupsPresent => GetHostileGroups().Count() > 1;
         public IEnumerable<object> rules => _globalRules.Concat(monsters.SelectMany(monster => monster.rules));
 
         // Events 
@@ -60,6 +62,34 @@ namespace MonsterQuest
             {
                 monster.stateEvent += ReportStateEvent;
             }
+        }
+
+        public void SimulateTurn()
+        {
+            // Simulate a combat turn.
+            Creature creature = StartNextCreatureTurn();
+
+            if (creature.lifeStatus == LifeStatus.Dead) return;
+
+            // In case a character became conscious after the start of the combat, mark them as participating.
+            if (creature.lifeStatus == LifeStatus.Conscious && creature is Character character)
+            {
+                AddParticipatingCharacter(character);
+            }
+
+            IAction action = creature.TakeTurn(gameState);
+
+            if (action is IStateEventProvider stateEventProvider)
+            {
+                stateEventProvider.stateEvent += ReportStateEvent;
+                stateEventProvider.StartProvidingStateEvents();
+            }
+
+            action?.Execute();
+
+            if (areHostileGroupsPresent) return;
+
+            End();
         }
 
         public Creature StartNextCreatureTurn()

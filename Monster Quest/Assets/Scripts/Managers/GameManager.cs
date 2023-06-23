@@ -17,6 +17,8 @@ namespace MonsterQuest
         [SerializeField] private int charactersStartingLevel;
         [SerializeField] private Presenter[] _presenters;
 
+        [SerializeField] private bool ignoreExistingSaveFile;
+
         private readonly Queue<object> _eventsToBePresented = new();
 
         private Coroutine _presentingCoroutine;
@@ -34,7 +36,7 @@ namespace MonsterQuest
                 _state = loadGameState.gameState;
                 StartPresentingStateEvents();
             }
-            else if (SaveGameHelper.saveFileExists)
+            else if (SaveGameHelper.saveFileExists && !ignoreExistingSaveFile)
             {
                 _state = SaveGameHelper.Load();
                 StartPresentingStateEvents();
@@ -132,9 +134,6 @@ namespace MonsterQuest
 
         private IEnumerator Simulate()
         {
-            CombatManager combatManager = new(_state);
-            combatManager.stateEvent += PresentStateEvent;
-
             // Present the characters.
             yield return _presenters.Select(presenter => presenter.InitializeParty(_state)).WaitForAll(this);
 
@@ -160,10 +159,10 @@ namespace MonsterQuest
                 yield return new WaitForSeconds(1);
 
                 // Simulate the combat.
-                while (combatManager.combatActive)
+                while (_state.combat.combatActive)
                 {
                     // Move combat one turn forward.
-                    combatManager.SimulateTurn();
+                    _state.combat.SimulateTurn();
 
                     SaveGameHelper.Save(_state);
 
