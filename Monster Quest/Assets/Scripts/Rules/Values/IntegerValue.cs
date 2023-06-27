@@ -49,41 +49,42 @@ namespace MonsterQuest
 
                 #region Verbose output
 
-                if (Console.verbose)
+                Console.Indent(true);
+
+                Console.WriteLine($"Value is {value} as overriden by {overrideValues[0].provider.rulesProviderName}.");
+
+                if (overrideValues.Length > 1)
                 {
-                    Console.WriteLine($"Value is {value} as overriden by {overrideValues[0].provider.rulesProviderName}.");
+                    Console.WriteLine("Other overriding values were:");
 
-                    if (overrideValues.Length > 1)
+                    for (int i = 1; i < overrideValues.Length; i++)
                     {
-                        Console.WriteLine("Other overriding values were:");
-
-                        for (int i = 1; i < overrideValues.Length; i++)
-                        {
-                            Console.WriteLine($"{overrideValues[i].overrideValue.GetValueOrDefault()} from {overrideValues[i].provider.rulesProviderName}.");
-                        }
-                    }
-
-                    if (baseValues.Length > 0)
-                    {
-                        Console.WriteLine("Discarded base values were:");
-
-                        foreach (IntegerValue integerValue in baseValues)
-                        {
-                            Console.WriteLine($"{integerValue.baseValue.GetValueOrDefault()} from {integerValue.provider.rulesProviderName}.");
-                        }
-                    }
-
-                    if (modifierValues.Length > 0)
-                    {
-                        Console.WriteLine("Discarded modifiers were:");
-
-                        foreach (IntegerValue integerValue in modifierValues)
-                        {
-                            int modifier = integerValue.modifierValue.GetValueOrDefault();
-                            Console.WriteLine($"{modifier:+#;-#;0} from {integerValue.provider}.");
-                        }
+                        Console.WriteLine($"{overrideValues[i].overrideValue.GetValueOrDefault()} from {overrideValues[i].provider.rulesProviderName}.");
                     }
                 }
+
+                if (baseValues.Length > 0)
+                {
+                    Console.WriteLine("Discarded base values were:");
+
+                    foreach (IntegerValue integerValue in baseValues)
+                    {
+                        Console.WriteLine($"{integerValue.baseValue.GetValueOrDefault()} from {integerValue.provider.rulesProviderName}.");
+                    }
+                }
+
+                if (modifierValues.Length > 0)
+                {
+                    Console.WriteLine("Discarded modifiers were:");
+
+                    foreach (IntegerValue integerValue in modifierValues)
+                    {
+                        int modifier = integerValue.modifierValue.GetValueOrDefault();
+                        Console.WriteLine($"{modifier:+#;-#;0} from {integerValue.provider}.");
+                    }
+                }
+
+                Console.Outdent();
 
                 #endregion
 
@@ -101,42 +102,43 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
+            Console.Indent(true);
+
+            if (modifierValues.Length > 0)
             {
-                if (modifierValues.Length > 0)
-                {
-                    Console.WriteLine($"Value is {result} ({baseValue}{modifierValue:+#;-#;+0}).");
-                }
-                else if (baseValues.Length > 0)
-                {
-                    Console.WriteLine($"Value is {result}.");
-                }
-                else
-                {
-                    Console.WriteLine($"Value is {result} by default.");
-                }
+                Console.WriteLine($"Value is {result} ({baseValue}{modifierValue:+#;-#;+0}).");
+            }
+            else if (baseValues.Length > 0)
+            {
+                Console.WriteLine($"Value is {result}.");
+            }
+            else
+            {
+                Console.WriteLine($"Value is {result} by default.");
+            }
 
-                if (baseValues.Length > 0)
+            if (baseValues.Length > 0)
+            {
+                Console.WriteLine("Base values were:");
+
+                foreach (IntegerValue integerValue in baseValues)
                 {
-                    Console.WriteLine("Base values were:");
-
-                    foreach (IntegerValue integerValue in baseValues)
-                    {
-                        Console.WriteLine($"{integerValue.baseValue.GetValueOrDefault()} from {integerValue.provider.rulesProviderName}.");
-                    }
-                }
-
-                if (modifierValues.Length > 0)
-                {
-                    Console.WriteLine("Modifiers were:");
-
-                    foreach (IntegerValue integerValue in modifierValues)
-                    {
-                        int modifier = integerValue.modifierValue.GetValueOrDefault();
-                        Console.WriteLine($"{modifier:+#;-#;0} from {integerValue.provider.rulesProviderName}.");
-                    }
+                    Console.WriteLine($"{integerValue.baseValue.GetValueOrDefault()} from {integerValue.provider.rulesProviderName}.");
                 }
             }
+
+            if (modifierValues.Length > 0)
+            {
+                Console.WriteLine("Modifiers were:");
+
+                foreach (IntegerValue integerValue in modifierValues)
+                {
+                    int modifier = integerValue.modifierValue.GetValueOrDefault();
+                    Console.WriteLine($"{modifier:+#;-#;0} from {integerValue.provider.rulesProviderName}.");
+                }
+            }
+
+            Console.Outdent();
 
             #endregion
 

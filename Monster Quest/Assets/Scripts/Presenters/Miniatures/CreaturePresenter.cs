@@ -226,7 +226,7 @@ namespace MonsterQuest.Presenters.Miniatures
         private IEnumerator ResetStandingMiniatureCoroutine()
         {
             const float delayDuration = 0.5f;
-            const float transitionDuration = 1;
+            const float transitionDuration = 0.5f;
 
             yield return new WaitForSeconds(delayDuration);
 

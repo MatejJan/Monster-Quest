@@ -1,0 +1,52 @@
+#console-panel {
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    left: 0;
+    top: 0;
+    right: 0;
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-top-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+}
+
+.text {
+    padding-left: 24px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.text-group #unity-checkmark {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.text-group .unity-foldout__toggle {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.text-group .unity-foldout__content {
+    margin-left: 22px;
+}
+
+.text-group .verbose {
+    color: rgb(147, 147, 147);
+}

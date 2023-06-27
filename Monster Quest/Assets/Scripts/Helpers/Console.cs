@@ -1,23 +1,38 @@
 using System;
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MonsterQuest
 {
     public class Console : MonoBehaviour
     {
         private static Console _instance;
-        public bool verboseOutput;
-        private int _indentationLevel;
+        private readonly Stack<VisualElement> _textGroups = new();
 
-        private TextMeshProUGUI _textMeshProUGui;
+        private ScrollView _consolePanelScrollView;
+        private UIDocument _document;
 
-        public static bool verbose => _instance is null ? false : _instance.verboseOutput;
+        private VisualElement currentTextGroup => _textGroups.Peek();
 
         private void Awake()
         {
-            _textMeshProUGui = GetComponent<TextMeshProUGUI>();
+            _document = GetComponent<UIDocument>();
+            _consolePanelScrollView = _document.rootVisualElement.Q<ScrollView>("console-panel");
+
+            _textGroups.Push(_consolePanelScrollView.contentContainer);
+
             _instance = this;
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _consolePanelScrollView.style.visibility = _consolePanelScrollView.resolvedStyle.visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            }
         }
 
         public static void Write(string text)
@@ -30,9 +45,9 @@ namespace MonsterQuest
             _instance.WriteLineInternal(text);
         }
 
-        public static void Indent()
+        public static void Indent(bool verbose)
         {
-            _instance.IndentInternal();
+            _instance.IndentInternal(verbose);
         }
 
         public static void Outdent()
@@ -42,14 +57,16 @@ namespace MonsterQuest
 
         private void WriteInternal(string text)
         {
-            // Add indentation to text.
-            if (_indentationLevel > 0)
+            string[] lines = text.Split("\n");
+
+            AppendText(lines[0]);
+
+            for (int i = 1; i < lines.Length; i++)
             {
-                string indent = GetIndentPadding();
-                text = text.Replace("\n", $"\n{indent}");
+                AddText(lines[i]);
             }
 
-            _textMeshProUGui.text += text;
+            StartCoroutine(ScrollOnNextFrame());
         }
 
         private void WriteLineInternal(string text)
@@ -57,38 +74,84 @@ namespace MonsterQuest
             WriteInternal($"{text}\n");
         }
 
-        private void IndentInternal()
+        private IEnumerator ScrollOnNextFrame()
         {
-            ChangeIndentation(1);
+            yield return new WaitForEndOfFrame();
+            _consolePanelScrollView.verticalScroller.value = Math.Max(0, _consolePanelScrollView.verticalScroller.highValue);
+        }
+
+        private void AppendText(string text)
+        {
+            if (currentTextGroup.Children().LastOrDefault() is not Label lastLabel)
+            {
+                lastLabel = new Label();
+                lastLabel.AddToClassList("text");
+
+                currentTextGroup.Add(lastLabel);
+            }
+
+            lastLabel.text += text;
+        }
+
+        private void AddText(string text)
+        {
+            Label label = new()
+            {
+                text = text
+            };
+
+            label.AddToClassList("text");
+
+            currentTextGroup.Add(label);
+        }
+
+        private void IndentInternal(bool verbose)
+        {
+            VisualElement lastElement = currentTextGroup.Children().LastOrDefault();
+
+            Label lastLabel = lastElement as Label;
+
+            if (lastLabel?.text == "")
+            {
+                currentTextGroup.Remove(lastLabel);
+                lastElement = currentTextGroup.Children().LastOrDefault();
+                lastLabel = lastElement as Label;
+            }
+
+            Foldout foldout = lastElement as Foldout;
+
+            if (foldout is null)
+            {
+                foldout = new Foldout
+                {
+                    text = lastLabel?.text,
+                    value = !verbose
+                };
+
+                foldout.AddToClassList("text-group");
+                if (verbose) foldout.AddToClassList("verbose");
+
+                currentTextGroup.Add(foldout);
+
+                if (lastLabel is not null)
+                {
+                    currentTextGroup.Remove(lastLabel);
+                }
+            }
+
+            _textGroups.Push(foldout.contentContainer);
         }
 
         private void OutdentInternal()
         {
-            ChangeIndentation(-1);
-        }
+            Label lastLabel = currentTextGroup.Children().LastOrDefault() as Label;
 
-        private void ChangeIndentation(int change)
-        {
-            string oldIndent = GetIndentPadding();
-
-            _indentationLevel = Math.Max(0, _indentationLevel + change);
-
-            string newIndent = GetIndentPadding();
-
-            // Remove indentation if we're on a new line.
-            if (_textMeshProUGui.text.EndsWith($"\n{oldIndent}", StringComparison.Ordinal))
+            if (lastLabel?.text == "")
             {
-                _textMeshProUGui.text = _textMeshProUGui.text[..^oldIndent.Length] + newIndent;
+                currentTextGroup.Remove(lastLabel);
             }
-            else if (_textMeshProUGui.text == oldIndent)
-            {
-                _textMeshProUGui.text = newIndent;
-            }
-        }
 
-        private string GetIndentPadding()
-        {
-            return new string(' ', _indentationLevel * 4);
+            _textGroups.Pop();
         }
     }
 }

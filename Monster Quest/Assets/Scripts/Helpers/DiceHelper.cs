@@ -8,11 +8,8 @@ namespace MonsterQuest
     {
         private static int Roll(int numberOfRolls, int diceSides, int fixedBonus, int multiplier, int divider, out int[] rolls)
         {
-            if (Console.verbose)
-            {
-                Console.Indent();
-                Console.Write($"Rolling {numberOfRolls}d{diceSides}{(fixedBonus == 0 ? "" : fixedBonus.ToString("+#;-#;"))}{(multiplier > 1 ? $"*{multiplier}" : "")}{(divider > 1 ? $"/{divider}" : "")} …");
-            }
+            Console.Indent(true);
+            Console.Write($"Rolling {numberOfRolls}d{diceSides}{(fixedBonus == 0 ? "" : fixedBonus.ToString("+#;-#;"))}{(multiplier > 1 ? $"*{multiplier}" : "")}{(divider > 1 ? $"/{divider}" : "")} …");
 
             rolls = new int[numberOfRolls];
             int result = fixedBonus;
@@ -20,7 +17,7 @@ namespace MonsterQuest
             for (int i = 0; i < numberOfRolls; i++)
             {
                 int roll = Random.Range(1, diceSides + 1);
-                if (Console.verbose) Console.Write($" {roll}");
+                Console.Write($" {roll}");
 
                 rolls[i] = roll;
                 result += roll;
@@ -28,11 +25,8 @@ namespace MonsterQuest
 
             result = result * multiplier / divider;
 
-            if (Console.verbose)
-            {
-                Console.WriteLine($" = {result}");
-                Console.Outdent();
-            }
+            Console.WriteLine($" = {result}");
+            Console.Outdent();
 
             return result;
         }

@@ -29,15 +29,16 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
-            {
-                Console.WriteLine($"Values are {(items.Count > 0 ? EnglishHelper.JoinWithAnd(items) : "empty")}.");
+            Console.Indent(true);
 
-                foreach (MultipleValue<T> value in validValues)
-                {
-                    Console.WriteLine($"{value.value} from {value.provider.rulesProviderName}.");
-                }
+            Console.WriteLine($"Values are {(items.Count > 0 ? EnglishHelper.JoinWithAnd(items) : "empty")}.");
+
+            foreach (MultipleValue<T> value in validValues)
+            {
+                Console.WriteLine($"{value.value} from {value.provider.rulesProviderName}.");
             }
+
+            Console.Outdent();
 
             #endregion
 

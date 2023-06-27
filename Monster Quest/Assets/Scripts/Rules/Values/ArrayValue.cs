@@ -37,35 +37,35 @@ namespace MonsterQuest
 
                 #region Verbose output
 
-                if (Console.verbose)
+                Console.Indent(true);
+                Console.WriteLine($"Values are {EnglishHelper.JoinWithAnd(overrideItems)} from {overrideValues[0].provider} with priority {overrideValues[0].priority}.");
+
+                if (overrideValues.Length > 1)
                 {
-                    Console.WriteLine($"Values are {EnglishHelper.JoinWithAnd(overrideItems)} from {overrideValues[0].provider} with priority {overrideValues[0].priority}.");
+                    Console.WriteLine("Other overriding values were:");
 
-                    if (overrideValues.Length > 1)
+                    for (int i = 1; i < overrideValues.Length; i++)
                     {
-                        Console.WriteLine("Other overriding values were:");
-
-                        for (int i = 1; i < overrideValues.Length; i++)
-                        {
-                            Console.WriteLine($"{EnglishHelper.JoinWithAnd(overrideValues[i].overrideItems)} from {overrideValues[i].provider.rulesProviderName} with priority {overrideValues[i].priority}.");
-                        }
-                    }
-
-                    if (addValues.Length + removeValues.Length > 0)
-                    {
-                        Console.WriteLine("Discarded items were:");
-
-                        foreach (ArrayValue<T> addValue in addValues)
-                        {
-                            Console.WriteLine($"{EnglishHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
-                        }
-
-                        foreach (ArrayValue<T> removeValue in removeValues)
-                        {
-                            Console.WriteLine($"{EnglishHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
-                        }
+                        Console.WriteLine($"{EnglishHelper.JoinWithAnd(overrideValues[i].overrideItems)} from {overrideValues[i].provider.rulesProviderName} with priority {overrideValues[i].priority}.");
                     }
                 }
+
+                if (addValues.Length + removeValues.Length > 0)
+                {
+                    Console.WriteLine("Discarded items were:");
+
+                    foreach (ArrayValue<T> addValue in addValues)
+                    {
+                        Console.WriteLine($"{EnglishHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
+                    }
+
+                    foreach (ArrayValue<T> removeValue in removeValues)
+                    {
+                        Console.WriteLine($"{EnglishHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
+                    }
+                }
+
+                Console.Outdent();
 
                 #endregion
 
@@ -86,33 +86,34 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
+            Console.Indent(true);
+
+            if (items.Count > 0)
             {
-                if (items.Count > 0)
-                {
-                    Console.WriteLine($"Values are {EnglishHelper.JoinWithAnd(items)}.");
-                }
-                else
-                {
-                    Console.WriteLine("Values are empty.");
-                }
+                Console.WriteLine($"Values are {EnglishHelper.JoinWithAnd(items)}.");
+            }
+            else
+            {
+                Console.WriteLine("Values are empty.");
+            }
 
-                foreach (ArrayValue<T> addValue in addValues)
+            foreach (ArrayValue<T> addValue in addValues)
+            {
+                if (addValue.addItems.Any())
                 {
-                    if (addValue.addItems.Any())
-                    {
-                        Console.WriteLine($"{EnglishHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
-                    }
-                }
-
-                foreach (ArrayValue<T> removeValue in removeValues)
-                {
-                    if (removeValue.addItems.Any())
-                    {
-                        Console.WriteLine($"{EnglishHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
-                    }
+                    Console.WriteLine($"{EnglishHelper.JoinWithAnd(addValue.addItems)} added from {addValue.provider.rulesProviderName}.");
                 }
             }
+
+            foreach (ArrayValue<T> removeValue in removeValues)
+            {
+                if (removeValue.addItems.Any())
+                {
+                    Console.WriteLine($"{EnglishHelper.JoinWithAnd(removeValue.addItems)} removed from {removeValue.provider.rulesProviderName}.");
+                }
+            }
+
+            Console.Outdent();
 
             #endregion
 

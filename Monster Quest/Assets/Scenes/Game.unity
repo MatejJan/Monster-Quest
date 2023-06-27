@@ -280,6 +280,7 @@ Transform:
   m_Children:
   - {fileID: 887982938}
   - {fileID: 473331478}
+  - {fileID: 2036068154}
   m_Father: {fileID: 1066135998}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -530,10 +531,10 @@ GameObject:
   - component: {fileID: 497185841}
   - component: {fileID: 497185840}
   - component: {fileID: 497185843}
-  - component: {fileID: 497185844}
   - component: {fileID: 497185845}
+  - component: {fileID: 497185844}
   m_Layer: 5
-  m_Name: Console
+  m_Name: Narrative
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -679,10 +680,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 497185838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff6410c5f9f74690b4c3e164cc1f9fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e7b5a93f2c741febcedab561ec24e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verboseOutput: 0
 --- !u!114 &497185845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,7 +870,7 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
-  m_Version: 8
+  m_Version: 9
   m_ObsoleteRenderingPath: 0
   m_ObsoleteFrameSettings:
     overrides: 0
@@ -1457,9 +1457,9 @@ GameObject:
   - component: {fileID: 1150369931}
   - component: {fileID: 1150369932}
   - component: {fileID: 1150369934}
-  - component: {fileID: 1150369933}
+  - component: {fileID: 1150369935}
   m_Layer: 5
-  m_Name: Console Panel
+  m_Name: Narrative Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1568,20 +1568,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 1, y: 1, z: 1, w: 1}
   m_Softness: {x: 0, y: 0}
---- !u!114 &1150369933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150369927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7e03c10470c44dafa11fc63222e086b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalHeight: 150
-  fullHeight: 500
 --- !u!114 &1150369934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1599,8 +1585,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1150369933}
-          m_TargetAssemblyTypeName: MonsterQuest.ConsolePanelController, Assembly-CSharp
+        - m_Target: {fileID: 1150369935}
+          m_TargetAssemblyTypeName: MonsterQuest.Presenters.Drawing.NarrativePanelPresenter,
+            Assembly-CSharp
           m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
@@ -1611,6 +1598,81 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 1
+--- !u!114 &1150369935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150369927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5644c8210545cebd92e95347af5171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalHeight: 150
+  fullHeight: 500
+--- !u!1 &1170579202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1170579204}
+  - component: {fileID: 1170579203}
+  - component: {fileID: 1170579205}
+  m_Layer: 0
+  m_Name: ConsolePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1170579203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170579202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: dc2d877ae970c40689e50a540f80186a, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5ed761901e16f4a36b72c935df63bf2d, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1170579204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170579202}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1170579205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170579202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff6410c5f9f74690b4c3e164cc1f9fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1477701834
 GameObject:
   m_ObjectHideFlags: 1
@@ -1907,3 +1969,51 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0.5
+--- !u!1 &2036068153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2036068154}
+  - component: {fileID: 2036068155}
+  m_Layer: 0
+  m_Name: GUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2036068154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036068153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 466410511}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2036068155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036068153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 0c1c48173249e47b28157c1c3fa6e480, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0

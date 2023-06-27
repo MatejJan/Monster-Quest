@@ -2,10 +2,12 @@ using System.Collections;
 using MonsterQuest.Effects;
 using MonsterQuest.Events;
 
-namespace MonsterQuest.Presenters.Console
+namespace MonsterQuest.Presenters.Narrative
 {
-    public class AttackEventPresenter : IEventPresenter<AttackEvent>
+    public class AttackEventPresenter : EventPresenter, IEventPresenter<AttackEvent>
     {
+        public AttackEventPresenter(IOutput output) : base(output) { }
+
         public IEnumerator Present(AttackEvent attackEvent)
         {
             // Describe the outcome of the attack.
@@ -50,7 +52,7 @@ namespace MonsterQuest.Presenters.Console
 
             text += $"and {(attackEvent.wasHit ? $"{(attackEvent.wasCritical ? "gets a critical hit!" : "hits.")}" : $"{(attackEvent.wasCritical ? "gets a critical miss" : "misses")}.")}";
 
-            MonsterQuest.Console.WriteLine(text);
+            output.WriteLine(text);
 
             yield return null;
         }

@@ -1,10 +1,12 @@
 using System.Collections;
 using MonsterQuest.Events;
 
-namespace MonsterQuest.Presenters.Console
+namespace MonsterQuest.Presenters.Narrative
 {
-    public class DamageEventPresenter : IEventPresenter<DamageEvent>
+    public class DamageEventPresenter : EventPresenter, IEventPresenter<DamageEvent>
     {
+        public DamageEventPresenter(IOutput output) : base(output) { }
+
         public IEnumerator Present(DamageEvent damageEvent)
         {
             string definiteName = damageEvent.creature.definiteName;
@@ -20,11 +22,11 @@ namespace MonsterQuest.Presenters.Console
                 {
                     if (damageAmountResult.savingThrowResult.success)
                     {
-                        MonsterQuest.Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and succeeds on a saving throw to halve the damage.");
+                        output.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and succeeds on a saving throw to halve the damage.");
                     }
                     else
                     {
-                        MonsterQuest.Console.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and fails on a saving throw to resist it.");
+                        output.WriteLine($"{definiteName.ToUpperFirst()} is hit with {damageAmount} and fails on a saving throw to resist it.");
                     }
                 }
 
@@ -60,12 +62,12 @@ namespace MonsterQuest.Presenters.Console
                     text += ".";
                 }
 
-                MonsterQuest.Console.WriteLine(text);
+                output.WriteLine(text);
             }
 
             if (damageEvent.hitPointsEnd > 0)
             {
-                MonsterQuest.Console.WriteLine($"{definiteName.ToUpperFirst()} has {damageEvent.hitPointsEnd} HP left.");
+                output.WriteLine($"{definiteName.ToUpperFirst()} has {damageEvent.hitPointsEnd} HP left.");
             }
 
             yield return null;

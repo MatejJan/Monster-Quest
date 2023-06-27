@@ -40,37 +40,38 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
+            Console.Indent(true);
+
+            List<string> categories = new();
+            if (result.vulnerability) categories.Add("vulnerable");
+            if (result.resistance) categories.Add("resistant");
+            if (result.immunity) categories.Add("immune");
+
+            if (categories.Count > 0)
             {
-                List<string> categories = new();
-                if (result.vulnerability) categories.Add("vulnerable");
-                if (result.resistance) categories.Add("resistant");
-                if (result.immunity) categories.Add("immune");
+                Console.WriteLine($"The target is {EnglishHelper.JoinWithAnd(categories)} to this damage.");
 
-                if (categories.Count > 0)
+                foreach (DamageAmountAlterationValue value in vulnerabilityValues)
                 {
-                    Console.WriteLine($"The target is {EnglishHelper.JoinWithAnd(categories)} to this damage.");
-
-                    foreach (DamageAmountAlterationValue value in vulnerabilityValues)
-                    {
-                        Console.WriteLine($"Vulnerable from {value.provider.rulesProviderName}.");
-                    }
-
-                    foreach (DamageAmountAlterationValue value in resistanceValues)
-                    {
-                        Console.WriteLine($"Resistant from {value.provider.rulesProviderName}.");
-                    }
-
-                    foreach (DamageAmountAlterationValue value in immunityValues)
-                    {
-                        Console.WriteLine($"Immune from {value.provider.rulesProviderName}.");
-                    }
+                    Console.WriteLine($"Vulnerable from {value.provider.rulesProviderName}.");
                 }
-                else
+
+                foreach (DamageAmountAlterationValue value in resistanceValues)
                 {
-                    Console.WriteLine("The target is not vulnerable, resistant, or immune to this damage.");
+                    Console.WriteLine($"Resistant from {value.provider.rulesProviderName}.");
+                }
+
+                foreach (DamageAmountAlterationValue value in immunityValues)
+                {
+                    Console.WriteLine($"Immune from {value.provider.rulesProviderName}.");
                 }
             }
+            else
+            {
+                Console.WriteLine("The target is not vulnerable, resistant, or immune to this damage.");
+            }
+
+            Console.Outdent();
 
             #endregion
 

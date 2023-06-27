@@ -32,27 +32,28 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
+            Console.Indent(true);
+
+            if (highestPriorityValue is null)
             {
-                if (highestPriorityValue is null)
-                {
-                    Console.WriteLine($"Value is {(value is null ? "null" : value)} by default.");
-                }
-                else
-                {
-                    Console.WriteLine($"Value is {value} from {highestPriorityValue.provider.rulesProviderName} with priority {highestPriorityValue.priority}.");
+                Console.WriteLine($"Value is {(value is null ? "null" : value)} by default.");
+            }
+            else
+            {
+                Console.WriteLine($"Value is {value} from {highestPriorityValue.provider.rulesProviderName} with priority {highestPriorityValue.priority}.");
 
-                    if (sortedValues.Length > 1)
+                if (sortedValues.Length > 1)
+                {
+                    Console.WriteLine("Other values were:");
+
+                    for (int i = 1; i < sortedValues.Length; i++)
                     {
-                        Console.WriteLine("Other values were:");
-
-                        for (int i = 1; i < sortedValues.Length; i++)
-                        {
-                            Console.WriteLine($"{sortedValues[i]} from {highestPriorityValue.provider.rulesProviderName} with priority {highestPriorityValue.priority}.");
-                        }
+                        Console.WriteLine($"{sortedValues[i]} from {highestPriorityValue.provider.rulesProviderName} with priority {highestPriorityValue.priority}.");
                     }
                 }
             }
+
+            Console.Outdent();
 
             #endregion
 

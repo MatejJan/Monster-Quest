@@ -2,10 +2,12 @@ using System.Collections;
 using MonsterQuest.Effects;
 using MonsterQuest.Events;
 
-namespace MonsterQuest.Presenters.Console
+namespace MonsterQuest.Presenters.Narrative
 {
-    public class UseItemEventPresenter : IEventPresenter<UseItemEvent>
+    public class UseItemEventPresenter : EventPresenter, IEventPresenter<UseItemEvent>
     {
+        public UseItemEventPresenter(IOutput output) : base(output) { }
+
         public IEnumerator Present(UseItemEvent useItemEvent)
         {
             Item item = useItemEvent.useItemAction.item;
@@ -16,13 +18,13 @@ namespace MonsterQuest.Presenters.Console
             {
                 if (target is not null)
                 {
-                    MonsterQuest.Console.WriteLine($"{creature.definiteName.ToUpperFirst()} administers {item.definiteName} to {target.definiteName}.");
+                    output.WriteLine($"{creature.definiteName.ToUpperFirst()} administers {item.definiteName} to {target.definiteName}.");
                 }
                 else
                 {
                     target = creature;
                     HealingItemType healingItemType = item.GetEffect<HealingItem>().healingItemType;
-                    MonsterQuest.Console.WriteLine($"{target.definiteName.ToUpperFirst()} {healingItemType.verb} {item.definiteName}.");
+                    output.WriteLine($"{target.definiteName.ToUpperFirst()} {healingItemType.verb} {item.definiteName}.");
                 }
             }
 

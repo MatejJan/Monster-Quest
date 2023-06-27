@@ -35,61 +35,62 @@ namespace MonsterQuest
 
             #region Verbose output
 
-            if (Console.verbose)
+            Console.Indent(true);
+
+            if (providerValues.Length == 0)
             {
-                if (providerValues.Length == 0)
+                Console.WriteLine("There is no cover.");
+            }
+            else
+            {
+                if (cover == Cover.None)
                 {
-                    Console.WriteLine("There is no cover.");
+                    Console.WriteLine($"Cover was removed by {removerValues[0].provider.rulesProviderName} (up to {removerValues[0].removeCoverUpTo}).");
+
+                    Console.WriteLine("Covers were:");
+
+                    foreach (CoverValue value in providerValues)
+                    {
+                        Console.WriteLine($"{value.provideCover} from {value.provider.rulesProviderName}.");
+                    }
+
+                    if (removerValues.Length > 1)
+                    {
+                        Console.WriteLine("Other cover removers were:");
+
+                        for (int i = 1; i < removerValues.Length; i++)
+                        {
+                            Console.WriteLine($"{providerValues[i].provider.rulesProviderName} (up to {providerValues[i].removeCoverUpTo}).");
+                        }
+                    }
                 }
                 else
                 {
-                    if (cover == Cover.None)
+                    Console.WriteLine($"Cover is {cover} from {providerValues[0].provider.rulesProviderName}.");
+
+                    if (providerValues.Length > 1)
                     {
-                        Console.WriteLine($"Cover was removed by {removerValues[0].provider.rulesProviderName} (up to {removerValues[0].removeCoverUpTo}).");
+                        Console.WriteLine("Other covers were:");
 
-                        Console.WriteLine("Covers were:");
-
-                        foreach (CoverValue value in providerValues)
+                        for (int i = 1; i < removerValues.Length; i++)
                         {
-                            Console.WriteLine($"{value.provideCover} from {value.provider.rulesProviderName}.");
-                        }
-
-                        if (removerValues.Length > 1)
-                        {
-                            Console.WriteLine("Other cover removers were:");
-
-                            for (int i = 1; i < removerValues.Length; i++)
-                            {
-                                Console.WriteLine($"{providerValues[i].provider.rulesProviderName} (up to {providerValues[i].removeCoverUpTo}).");
-                            }
+                            Console.WriteLine($"{providerValues[i].provideCover} from {providerValues[i].provider.rulesProviderName}.");
                         }
                     }
-                    else
+
+                    if (removerValues.Length > 0)
                     {
-                        Console.WriteLine($"Cover is {cover} from {providerValues[0].provider.rulesProviderName}.");
+                        Console.WriteLine("Cover removers were:");
 
-                        if (providerValues.Length > 1)
+                        foreach (CoverValue value in removerValues)
                         {
-                            Console.WriteLine("Other covers were:");
-
-                            for (int i = 1; i < removerValues.Length; i++)
-                            {
-                                Console.WriteLine($"{providerValues[i].provideCover} from {providerValues[i].provider.rulesProviderName}.");
-                            }
-                        }
-
-                        if (removerValues.Length > 0)
-                        {
-                            Console.WriteLine("Cover removers were:");
-
-                            foreach (CoverValue value in removerValues)
-                            {
-                                Console.WriteLine($"{value.provider.rulesProviderName} (up to {value.removeCoverUpTo}).");
-                            }
+                            Console.WriteLine($"{value.provider.rulesProviderName} (up to {value.removeCoverUpTo}).");
                         }
                     }
                 }
             }
+
+            Console.Outdent();
 
             #endregion
 
